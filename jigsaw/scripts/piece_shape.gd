@@ -19,6 +19,9 @@ const ARC_STEPS := 16
 const JITTER := 0.035
 ## The area every tab is scaled to, in square cells (about a classic round tab's).
 const TAB_AREA := 0.045
+## The classic cut's corner wander (Eric: "Even real cardboard stodgy puzzles have some variation"): enough that edges
+## meet at slightly-off angles, too little to read as whimsical.
+const CLASSIC_JITTER := 0.015
 ## Share of edges flipped after balancing: gives about half two-and-two pieces, the rest mostly three-and-one, a few
 ## four-and-none (measured in the self-test).
 const MIX_FLIP := 0.2
@@ -45,9 +48,9 @@ static func make_cut(rows: int, cols: int, seed_value: int, style: int) -> Dicti
 		var row := []
 		for c in range(cols + 1):
 			var p := Vector2(c, r)
-			if whimsical:
-				# inner corners wander, border corners slide only along their border
-				var j := JITTER
+			if true:
+				# inner corners wander (a little even in classic: real dies are not ruled), border corners only along their border
+				var j := JITTER if whimsical else CLASSIC_JITTER
 				if c > 0 and c < cols:
 					p.x += rng.randf_range(-j, j)
 				if r > 0 and r < rows:
@@ -174,7 +177,7 @@ static func _edge(a: Vector2, b: Vector2, horizontal: bool, inner: bool, dir: fl
 	var n := (Vector2(-t.y, t.x) if horizontal else Vector2(t.y, -t.x)).normalized()
 	var len_t := t.length()
 	# a gentle wave along the whole edge (whimsical only), zero at both corners so edges meet cleanly
-	var wave_amp := rng.randf_range(0.02, 0.055) * (1.0 if rng.randi() % 2 == 0 else -1.0) if whimsical else 0.0
+	var wave_amp := (rng.randf_range(0.02, 0.055) if whimsical else rng.randf_range(0.006, 0.016)) * (1.0 if rng.randi() % 2 == 0 else -1.0)
 	var wave_k := 2.0  # an S-wave: out as much as in, so it changes the look but not the piece's area
 	# the bow: a hump of area BOW_SHARE * TAB_AREA into the tab holder (against the tab's direction); zero at both corners
 	var bow := BOW_SHARE * TAB_AREA * PI / 2.0
@@ -196,11 +199,11 @@ static func _edge(a: Vector2, b: Vector2, horizontal: bool, inner: bool, dir: fl
 ## The tab, as (along, out) points from where it leaves the base line to where it returns. Kept inside along
 ## 0.27 .. 0.73 and at most 0.27 cells out, so two blanks in one piece never meet.
 static func _tab_profile(rng: RandomNumberGenerator, whimsical: bool) -> Array:
-	var cx := rng.randf_range(0.43, 0.57) if not whimsical else rng.randf_range(0.40, 0.60)
+	var cx := rng.randf_range(0.42, 0.58) if not whimsical else rng.randf_range(0.40, 0.60)
 	var kind := "round"
 	if whimsical:
 		kind = ["round", "round", "bulb", "cap", "point", "point"][rng.randi() % 6]
-	var lean := rng.randf_range(-0.025, 0.025) if not whimsical else rng.randf_range(-0.05, 0.05)
+	var lean := rng.randf_range(-0.035, 0.035) if not whimsical else rng.randf_range(-0.05, 0.05)
 	var pts := []
 	var neck_half := 0.0
 	var head_half := 0.0
@@ -220,7 +223,7 @@ static func _tab_profile(rng: RandomNumberGenerator, whimsical: bool) -> Array:
 				Vector2(cx + nw + 0.02, 0.0)]
 		_:
 			var rx := rng.randf_range(0.095, 0.125)
-			var ry := rx * rng.randf_range(0.9, 1.1)
+			var ry := rx * rng.randf_range(0.86, 1.14)  # from round to a little oval, as real dies vary
 			var nw := rng.randf_range(0.045, 0.065)
 			if kind == "bulb":     # a big round head on a thin neck
 				rx = rng.randf_range(0.125, 0.14)

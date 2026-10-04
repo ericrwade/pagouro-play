@@ -144,3 +144,9 @@ invisible; the theme now gives focused buttons the house green.
 Design note, not built: "shells" earned for solving need no login or cookie for one player on one device; they would
 sit in `user://` beside the settings (phone app storage until uninstall; browser storage on the web). Accounts and a
 server only come in for shells that follow a player across devices, leaderboards, or shells worth cheating for.
+
+**Classic cut, a little less geometric (Eric: "Even real cardboard stodgy puzzles have some variation").** Classic
+had varied tabs but ruler-straight edges and square corners. Now: corners wander 0.015 of a cell (`CLASSIC_JITTER`),
+edges carry a faint S-wave (0.006-0.016), and tabs vary a bit more in place (0.42-0.58), lean (+-0.035) and shape
+(round to slightly oval, 0.86-1.14). Measured: worst largest/smallest 1.10 (was 1.06); necks still at least half
+their heads; same tab mix.
