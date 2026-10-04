@@ -2,22 +2,22 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://v6x06c1u5vj0"
-path="res://.godot/imported/085-nightclub-dancing-couples.jpg-501035e23e08634ae7ebb74c2f5c4266.ctex"
+uid="uid://d3ha1cos0o1ur"
+path="res://.godot/imported/icon_fg_432.png-5e1f37f435ae6c4166c74b6e11d79a0c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/be/085-nightclub-dancing-couples.jpg"
-dest_files=["res://.godot/imported/085-nightclub-dancing-couples.jpg-501035e23e08634ae7ebb74c2f5c4266.ctex"]
+source_file="res://art/icon/icon_fg_432.png"
+dest_files=["res://.godot/imported/icon_fg_432.png-5e1f37f435ae6c4166c74b6e11d79a0c.ctex"]
 
 [params]
 
-compress/mode=1
+compress/mode=0
 compress/high_quality=false
-compress/lossy_quality=0.9
+compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
