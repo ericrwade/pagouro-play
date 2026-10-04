@@ -298,14 +298,14 @@
   "id": "pagouro-01",
   "topic": "pagouro",
   "title": "The Hermit Crab",
-  "text": "Pagouro (our AI text model) comes from the Greek págouros, hermit crab: an animal that carries a home it did not build and can move out of.",
+  "text": "The name Pagouro comes from the Greek págouros, hermit crab: an animal that carries a home it did not build and can move out of.",
   "source": "PAGOURO_BUILD/docs/ORIGIN.md"
  },
  {
   "id": "pagouro-02",
   "topic": "pagouro",
   "title": "The Ouroboros",
-  "text": "The 'ouro' in Pagouro (our AI text model) nods to the ouroboros, the loop that needs nothing from outside.",
+  "text": "The 'ouro' in the name Pagouro nods to the ouroboros, the loop that needs nothing from outside.",
   "source": "PAGOURO_BUILD/docs/ORIGIN.md"
  },
  {
