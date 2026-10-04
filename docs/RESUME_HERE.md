@@ -1,0 +1,48 @@
+# Resume here — Pagouro Jigsaw on Google Play
+
+Saved 2026-10-04, evening, at Eric's request before an aside ("a fork of this conversation"). Everything below is
+committed and pushed (`ericrwade/pagouro-play`, private, main). Read this, then `store/PLAY_STORE.md`, then the last two
+entries of `docs/BUILD_LOG.md`. `docs/HANDOFF.md` has the toolchain and guardrails.
+
+## Where things stand
+
+- **Game:** Pagouro Jigsaw 0.2.4 (version code 15), tag `v0.2.4`. Eric is happy with it ("I'm very happy with the game").
+  The RELEASE build (from the Play bundle, via bundletool) is installed on Eric's Pixel 11 Pro XL; the old debug test
+  build was removed with his OK.
+- **Play bundle:** `build/pagouro-jigsaw.aab`, built by `python tools_src/build_aab.py`; backed up on the private
+  release `play-0.2.4` (SHA-256 6812ad30…570ca9, verified by download).
+- **Signing:** upload/release key `%USERPROFILE%\.ssh\pagouro-jigsaw-release.keystore`, password in the `.password.txt`
+  beside it (never printed, never in a repo). Cert SHA-256
+  `89:05:8D:53:72:88:B3:99:FC:C5:FA:3B:1C:2B:B8:F9:A0:F4:F4:A6:97:7D:C5:F9:41:E5:F6:8A:16:68:BB:22`. Public cert in
+  `store/pagouro-jigsaw-release-cert.pem/.der`. Eric still needs to back the keystore + password up offline.
+- **Android Developer Console:** package `com.pagouro.jigsaw` ("Pagouro Jigsaw") REGISTERED with that key. From
+  September 2026 only builds signed with registered keys install on certified devices, so sign every test build with
+  the release key from now on (the debug key is not registered).
+- **Play Console:** personal account, developer name **Pagouro**, device check done (Play Console app installed).
+  **Waiting on Google's identity verification.** Fees: $25 Developer Console + $25 Play Console, both paid by Eric.
+- **Privacy policy:** LIVE at https://pagouro.com/jigsaw-privacy.html (pushed to `ericrwade/pagouro-site` with Eric's OK).
+  Contact `info@pagouro.com`, confirmed delivering.
+- **Store kit ready** in `store/`: listing text and every form answer (`PLAY_STORE.md`), `feature_graphic.png`
+  (1024×500), `screenshots/phone_1..5.png` (1080×2160), icon `jigsaw/art/icon/icon_512.png`.
+- **Pagouro Salon** backed up: private `ericrwade/pagouro-salon` + release `backup-r2-2026-10-04` (model, loop v2).
+- **Summer Engine** credited in About, README and the store description. Eric plans to email the Summer Engine builder
+  (name uncertain; he said "Mathias???") once the closed test needs testers, by email, not Discord (his Discord name
+  is not his real name and he doesn't want them linked).
+
+## Next, when Eric is verified
+
+1. Play Console → Create app: name `Pagouro Jigsaw`, English (United States), Game, Free, tick both declarations.
+2. Store listing: paste from `PLAY_STORE.md`; upload icon, feature graphic, screenshots; category Game › Puzzle;
+   contact info@pagouro.com; privacy URL above.
+3. App content forms: answers in `PLAY_STORE.md` (no ads, collects nothing, IARC all "none", audience 13+).
+4. Internal testing: upload the AAB (rebuild first if anything changed; bump the version in BOTH presets and
+   project.godot).
+5. Closed test: 12+ testers opted in for 14 continuous days (Eric is collecting Gmail addresses), then apply for
+   production.
+
+## Open, not urgent
+
+- Loop v2 (round-2 Salon music) is not in the game yet; Eric's ears decide.
+- The "Le Robot Désolé" poster idea (the adb-keystrokes moment), offered, waiting on Eric's go.
+- Web export for iPhones via pagouro.com (before paying Apple $99/yr); F-Droid later; the same APK on a public
+  GitHub release the day the Play version ships.
