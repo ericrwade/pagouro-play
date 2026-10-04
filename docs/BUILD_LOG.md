@@ -194,3 +194,39 @@ with no width yet measures absurdly tall; it now has a width from the start and 
 duplicated block of declarations when I applied a patch script twice (Godot refused to parse; removed).
 
 Not tested: a real phone. An emulator needs a hypervisor driver, and installs of that kind wait for Eric.
+
+## 2026-10-04 (day) — Eric plays it on his Pixel; 0.1.1 to 0.2.3
+
+Installed over USB (adb) on Eric's Pixel 11 Pro XL (Android 17) and iterated from his play. Every build: self-test at
+405x880 and 1280x800, Android export, install, version bumped in BOTH `project.godot` and `export_presets.cfg`,
+APK replaced on the private prerelease `android-test-0.1.0`.
+
+- 0.1.1: a close mark on every card and menu; phone title on its own row; hint picture off by default; "no third-party
+  ads" (reverted in 0.1.2); license text reflow fixed (a heredoc had turned "\r" into a real newline, so words ran together).
+- 0.1.2: "No ads" made true by Google Play's definition (third-party ad SDKs, display/banner ads, house ads promoting
+  your own apps): the 8 call-to-action Help panels left the timed card (152 -> 144); where to find Pagouro is one line in
+  About; no sponsorship ask in the app.
+- 0.1.3: smooth cut edges. Polygon2D antialiasing does nothing in GL Compatibility and 2D MSAA is unsupported (tested in
+  a side-by-side project), so each piece gets a 16-sample mask baked at puzzle start (`piece_masks.gd`, force_draw through
+  RenderingServer canvas items; 0.2 s for 49 pieces on the PC, 0.9-1.0 s for 156 on the Pixel) and `piece.gdshader` cuts
+  the picture with it and draws the ink cut line. Seams close when joined (alpha opaque from the true edge in) and vanish
+  when finished. Version shown in About.
+- 0.1.4-0.1.6, 0.2.1: Help wording: every Pagouro Salon / Pagouro BE / text-model mention says what it is; "the name
+  Pagouro"; "from any folder, even a USB stick" (checked against both release READMEs and launchers).
+- 0.1.7: classic tabs 25 % larger in area; self-test now measures tab reach and outline validity (0 invalid of 980).
+- 0.1.8: true piece counts 12/25/49/100/156 (150 was always 12 x 13); Help scales by pieces left past halfway
+  (156 pieces: 7, 7, 3, 1 at 156/78/40/10 left); gold light around a finished border; soft pulse on attached pieces and a
+  click synthesized in code (Menu: Sounds).
+- 0.1.9: Help picks at random like a friend would (border first, then pieces that fit placed work, spread apart); new
+  icon: the crab medallion cut in four, one piece loose (`tools_src/make_icons.py`, 192/256/512 + adaptive).
+- 0.2.0: Rotation (Menu, off by default): quarter turns, tap or right-click turns, joins need the same facing, locks need
+  upright (a turned piece exactly at home used to lock: fixed via `_is_home`), Help turns pieces upright, saved/restored.
+- 0.2.2: the sponsor line drops to the bottom when the tray goes at the finish (Eric saw the picture over it). The
+  self-test now finishes with the tray on and shoots the closed-card view; the rotation test had been placed between the
+  solve and the finish screenshots, so those shots showed the wrong puzzle for two versions.
+- 0.2.3: last tray pieces would not come out on a diagonal drag (read as a scroll of a tray that could not scroll).
+  Reproduced on the phone, fixed with `Tray.decide` (lift within ~60 degrees of up, any direction when nothing scrolls).
+  The self-test's simulated fingers were in layout units, not window pixels, so its touch checks were void until fixed.
+
+Mistake to remember: an adb test swipe went to the phone while Eric had Telegram open and landed on his keyboard. Never
+send adb input without checking the foreground app first.

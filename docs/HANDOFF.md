@@ -74,8 +74,9 @@ Bump BOTH `application/config/version` in `jigsaw/project.godot` (shown in About
 
 ## Open / next
 
-1. **Eric installs the APK on his Android phone** and reports what feels wrong. Expect touch-feel issues no desktop test
-   can show (grab size, snap distance, pinch while carrying a piece).
+1. **Played on Eric's Pixel 11 Pro XL**, 0.2.3 installed (2026-10-04). Install over USB with
+   `tools/android-sdk/platform-tools/adb.exe install -r build/pagouro-jigsaw.apk`; check the foreground app before
+   ever sending adb input. Tag `v0.2.3` marks this build.
 2. Store path (needs Eric's word and money): Google Play developer account ($25 once); new personal accounts must run a
    closed test with at least 12 testers for 14 days before production (as of my training data — check at sign-up).
    A RELEASE keystore must be made for the store build and kept OUTSIDE every repo, like the minisign key; losing it
