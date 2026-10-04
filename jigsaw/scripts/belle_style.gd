@@ -4,12 +4,12 @@ extends RefCounted
 ## to resonate very subtly"): paper and ink colours, a period serif, thin double rules and small corner scrolls.
 ## Controls and spacing stay modern; ornament never sits on top of the picture or the text.
 
-const PAPER := Color("efe6d2")
-const PAPER_DEEP := Color("e3d5b6")
-const INK := Color("3b2a1e")
-const INK_SOFT := Color(0.231, 0.165, 0.118, 0.72)
-const GOLD := Color("a8834e")
-const GREEN := Color("2f4a3a")
+const PAPER := Color("efe3c6")        # D-74 poster cream
+const PAPER_DEEP := Color("d9c9a6")   # D-74 poster cream, one step down
+const INK := Color("332822")          # D-74 warm black (never pure black)
+const INK_SOFT := Color(0.2, 0.157, 0.133, 0.72)
+const GOLD := Color("a8823a")         # D-74 gold ochre
+const GREEN := Color("3a4a34")        # D-74 sage, darkest
 
 const TITLE_FONT := "res://fonts/CormorantGaramond.ttf"
 const TEXT_FONT := "res://fonts/EBGaramond.ttf"

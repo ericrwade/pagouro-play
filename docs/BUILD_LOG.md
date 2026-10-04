@@ -41,3 +41,10 @@ artwork too closely, too. Makes it easier to play.").** A menu of eight period-f
 Paper, Sage, Rose, Slate blue, Bottle green, Burgundy, Night, Charcoal. The board takes a shade just off the table
 (darker on light tables, lighter on dark ones), the sponsor line switches between ink and paper so it stays readable,
 and the choice is kept between sessions in `user://settings.cfg`. Checked on Night: cream and lavender pieces stand out.
+
+**Colors snapped to the locked house palette (Eric, 2026-10-03: "Is everything you are doing still honoring our original
+color scheme?").** The first pass picked paper, ink, gold and the table colors by eye; they were close to D-74 but not
+it. Now every color is a value from D-74's Belle Époque palette (`PAGOURO_BUILD/docs/STYLE_GUIDE.md`): poster cream
+`#efe3c6` paper, warm black `#332822` ink, gold ochre `#a8823a` rules, and nine table colors from its ramps (poster cream,
+sage, dusty rose, chrome yellow, Prussian blue, deep sage, plum, Prussian night, warm black). Self-test passes; screenshots
+checked on poster cream and Prussian night.

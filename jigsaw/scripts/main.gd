@@ -7,11 +7,11 @@ const PICTURES := "res://art/be/pictures.json"
 const MUSIC := "res://music/salon-loop-v1.ogg"
 const COUNTS := [12, 24, 48, 96, 150]
 const DAILY_COUNT := 48
-## Table colours to play on, so a picture never disappears into its background (Eric, 2026-10-03). Period-flavoured,
-## light to dark; the choice is kept between sessions.
+## Table colours to play on, so a picture never disappears into its background (Eric, 2026-10-03). Every one is a
+## colour of the locked D-74 house palette (Belle Epoque poster), light to dark; the choice is kept between sessions.
 const TABLES := [
-	["Paper", Color("efe6d2")], ["Sage", Color("b9c4a7")], ["Rose", Color("d9b8ae")], ["Slate blue", Color("7d8fa3")],
-	["Bottle green", Color("2f4a3a")], ["Burgundy", Color("5c2a2e")], ["Night", Color("1f2433")], ["Charcoal", Color("2b2724")],
+	["Poster cream", Color("efe3c6")], ["Sage", Color("c3ceae")], ["Dusty rose", Color("ecc3c6")], ["Chrome yellow", Color("f8dd6a")],
+	["Prussian blue", Color("2d6fa0")], ["Deep sage", Color("3a4a34")], ["Plum", Color("7a3c4a")], ["Prussian night", Color("0e2a44")], ["Warm black", Color("1a1410")],
 ]
 const SETTINGS := "user://settings.cfg"
 const EPOCH_DAY := 20454  # 2026-01-01 as days since 1970-01-01 (UTC); day 0 of the daily list
@@ -252,7 +252,7 @@ func _selftest() -> void:
 	await get_tree().process_frame
 	await RenderingServer.frame_post_draw
 	get_viewport().get_texture().get_image().save_png("user://selftest_scattered.png")
-	_set_table(6, false)
+	_set_table(7, false)
 	await get_tree().process_frame
 	await RenderingServer.frame_post_draw
 	get_viewport().get_texture().get_image().save_png("user://selftest_night.png")
