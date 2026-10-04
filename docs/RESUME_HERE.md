@@ -46,3 +46,10 @@ entries of `docs/BUILD_LOG.md`. `docs/HANDOFF.md` has the toolchain and guardrai
 - The "Le Robot Désolé" poster idea (the adb-keystrokes moment), offered, waiting on Eric's go.
 - Web export for iPhones via pagouro.com (before paying Apple $99/yr); F-Droid later; the same APK on a public
   GitHub release the day the Play version ships.
+
+## Engine note (Eric, 2026-10-04)
+
+Eric had wanted to use Summer Engine. The jigsaw was built in standalone Godot only because Summer's editor was busy with
+AMPLYFi and its tools act on whatever project is open (no interference was the rule). Not an efficiency choice. Next
+time Summer is free: offer to move the jigsaw into Summer, or build Solitaire in Summer from the start, and say so up
+front if a project can't use it.
