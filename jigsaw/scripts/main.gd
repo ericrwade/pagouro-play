@@ -79,17 +79,34 @@ func _start(seed_value: int) -> void:
 func _build_ui() -> void:
 	var ui := CanvasLayer.new()
 	add_child(ui)
+	var root := Control.new()
+	root.set_anchors_preset(Control.PRESET_FULL_RECT)
+	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	root.theme = BelleStyle.theme()
+	ui.add_child(root)
 	var top := PanelContainer.new()
 	top.set_anchors_preset(Control.PRESET_TOP_WIDE)
 	top.custom_minimum_size.y = 56
-	ui.add_child(top)
+	# paper bar with a thin gold rule beneath and an ink hairline under that
+	var bar_style := BelleStyle.box(BelleStyle.PAPER_DEEP, BelleStyle.GOLD, 0, 0, Vector4(14, 8, 14, 8))
+	bar_style.border_width_bottom = 2
+	top.add_theme_stylebox_override("panel", bar_style)
+	root.add_child(top)
+	var hairline := ColorRect.new()
+	hairline.color = Color(BelleStyle.INK, 0.35)
+	hairline.set_anchors_preset(Control.PRESET_TOP_WIDE)
+	hairline.offset_top = 59
+	hairline.offset_bottom = 60
+	hairline.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	root.add_child(hairline)
 	var bar := HBoxContainer.new()
 	bar.add_theme_constant_override("separation", 10)
 	top.add_child(bar)
 	title_label = Label.new()
 	title_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	title_label.clip_text = true
-	title_label.add_theme_font_size_override("font_size", 18)
+	title_label.add_theme_font_override("font", BelleStyle.title_font())
+	title_label.add_theme_font_size_override("font_size", 24)
 	bar.add_child(title_label)
 	status_label = Label.new()
 	bar.add_child(status_label)
@@ -131,24 +148,32 @@ func _build_ui() -> void:
 	sponsor.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	sponsor.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
 	sponsor.offset_top = -30
-	sponsor.add_theme_font_size_override("font_size", 13)
-	sponsor.modulate = Color(0.25, 0.2, 0.15, 0.75)
-	ui.add_child(sponsor)
+	sponsor.add_theme_font_size_override("font_size", 15)
+	sponsor.add_theme_color_override("font_color", BelleStyle.INK_SOFT)
+	sponsor.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	root.add_child(sponsor)
 	finish_panel = PanelContainer.new()
 	finish_panel.set_anchors_preset(Control.PRESET_CENTER)
 	finish_panel.visible = false
-	ui.add_child(finish_panel)
+	# a paper card with a gold double edge: the outer border here, the inner rule drawn by the margin container below
+	finish_panel.add_theme_stylebox_override("panel", BelleStyle.box(BelleStyle.PAPER, BelleStyle.GOLD, 2, 2, Vector4(6, 6, 6, 6)))
+	root.add_child(finish_panel)
+	var inner := PanelContainer.new()
+	inner.add_theme_stylebox_override("panel", BelleStyle.box(BelleStyle.PAPER, Color(BelleStyle.INK, 0.45), 1, 1, Vector4(28, 18, 28, 18)))
+	finish_panel.add_child(inner)
 	var box := VBoxContainer.new()
 	box.add_theme_constant_override("separation", 12)
-	finish_panel.add_child(box)
+	inner.add_child(box)
 	finish_label = Label.new()
 	finish_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	finish_label.add_theme_font_size_override("font_size", 22)
+	finish_label.add_theme_font_override("font", BelleStyle.title_font())
+	finish_label.add_theme_font_size_override("font_size", 34)
+	finish_label.add_theme_color_override("font_color", BelleStyle.GREEN)
 	box.add_child(finish_label)
 	var credit := Label.new()
 	credit.text = "This picture was drawn by Pagouro BE, a free image model that runs offline.\nNot every picture it draws is a masterpiece; this one made the cut."
 	credit.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	credit.add_theme_font_size_override("font_size", 14)
+	credit.add_theme_font_size_override("font_size", 17)
 	box.add_child(credit)
 	var again := Button.new()
 	again.text = "Another picture"
@@ -171,7 +196,11 @@ func _on_solved(seconds: float) -> void:
 	var s := int(seconds) % 60
 	finish_label.text = "Finished in %d:%02d" % [m, s]
 	finish_panel.visible = true
-	finish_panel.position = (get_viewport().get_visible_rect().size - finish_panel.size) * 0.5
+	# below the finished picture, so the picture stays in view
+	var view := get_viewport().get_visible_rect().size
+	finish_panel.reset_size()
+	finish_panel.position = Vector2((view.x - finish_panel.size.x) * 0.5, view.y - finish_panel.size.y - 44)
+	puzzle.focus_board(finish_panel.size.y + 52)
 
 
 func _selftest() -> void:
@@ -196,7 +225,7 @@ func _selftest() -> void:
 	get_viewport().get_texture().get_image().save_png("user://selftest_half.png")
 	puzzle.solve_all_for_test()
 	report.append("after solve: %d cluster(s), solved=%s" % [puzzle.clusters.size(), str(puzzle.is_solved)])
-	await get_tree().process_frame
+	await get_tree().create_timer(1.5).timeout  # let the seams fade
 	await RenderingServer.frame_post_draw
 	get_viewport().get_texture().get_image().save_png("user://selftest_solved.png")
 	report.append("daily index today: %d (%s)" % [today_index(), pictures[today_index()].caption])

@@ -62,7 +62,7 @@ func build(tex: Texture2D, piece_count: int, seed_value: int) -> void:
 			edge.points = poly
 			edge.closed = true
 			edge.width = max(1.5, cell.x * 0.012)
-			edge.default_color = Color(0.2, 0.15, 0.1, 0.55)
+			edge.default_color = Color(BelleStyle.INK, 0.5)
 			edge.joint_mode = Line2D.LINE_JOINT_ROUND
 			piece.add_child(edge)
 			var cluster := Node2D.new()
@@ -107,7 +107,7 @@ func _draw_board() -> void:
 	var size := texture.get_size()
 	var frame := Polygon2D.new()
 	frame.polygon = PackedVector2Array([Vector2.ZERO, Vector2(size.x, 0), size, Vector2(0, size.y)])
-	frame.color = Color(0.86, 0.81, 0.7, 1.0)
+	frame.color = BelleStyle.PAPER_DEEP
 	board.add_child(frame)
 	if show_ghost:
 		var ghost := Sprite2D.new()
@@ -115,12 +115,8 @@ func _draw_board() -> void:
 		ghost.centered = false
 		ghost.modulate = Color(1, 1, 1, 0.12)
 		board.add_child(ghost)
-	var line := Line2D.new()
-	line.points = frame.polygon
-	line.closed = true
-	line.width = max(2.0, size.x * 0.003)
-	line.default_color = Color(0.45, 0.35, 0.25, 0.8)
-	board.add_child(line)
+	for node in BelleStyle.frame_nodes(size):
+		board.add_child(node)
 
 
 func set_ghost(on: bool) -> void:
@@ -138,6 +134,20 @@ func _fit_camera() -> void:
 	var z: float = min(usable.x / table.size.x, usable.y / table.size.y)
 	camera.zoom = Vector2(z, z)
 	camera.position = table.get_center() + Vector2(0, (bottom_bar - top_bar) * 0.5 / z)
+
+
+## Glide the view to frame the finished picture in the space above a card of `reserved_bottom` pixels.
+func focus_board(reserved_bottom: float) -> void:
+	var size := texture.get_size() * 1.08  # the frame and its scrolls
+	var view := get_viewport_rect().size
+	var top_bar := 64.0
+	var usable := Vector2(view.x * 0.9, max(80.0, view.y - top_bar - reserved_bottom - 16.0))
+	var z: float = min(usable.x / size.x, usable.y / size.y)
+	var centre_screen_y := top_bar + 8.0 + usable.y * 0.5
+	var target := texture.get_size() * 0.5 + Vector2(0, (view.y * 0.5 - centre_screen_y) / z)
+	var t := create_tween().set_parallel(true).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	t.tween_property(camera, "zoom", Vector2(z, z), 0.9)
+	t.tween_property(camera, "position", target, 0.9)
 
 
 func _notification(what: int) -> void:
@@ -200,6 +210,12 @@ func _settle(cluster: Node2D) -> void:
 	progress.emit(piece_total() - clusters.size() + 1, piece_total())
 	if clusters.size() == 1 and cluster.position == Vector2.ZERO:
 		is_solved = true
+		# the seams melt away: the finished picture shows whole
+		var fade := create_tween().set_parallel(true)
+		for piece in cluster.get_children():
+			for edge in piece.get_children():
+				if edge is Line2D:
+					fade.tween_property(edge, "modulate:a", 0.0, 1.2)
 		solved.emit((Time.get_ticks_msec() - started_ms) / 1000.0)
 
 

@@ -28,4 +28,4 @@ pointing/emulate_mouse_from_touch=true
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
 textures/vram_compression/import_etc2_astc=true
-environment/defaults/default_clear_color=Color(0.93, 0.89, 0.8, 1)
+environment/defaults/default_clear_color=Color(0.937, 0.902, 0.824, 1)

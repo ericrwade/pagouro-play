@@ -27,6 +27,6 @@ tools\godot\Godot_v4.7.2-stable_win64_console.exe --path jigsaw -- --selftest
 
 ## Licenses
 
-Code: Apache 2.0. Pictures: CC0 1.0 (drawn by Pagouro BE; prompts and seeds in `jigsaw/art/be/pictures.json`). Music:
+Fonts: Cormorant Garamond and EB Garamond, SIL Open Font License 1.1 (license texts in `jigsaw/fonts/`). Code: Apache 2.0. Pictures: CC0 1.0 (drawn by Pagouro BE; prompts and seeds in `jigsaw/art/be/pictures.json`). Music:
 CC0 1.0 (composed by Pagouro Salon round 1, rendered with the CC0 Upright Piano KW SoundFont; tracklist in
 `jigsaw/music/salon-loop-v1.tracklist.json`).

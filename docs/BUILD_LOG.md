@@ -27,3 +27,11 @@ board was too small, and on a wide window the pieces used only a narrow column.
 
 Not yet done: playtesting by a person with a mouse and on a phone, piece rotation option, edge-pieces tray, saving a
 puzzle in progress, the ratings and the generated-art packs (S-4), Android and Mac builds.
+
+**The Pagouro look (Eric, same evening):** "whenever we design anything graphical for Pagouro let's lean a little bit
+into the Belle Epoque visuals such as the curlycues and edging etc. Not too much, but stylishly a tiny bit less clean
+than Cupertino would build." `belle_style.gd` holds it: paper and ink colours, Cormorant Garamond for titles and EB
+Garamond for text (both SIL OFL), buttons with thin ink borders on paper, a gold rule and ink hairline under the top bar,
+a gold-and-ink double frame around the board with a pair of small Art Nouveau scrolls at each corner (outside the
+picture, never over it), and a double-edged finish card. Also: on completion the piece seams fade out and the view glides
+to frame the finished picture above the card, so the card never covers it.
