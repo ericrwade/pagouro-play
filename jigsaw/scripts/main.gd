@@ -20,6 +20,7 @@ var pictures: Array = []
 var current := {}
 var current_count := DAILY_COUNT
 var is_daily := true
+var current_seed := 0
 
 @onready var puzzle: Puzzle = $Puzzle
 @onready var music: AudioStreamPlayer = $Music
@@ -30,6 +31,9 @@ var music_button: Button
 var ghost_button: Button
 var table_button: OptionButton
 var sponsor_label: Label
+var cut_button: OptionButton
+var tray_button: Button
+var tray_panel: Tray
 var finish_panel: PanelContainer
 var finish_label: Label
 
@@ -42,6 +46,15 @@ func _ready() -> void:
 	var table_index := int(cfg.get_value("play", "table", 0))
 	table_button.select(clampi(table_index, 0, TABLES.size() - 1))
 	_set_table(clampi(table_index, 0, TABLES.size() - 1), false)
+	var cut_index := clampi(int(cfg.get_value("play", "cut", 0)), 0, 1)
+	cut_button.select(cut_index)
+	puzzle.cut_style = PieceShape.Style.WHIMSICAL if cut_index == 0 else PieceShape.Style.CLASSIC
+	# the tray starts on for a tall (phone-shaped) window, off for a wide one; the player's choice is kept
+	var view := get_viewport().get_visible_rect().size
+	var tray_on := bool(cfg.get_value("play", "tray", view.y > view.x))
+	tray_button.set_pressed_no_signal(tray_on)
+	_set_tray(tray_on, false)
+	get_viewport().size_changed.connect(_layout_tray)
 	puzzle.solved.connect(_on_solved)
 	puzzle.progress.connect(_on_progress)
 	var stream: AudioStream = load(MUSIC)
@@ -83,7 +96,9 @@ func start_random() -> void:
 
 
 func _start(seed_value: int) -> void:
+	current_seed = seed_value
 	finish_panel.visible = false
+	tray_panel.visible = puzzle.tray_mode
 	_select_count(current_count)
 	var tex: Texture2D = load(current.file)
 	puzzle.build(tex, current_count, seed_value)
@@ -141,6 +156,17 @@ func _build_ui() -> void:
 		is_daily = false
 		_start(randi()))
 	bar.add_child(count_button)
+	cut_button = OptionButton.new()
+	cut_button.add_item("Whimsical cut")
+	cut_button.add_item("Classic cut")
+	cut_button.item_selected.connect(_set_cut)
+	bar.add_child(cut_button)
+	tray_button = Button.new()
+	tray_button.text = "Tray"
+	tray_button.toggle_mode = true
+	tray_button.tooltip_text = "Keep loose pieces in a tray along the bottom (best on a phone)"
+	tray_button.toggled.connect(_set_tray)
+	bar.add_child(tray_button)
 	table_button = OptionButton.new()
 	for t in TABLES:
 		var swatch := Image.create(14, 14, false, Image.FORMAT_RGBA8)
@@ -178,6 +204,11 @@ func _build_ui() -> void:
 	sponsor.add_theme_color_override("font_color", BelleStyle.INK_SOFT)
 	sponsor.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	root.add_child(sponsor)
+	tray_panel = Tray.new()
+	tray_panel.puzzle = puzzle
+	tray_panel.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
+	tray_panel.visible = false
+	root.add_child(tray_panel)
 	finish_panel = PanelContainer.new()
 	finish_panel.set_anchors_preset(Control.PRESET_CENTER)
 	finish_panel.visible = false
@@ -219,6 +250,44 @@ func _set_table(i: int, save := true) -> void:
 		cfg.save(SETTINGS)
 
 
+## Whimsical or classic pieces; the current picture is cut again from the start.
+func _set_cut(i: int) -> void:
+	puzzle.cut_style = PieceShape.Style.WHIMSICAL if i == 0 else PieceShape.Style.CLASSIC
+	_save("cut", i)
+	if not current.is_empty():
+		_start(current_seed)
+
+
+func _set_tray(on: bool, save := true) -> void:
+	if save:
+		_save("tray", on)
+	_layout_tray()
+	puzzle.set_tray_mode(on)
+	tray_panel.visible = on and not puzzle.is_solved
+	_layout_tray()
+
+
+## Size the tray so a phone shows about six pieces (two rows of three) and a computer a longer shelf.
+func _layout_tray() -> void:
+	var view := get_viewport().get_visible_rect().size
+	var slot: float = min(view.x / 3.2, view.y * 0.15)
+	var height := slot * Tray.ROWS + 8.0
+	var on := tray_button.button_pressed
+	tray_panel.offset_top = -height
+	tray_panel.offset_bottom = 0
+	puzzle.tray_height = height if on else 0.0
+	# the sponsor line sits just above the tray when there is one
+	sponsor_label.offset_top = -30 - (height if on else 0.0)
+	sponsor_label.offset_bottom = -(height if on else 0.0)
+
+
+func _save(key: String, value) -> void:
+	var cfg := ConfigFile.new()
+	cfg.load(SETTINGS)
+	cfg.set_value("play", key, value)
+	cfg.save(SETTINGS)
+
+
 func _select_count(n: int) -> void:
 	var i := COUNTS.find(n)
 	if i >= 0:
@@ -234,6 +303,7 @@ func _on_solved(seconds: float) -> void:
 	var s := int(seconds) % 60
 	finish_label.text = "Finished in %d:%02d" % [m, s]
 	finish_panel.visible = true
+	tray_panel.visible = false
 	# below the finished picture, so the picture stays in view
 	var view := get_viewport().get_visible_rect().size
 	finish_panel.reset_size()
@@ -252,6 +322,26 @@ func _selftest() -> void:
 	await get_tree().process_frame
 	await RenderingServer.frame_post_draw
 	get_viewport().get_texture().get_image().save_png("user://selftest_scattered.png")
+	puzzle.cut_style = PieceShape.Style.CLASSIC
+	_start(42)
+	await get_tree().process_frame
+	await RenderingServer.frame_post_draw
+	get_viewport().get_texture().get_image().save_png("user://selftest_classic.png")
+	puzzle.cut_style = PieceShape.Style.WHIMSICAL
+	_start(42)
+	tray_button.set_pressed_no_signal(true)
+	_set_tray(true, false)
+	var before := puzzle.tray.size()
+	var lifted: Node2D = puzzle.tray[0]
+	puzzle.begin_drag_from_tray(lifted, Vector2(640, 300))
+	puzzle.end_drag(Vector2(640, 300))
+	report.append("tray %d -> %d after one lift, lifted piece visible=%s" % [before, puzzle.tray.size(), str(lifted.visible)])
+	await get_tree().process_frame
+	await RenderingServer.frame_post_draw
+	get_viewport().get_texture().get_image().save_png("user://selftest_tray.png")
+	tray_button.set_pressed_no_signal(false)
+	_set_tray(false, false)
+	report.append("tray off: %d in tray, %d hidden" % [puzzle.tray.size(), puzzle.clusters.filter(func(c): return not c.visible).size()])
 	_set_table(7, false)
 	await get_tree().process_frame
 	await RenderingServer.frame_post_draw

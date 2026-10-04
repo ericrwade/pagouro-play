@@ -48,3 +48,25 @@ it. Now every color is a value from D-74's Belle Époque palette (`PAGOURO_BUILD
 `#efe3c6` paper, warm black `#332822` ink, gold ochre `#a8823a` rules, and nine table colors from its ramps (poster cream,
 sage, dusty rose, chrome yellow, Prussian blue, deep sage, plum, Prussian night, warm black). Self-test passes; screenshots
 checked on poster cream and Prussian night.
+
+## 2026-10-04 — Eric's first playtest: tray, tab variety, whimsical cut
+
+Eric: "It's great for how little instruction you got!" Notes: on a phone his jigsaw keeps loose pieces in a two-row tray
+along the bottom that slides left and right (4-6 pieces in view), swiped up onto the board; the tabs and blanks had no
+variation; and he asked for a random or whimsical cut ("some bulbous protrusions and some spiky").
+
+**Cuts** (`piece_shape.gd`, rewritten). The puzzle is now cut once as a lattice of corners plus one shared polyline per
+inner edge, so neighbours always fit exactly whatever the shapes. *Classic*: straight grid, every tab different (place
+along the edge, size, height, lean, neck). *Whimsical* (the default): inner corners wander up to 0.13 of a cell, so
+pieces differ in size and lean; edges wave; tabs are round, bulbous, flat mushroom caps or spiky arrowheads. Blanks are
+the neighbour's tab seen from the other side, so they vary the same way. A "Whimsical cut / Classic cut" menu re-cuts
+the current picture; the choice is kept.
+
+**Tray** (`tray.gd`, new). Two rows of loose pieces in a shuffled box order, on a paper shelf with the gold rule.
+Swipe sideways to scroll (mouse wheel on a computer), swipe a piece up to lift it onto the board, drop a loose piece back
+over the tray to put it away. In tray mode the view frames the board alone. On by default when the window is taller than
+wide; the "Tray" button switches it and the choice is kept. Sized so a phone shows six pieces.
+
+Verified by the self-test (both cuts, tray 49 -> 48 after a lift, tray off leaves nothing hidden, solve still ends in
+one cluster) at 1280 x 800 and 450 x 900, screenshots looked at. Still to do for phones: the top bar is built for a
+computer and is too small to tap on a phone; it needs its own compact layout.

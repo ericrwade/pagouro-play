@@ -4,12 +4,18 @@ extends Node2D
 ## Polygon2D nodes textured with the picture, grouped in clusters (Node2D). A piece's place inside its cluster is its home
 ## position, so two clusters fit together exactly when their positions are equal: snapping and joining compare cluster
 ## positions only. The camera fits the whole table (board plus a scatter margin) to the window.
+##
+## Tray mode (Eric, 2026-10-04, for phones): loose pieces wait in a two-row tray along the bottom instead of on the
+## table, and the view frames the board alone. A piece in the tray is a hidden cluster; the Tray control draws it and
+## hands it back here when the player swipes it up.
 
 signal solved(seconds: float)
 signal progress(joined: int, total: int)
+signal tray_changed
 
 const SNAP_FRACTION := 0.18   # snap when within this fraction of a cell
 const MARGIN := 0.3           # scatter margin around the board, as a fraction of the board size
+const TRAY_MARGIN := 0.05     # in tray mode, the little table left around the board
 
 var texture: Texture2D
 var rows := 0
@@ -22,6 +28,10 @@ var started_ms := 0
 var is_solved := false
 var show_ghost := true
 var table_color := BelleStyle.PAPER
+var cut_style := PieceShape.Style.WHIMSICAL
+var tray_mode := false
+var tray_height := 0.0        # screen pixels the tray covers at the bottom (set by the screen)
+var tray: Array[Node2D] = []  # clusters waiting in the tray, in tray order
 
 @onready var camera: Camera2D = $Camera2D
 @onready var board: Node2D = $Board
@@ -32,6 +42,8 @@ func build(tex: Texture2D, piece_count: int, seed_value: int) -> void:
 	for c in clusters:
 		c.queue_free()
 	clusters.clear()
+	tray.clear()
+	dragging = null
 	is_solved = false
 	texture = tex
 	var size := tex.get_size()
@@ -39,26 +51,23 @@ func build(tex: Texture2D, piece_count: int, seed_value: int) -> void:
 	cols = max(2, int(round(sqrt(piece_count * size.x / size.y))))
 	rows = max(2, int(round(float(piece_count) / cols)))
 	cell = Vector2(size.x / cols, size.y / rows)
-	var edges := PieceShape.make_edges(rows, cols, seed_value)
+	var cut := PieceShape.make_cut(rows, cols, seed_value, cut_style)
 	var rng := RandomNumberGenerator.new()
 	rng.seed = seed_value * 7919 + 13
-	var table := _table_rect()
+	var table := _table_rect(false)
 	for r in range(rows):
 		for c in range(cols):
-			var signs := PieceShape.piece_signs(edges, rows, cols, r, c)
-			var unit := PieceShape.outline(signs)
-			var home := Vector2(c * cell.x, r * cell.y)
 			var poly := PackedVector2Array()
-			var uv := PackedVector2Array()
-			for p in unit:
-				var px := home + Vector2(p.x * cell.x, p.y * cell.y)
-				poly.append(px)
-				uv.append(px)
+			for p in PieceShape.piece_outline(cut, r, c):
+				poly.append(Vector2(p.x * cell.x, p.y * cell.y))
 			var piece := Polygon2D.new()
 			piece.texture = tex
 			piece.polygon = poly
-			piece.uv = uv
+			piece.uv = poly
 			piece.set_meta("rc", Vector2i(c, r))
+			var k: Array = cut.corners
+			var centre: Vector2 = (k[r][c] + k[r][c + 1] + k[r + 1][c] + k[r + 1][c + 1]) * 0.25
+			piece.set_meta("centre", Vector2(centre.x * cell.x, centre.y * cell.y))
 			var edge := Line2D.new()
 			edge.points = poly
 			edge.closed = true
@@ -69,14 +78,25 @@ func build(tex: Texture2D, piece_count: int, seed_value: int) -> void:
 			var cluster := Node2D.new()
 			cluster.add_child(piece)
 			# scatter: anywhere on the table, mostly off the board
+			var home := Vector2(c * cell.x, r * cell.y)
 			var spot := Vector2.ZERO
 			for _i in range(12):
 				spot = Vector2(rng.randf_range(table.position.x, table.end.x - cell.x), rng.randf_range(table.position.y, table.end.y - cell.y))
 				if not Rect2(Vector2.ZERO, size).grow(-cell.x * 0.5).has_point(spot + cell * 0.5):
 					break
 			cluster.position = spot - home
+			cluster.set_meta("scatter", cluster.position)
 			pieces_root.add_child(cluster)
 			clusters.append(cluster)
+	# the tray takes the pieces in a shuffled order, the way they would fall out of a box
+	var order := clusters.duplicate()
+	for i in range(order.size() - 1, 0, -1):
+		var j := rng.randi_range(0, i)
+		var t = order[i]; order[i] = order[j]; order[j] = t
+	for c in order:
+		c.set_meta("tray_rank", order.find(c))
+	if tray_mode:
+		_fill_tray()
 	_draw_board()
 	_fit_camera()
 	started_ms = Time.get_ticks_msec()
@@ -87,11 +107,51 @@ func piece_total() -> int:
 	return rows * cols
 
 
-func _table_rect() -> Rect2:
+## Switch between pieces on the table and pieces in the tray. Loose single pieces move between the two; anything already
+## joined or placed stays on the table, pulled into view if the smaller tray-mode table would hide it.
+func set_tray_mode(on: bool) -> void:
+	tray_mode = on
+	if texture == null:
+		return
+	if on:
+		_fill_tray()
+		var view := _table_rect(true)
+		for c in clusters:
+			if c.visible and c.position != Vector2.ZERO:
+				var centre := _cluster_centre(c)
+				var inside := Vector2(clamp(centre.x, view.position.x, view.end.x), clamp(centre.y, view.position.y, view.end.y))
+				c.position += inside - centre
+	else:
+		for c in tray:
+			c.visible = true
+			c.position = c.get_meta("scatter")
+		tray.clear()
+		tray_changed.emit()
+	_fit_camera()
+
+
+func _fill_tray() -> void:
+	for c in clusters:
+		if c.get_child_count() == 1 and c.position != Vector2.ZERO and not tray.has(c):
+			c.visible = false
+			tray.append(c)
+	tray.sort_custom(func(x, y): return x.get_meta("tray_rank") < y.get_meta("tray_rank"))
+	tray_changed.emit()
+
+
+func _cluster_centre(c: Node2D) -> Vector2:
+	var sum := Vector2.ZERO
+	for p in c.get_children():
+		sum += p.get_meta("centre")
+	return c.position + sum / max(1, c.get_child_count())
+
+
+func _table_rect(for_tray: bool) -> Rect2:
 	var size := texture.get_size()
-	var table := Rect2(-size * MARGIN, size * (1.0 + 2.0 * MARGIN))
+	var margin := TRAY_MARGIN if for_tray else MARGIN
+	var table := Rect2(-size * margin, size * (1.0 + 2.0 * margin))
 	# match the window's shape, so a wide screen gets more table at the sides and a tall one more above and below
-	var view := get_viewport_rect().size - Vector2(0, 104)
+	var view := get_viewport_rect().size - Vector2(0, 104 + (tray_height if for_tray else 0.0))
 	if view.x > 0 and view.y > 0:
 		var want: float = view.x / view.y
 		var have: float = table.size.x / table.size.y
@@ -135,10 +195,10 @@ func set_ghost(on: bool) -> void:
 
 
 func _fit_camera() -> void:
-	var table := _table_rect()
+	var table := _table_rect(tray_mode)
 	var view := get_viewport_rect().size
 	var top_bar := 64.0
-	var bottom_bar := 40.0
+	var bottom_bar := 40.0 + (tray_height if tray_mode else 0.0)
 	var usable := Vector2(view.x, max(100.0, view.y - top_bar - bottom_bar))
 	var z: float = min(usable.x / table.size.x, usable.y / table.size.y)
 	camera.zoom = Vector2(z, z)
@@ -159,18 +219,19 @@ func focus_board(reserved_bottom: float) -> void:
 	t.tween_property(camera, "position", target, 0.9)
 
 
-func _notification(what: int) -> void:
-	if what == NOTIFICATION_WM_SIZE_CHANGED and texture:
-		_fit_camera()
-
-
 func _ready() -> void:
-	get_viewport().size_changed.connect(func(): if texture: _fit_camera())
+	get_viewport().size_changed.connect(func(): if texture and not is_solved: _fit_camera())
+
+
+func screen_to_world(screen: Vector2) -> Vector2:
+	return get_canvas_transform().affine_inverse() * screen
 
 
 func _cluster_at(world: Vector2) -> Node2D:
 	for i in range(pieces_root.get_child_count() - 1, -1, -1):
 		var cluster: Node2D = pieces_root.get_child(i)
+		if not cluster.visible:
+			continue
 		var local := world - cluster.position
 		for piece in cluster.get_children():
 			if piece is Polygon2D and Geometry2D.is_point_in_polygon(local, piece.polygon):
@@ -178,12 +239,43 @@ func _cluster_at(world: Vector2) -> Node2D:
 	return null
 
 
+## The tray hands a piece over: it leaves the tray and follows the finger, centred under it.
+func begin_drag_from_tray(cluster: Node2D, screen: Vector2) -> void:
+	tray.erase(cluster)
+	tray_changed.emit()
+	var world := screen_to_world(screen)
+	cluster.visible = true
+	cluster.position += world - _cluster_centre(cluster)
+	pieces_root.move_child(cluster, pieces_root.get_child_count() - 1)
+	dragging = cluster
+	drag_offset = cluster.position - world
+
+
+func drag_to(screen: Vector2) -> void:
+	if dragging:
+		dragging.position = screen_to_world(screen) + drag_offset
+
+
+func end_drag(screen: Vector2) -> void:
+	if dragging == null:
+		return
+	var dropped := dragging
+	dragging = null
+	# dropped back over the tray: a loose piece goes back in, at the front
+	if tray_mode and screen.y > get_viewport_rect().size.y - tray_height and dropped.get_child_count() == 1:
+		dropped.visible = false
+		tray.push_front(dropped)
+		tray_changed.emit()
+		return
+	_settle(dropped)
+
+
 func _unhandled_input(event: InputEvent) -> void:
 	if is_solved or texture == null:
 		return
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-		var world := get_global_mouse_position()
 		if event.pressed:
+			var world := screen_to_world(event.position)
 			var hit := _cluster_at(world)
 			if hit:
 				dragging = hit
@@ -191,12 +283,10 @@ func _unhandled_input(event: InputEvent) -> void:
 				pieces_root.move_child(hit, pieces_root.get_child_count() - 1)
 				get_viewport().set_input_as_handled()
 		elif dragging:
-			var dropped := dragging
-			dragging = null
-			_settle(dropped)
+			end_drag(event.position)
 			get_viewport().set_input_as_handled()
 	elif event is InputEventMouseMotion and dragging:
-		dragging.position = get_global_mouse_position() + drag_offset
+		drag_to(event.position)
 		get_viewport().set_input_as_handled()
 
 
@@ -207,7 +297,7 @@ func _settle(cluster: Node2D) -> void:
 	while joined:
 		joined = false
 		for other in clusters:
-			if other == cluster or not is_instance_valid(other):
+			if other == cluster or not is_instance_valid(other) or not other.visible:
 				continue
 			if cluster.position.distance_to(other.position) <= snap and _are_neighbours(cluster, other):
 				_merge(other, cluster)  # keep the one already in place, move the dropped pieces into it
@@ -251,7 +341,10 @@ func _merge(into: Node2D, from: Node2D) -> void:
 
 ## Test helper: move every cluster home and settle, one by one (used by the self-test, never by the player).
 func solve_all_for_test() -> void:
+	tray.clear()
+	tray_changed.emit()
 	for c in clusters.duplicate():
 		if is_instance_valid(c) and clusters.has(c):
+			c.visible = true
 			c.position = Vector2.ZERO
 			_settle(c)
