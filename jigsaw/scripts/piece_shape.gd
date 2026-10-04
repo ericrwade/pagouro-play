@@ -22,6 +22,11 @@ const TAB_AREA := 0.045
 ## Share of edges flipped after balancing: gives about half two-and-two pieces, the rest mostly three-and-one, a few
 ## four-and-none (measured in the self-test).
 const MIX_FLIP := 0.2
+## Cardboard rule (Eric: no tab "with a neck so narrow that it would just tear off if it was real"): a tab's neck is
+## at least half as wide as the head it carries.
+const NECK_TO_HEAD := 0.5
+## Measured by the self-test: [narrowest neck in cells, smallest neck-to-head ratio] since the last reset.
+static var neck_stats := [9.0, 9.0]
 ## Under each tab the edge curves gently into the piece that holds it, giving back this share of the tab's area, so a
 ## four-tab piece is not much bigger than a four-blank one (real die-cut pieces do the same).
 const BOW_SHARE := 0.85
@@ -197,11 +202,16 @@ static func _tab_profile(rng: RandomNumberGenerator, whimsical: bool) -> Array:
 		kind = ["round", "round", "bulb", "cap", "point", "point"][rng.randi() % 6]
 	var lean := rng.randf_range(-0.025, 0.025) if not whimsical else rng.randf_range(-0.05, 0.05)
 	var pts := []
+	var neck_half := 0.0
+	var head_half := 0.0
 	match kind:
 		"point":
 			# a spiky arrowhead: narrow neck, barbs, a sharp tip that may lean
 			var nw := rng.randf_range(0.035, 0.05)
 			var barb := rng.randf_range(0.10, 0.13)
+			nw = max(nw, barb * NECK_TO_HEAD)
+			neck_half = nw
+			head_half = barb
 			var neck_h := rng.randf_range(0.05, 0.08)
 			var tip := rng.randf_range(0.21, 0.26)
 			pts = [Vector2(cx - nw - 0.02, 0.0), Vector2(cx - nw, neck_h * 0.6), Vector2(cx - nw, neck_h),
@@ -220,7 +230,9 @@ static func _tab_profile(rng: RandomNumberGenerator, whimsical: bool) -> Array:
 				rx = rng.randf_range(0.13, 0.145)
 				ry = rng.randf_range(0.065, 0.08)
 				nw = rng.randf_range(0.04, 0.055)
-			nw = min(nw, rx * 0.75)
+			nw = clamp(nw, rx * NECK_TO_HEAD, rx * 0.75)
+			neck_half = nw
+			head_half = rx
 			var phi := asin(nw / rx)
 			var neck_top := rng.randf_range(0.03, 0.06)
 			var centre := Vector2(cx + lean, neck_top + ry * cos(phi))
@@ -245,6 +257,8 @@ static func _tab_profile(rng: RandomNumberGenerator, whimsical: bool) -> Array:
 		area += p.x * q.y - q.x * p.y
 	area = abs(area) * 0.5
 	var k := sqrt(TAB_AREA * rng.randf_range(0.92, 1.08) / max(area, 1e-4))
+	neck_stats[0] = min(neck_stats[0], 2.0 * neck_half * k)
+	neck_stats[1] = min(neck_stats[1], neck_half / max(head_half, 1e-4))
 	var scaled := []
 	for p in pts:
 		scaled.append(Vector2(cx + (p.x - cx) * k, p.y * k))

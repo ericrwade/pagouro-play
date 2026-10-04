@@ -364,12 +364,14 @@ func _selftest() -> void:
 	for style in [PieceShape.Style.WHIMSICAL, PieceShape.Style.CLASSIC]:
 		var worst := [0.0, 0.0]
 		var mix := [0, 0, 0, 0, 0]
+		PieceShape.neck_stats = [9.0, 9.0]
 		for sd in range(20):
 			var ar := PieceShape.area_report(7, 7, 1000 + sd, style)
 			worst = [max(worst[0], ar[0]), max(worst[1], ar[1])]
 			for i in range(5):
 				mix[i] += ar[2][i]
 		report.append("%s areas, worst of 20 cuts at 49 pieces: inside largest/smallest %.2f, all %.2f, inside pieces by tabs out 0/1/2/3/4: %s of 500" % ["whimsical" if style == PieceShape.Style.WHIMSICAL else "classic", worst[0], worst[1], str(mix)])
+		report.append("  narrowest neck %.3f cell, smallest neck/head %.2f" % [PieceShape.neck_stats[0], PieceShape.neck_stats[1]])
 	for n in [12, 48]:
 		current = pictures[today_index()]
 		current_count = n

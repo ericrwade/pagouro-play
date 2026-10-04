@@ -119,3 +119,9 @@ way die-cut pieces are shaped, so a four-tab piece is not much bigger than a fou
 | classic | 10 / 101 / 286 / 92 / 11 | 1.06 |
 
 (With a 60 % bow the same mix measured 1.27 and 1.16.)
+
+**Cardboard rule for necks (Eric: no tab "with a neck so narrow that it would just tear off if it was real").** Every
+tab's neck is now at least half as wide as the head it carries (`NECK_TO_HEAD` 0.5), arrowheads included. Measured over
+the same 20 cuts per style: before, the narrowest neck was 0.058 of a cell and a quarter of its head's width
+(whimsical; 0.082 and 0.36 classic); now 0.105 and one half in both cuts. Areas and the tab mix are unchanged
+(1.19 / 1.06; same 0-4 tab counts).
