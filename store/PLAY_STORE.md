@@ -105,3 +105,8 @@ Pixel 11 Pro XL after removing the USB test build (Eric's go-ahead), and runs: m
 2. Closed testing: at least 12 testers opted in for 14 continuous days (the rule as of late 2024; the Console states the
    current number). Testers need a Google account and the opt-in link.
 3. Apply for production access from the dashboard; Google asks a few questions about the test.
+
+## Progress
+
+- 2026-10-04: personal developer account started. Package `com.pagouro.jigsaw` (friendly name "Pagouro Jigsaw")
+  registered with the release key's SHA-256 certificate fingerprint; status "in review".
