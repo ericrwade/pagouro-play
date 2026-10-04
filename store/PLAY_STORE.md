@@ -110,3 +110,6 @@ Pixel 11 Pro XL after removing the USB test build (Eric's go-ahead), and runs: m
 - 2026-10-04: personal developer account started. Package `com.pagouro.jigsaw` (friendly name "Pagouro Jigsaw")
   registered with the release key's SHA-256 certificate fingerprint; status "in review".
 - 2026-10-04: privacy page published at https://pagouro.com/jigsaw-privacy.html (HTTP 200 checked); contact info@pagouro.com.
+- 2026-10-04: Android Developer Console confirmed: `com.pagouro.jigsaw` registered with key SHA-256 89:05:8D:…:68:BB:22
+  ("From September 2026, this package name will continue to be installable on certified Android devices using the keys
+  you've added"). Builds signed with any other key, such as the Godot debug key, may not install once that applies.
