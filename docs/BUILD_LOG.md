@@ -106,3 +106,16 @@ staying random. (2) A fat bulb holds several times a spike's picture, so each ta
 one-hump wave bows a whole edge out; an S-wave goes out as much as in. Draradech's open-source generator (the common
 reference) keeps the grid straight and jitters only the tab shapes, by 4 %; ours still lets corners wander a little,
 since that is most of the whimsical look.
+
+**Tab mix restored (Eric: exact two-and-two "is not acceptable. There has to be some 4 and 0 and also some 1 and 3").**
+I had over-corrected. Now: balance by Euler circuit first, then flip one edge in five at random (`MIX_FLIP` 0.2), and
+under each tab bow the edge gently into the piece that holds it, giving back 85 % of the tab's area (`BOW_SHARE`), the
+way die-cut pieces are shaped, so a four-tab piece is not much bigger than a four-blank one. Measured over 20 cuts of
+49 pieces (500 inside pieces per style):
+
+| | tabs out 0 / 1 / 2 / 3 / 4 | worst largest / smallest |
+|---|---|---|
+| whimsical | 10 / 113 / 259 / 107 / 11 | 1.19 |
+| classic | 10 / 101 / 286 / 92 / 11 | 1.06 |
+
+(With a 60 % bow the same mix measured 1.27 and 1.16.)

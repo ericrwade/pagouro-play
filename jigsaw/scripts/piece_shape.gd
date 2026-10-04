@@ -19,6 +19,12 @@ const ARC_STEPS := 16
 const JITTER := 0.035
 ## The area every tab is scaled to, in square cells (about a classic round tab's).
 const TAB_AREA := 0.045
+## Share of edges flipped after balancing: gives about half two-and-two pieces, the rest mostly three-and-one, a few
+## four-and-none (measured in the self-test).
+const MIX_FLIP := 0.2
+## Under each tab the edge curves gently into the piece that holds it, giving back this share of the tab's area, so a
+## four-tab piece is not much bigger than a four-blank one (real die-cut pieces do the same).
+const BOW_SHARE := 0.85
 const WAVE_STEPS := 6     # points per straight stretch of a wavy edge
 
 
@@ -126,6 +132,12 @@ static func _balanced_dirs(rows: int, cols: int, rng: RandomNumberGenerator) -> 
 		if e[0] != "x":
 			out[e[0]][e[1]] = 1.0 if e[2] == u else -1.0  # the walk leaves u: u gets the tab
 		stack.append(w)
+	# then roughness: flip about one edge in five, so the puzzle also has three-and-one pieces and the odd four-tab
+	# star or four-blank piece (Eric: exact two-and-two everywhere "is not acceptable")
+	for kind in ["h", "v"]:
+		for key in out[kind].keys():
+			if rng.randf() < MIX_FLIP:
+				out[kind][key] = -out[kind][key]
 	return out
 
 
@@ -159,7 +171,9 @@ static func _edge(a: Vector2, b: Vector2, horizontal: bool, inner: bool, dir: fl
 	# a gentle wave along the whole edge (whimsical only), zero at both corners so edges meet cleanly
 	var wave_amp := rng.randf_range(0.02, 0.055) * (1.0 if rng.randi() % 2 == 0 else -1.0) if whimsical else 0.0
 	var wave_k := 2.0  # an S-wave: out as much as in, so it changes the look but not the piece's area
-	var base := func(x: float) -> float: return wave_amp * sin(PI * x * wave_k)  # zero at both corners
+	# the bow: a hump of area BOW_SHARE * TAB_AREA into the tab holder (against the tab's direction); zero at both corners
+	var bow := BOW_SHARE * TAB_AREA * PI / 2.0
+	var base := func(x: float) -> float: return wave_amp * sin(PI * x * wave_k) - bow * sin(PI * x)
 	var profile := _tab_profile(rng, whimsical)  # list of Vector2(along, out) for the tab, out measured from the base line
 	var start_x: float = profile[0].x
 	var end_x: float = profile[profile.size() - 1].x
@@ -255,10 +269,9 @@ static func area_report(rows: int, cols: int, seed_value: int, style: int) -> Ar
 			all.append(a)
 			if r > 0 and c > 0 and r < rows - 1 and c < cols - 1:
 				inner.append(a)
-	var off := 0
+	var mix := [0, 0, 0, 0, 0]
 	for r in range(1, rows - 1):
 		for c in range(1, cols - 1):
 			var outs := int(cut.dirs.h[Vector2i(r, c)] < 0) + int(cut.dirs.h[Vector2i(r + 1, c)] > 0) + int(cut.dirs.v[Vector2i(r, c)] < 0) + int(cut.dirs.v[Vector2i(r, c + 1)] > 0)
-			if outs != 2:
-				off += 1
-	return [inner.max() / inner.min(), all.max() / all.min(), off]
+			mix[outs] += 1
+	return [inner.max() / inner.min(), all.max() / all.min(), mix]
