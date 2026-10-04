@@ -61,7 +61,8 @@ Every picture and the music are CC0: yours to keep.
 
 The game works fully offline and asks for no permissions.
 
-With thanks to Summer Engine (summerengine.com), the AI game engine that got us making games.
+With thanks to Summer Engine (summerengine.com), the AI game engine that got us making games. Pagouro Jigsaw
+itself is built with Godot, the open-source engine Summer is built on.
 ```
 
 **Category:** Game › Puzzle. **Tags:** jigsaw, puzzle, art, relaxing, offline.
