@@ -542,36 +542,62 @@ func _merge(into: Node2D, from: Node2D) -> void:
 		pieces_root.move_child(into, pieces_root.get_child_count() - 1)
 
 
-## The Help hint: one loose piece glides to its place. Prefers a piece that joins what is already on the board, then a
-## border piece (the usual way to start), then any; if nothing loose is left, the smallest cluster still off the board.
+## The Help hint: one loose piece glides to its place, the way a friend sitting down at the table would help (Eric,
+## 2026-10-04: the old grid-order choice was "very engineery"; random is "funner"). While the border is unfinished it
+## picks border pieces; after that, pieces that fit against work already on the board; failing both, any loose piece;
+## and when nothing loose is left, the smallest cluster still off the board. Within that choice it picks at random, and
+## stays away from pieces another hint is already carrying, so one Help's pieces land in different places.
 ## Returns false when there is nothing to help with.
 func hint() -> bool:
 	if is_solved or dragging:
 		return false
 	var placed := {}
+	var flying := {}
 	for c in clusters:
 		if c.position == Vector2.ZERO and c.visible:
 			for p in c.get_children():
 				placed[p.get_meta("rc")] = true
-	var best: Node2D = null
-	var best_score := -1
+		if c.has_meta("hinting"):
+			for p in c.get_children():
+				flying[p.get_meta("rc")] = true
+	var border_open := not _border_complete()
+	var tiers := [[], [], []]  # 0: border while it is open, 1: fits placed work, 2: any loose piece
+	var smallest: Node2D = null
 	for c in clusters:
 		if (c.position == Vector2.ZERO and c.visible) or c.has_meta("hinting"):
 			continue
-		var score := 0
-		if c.get_child_count() == 1:
+		if c.get_child_count() > 1:
+			if smallest == null or c.get_child_count() < smallest.get_child_count():
+				smallest = c
+			continue
+		var rc: Vector2i = c.get_child(0).get_meta("rc")
+		var on_border := rc.x == 0 or rc.y == 0 or rc.x == cols - 1 or rc.y == rows - 1
+		var fits := false
+		for d in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+			if placed.has(rc + d):
+				fits = true
+		if border_open and on_border:
+			tiers[0].append(c)
+		elif fits:
+			tiers[1].append(c)
+		else:
+			tiers[2].append(c)
+	var best: Node2D = null
+	for tier in tiers:
+		if tier.is_empty():
+			continue
+		# spread: prefer pieces at least two cells from any piece already on its way
+		var apart: Array = tier.filter(func(c):
 			var rc: Vector2i = c.get_child(0).get_meta("rc")
-			score = 1
-			if rc.x == 0 or rc.y == 0 or rc.x == cols - 1 or rc.y == rows - 1:
-				score = 2
-			for d in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
-				if placed.has(rc + d):
-					score = 3
-		elif best_score == 0 and c.get_child_count() >= best.get_child_count():
-			continue  # among joined clusters, the smallest
-		if score > best_score or (score == 0 and best_score == 0):
-			best = c
-			best_score = score
+			for f in flying:
+				if absi(f.x - rc.x) + absi(f.y - rc.y) < 3:
+					return false
+			return true)
+		var pool: Array = apart if not apart.is_empty() else tier
+		best = pool[randi() % pool.size()]
+		break
+	if best == null:
+		best = smallest
 	if best == null:
 		return false
 	if tray.has(best):

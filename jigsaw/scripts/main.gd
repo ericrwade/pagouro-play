@@ -845,12 +845,12 @@ func _selftest() -> void:
 	get_viewport().get_texture().get_image().save_png("user://selftest_help_done.png")
 	report.append("help card: Done shown during countdown=%s, after=%s, card still open=%s" % [str(done_early), str(help_card._done.visible), str(help_card.visible)])
 	help_card._end(false)
-	var before_hint := puzzle.clusters.size()
+	var before_hint := puzzle.pieces_left()
 	var hinted := true
 	_give_hints(true)
 	await get_tree().create_timer(2.0).timeout
 	report.append("hints per Help at 49 pieces: %d" % puzzle.hint_count())
-	report.append("hint given=%s clusters %d -> %d" % [str(hinted), before_hint, puzzle.clusters.size()])
+	report.append("hint given=%s pieces left %d -> %d" % [str(hinted), before_hint, puzzle.pieces_left()])
 	report.append("%d help panels" % panels.size())
 	puzzle.solve_all_for_test()
 	report.append("after solve: %d cluster(s), solved=%s" % [puzzle.clusters.size(), str(puzzle.is_solved)])
