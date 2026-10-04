@@ -66,11 +66,10 @@ With thanks to Summer Engine (summerengine.com), the AI game engine that got us 
 
 **Category:** Game › Puzzle. **Tags:** jigsaw, puzzle, art, relaxing, offline.
 
-**Contact email** ✱: one that can be public (Google shows it on the listing). **Website:** `https://pagouro.com`.
+**Contact email:** `info@pagouro.com` (public on the listing; Eric to confirm it delivers). **Website:** `https://pagouro.com`.
 
-**Privacy policy URL:** `https://pagouro.com/jigsaw-privacy.html`. The page is ready in `store/jigsaw-privacy.html`
-(the site's own style). It goes live when it is pushed to the public `ericrwade/pagouro-site` repo, which needs Eric's
-word, and its `CONTACT_EMAIL` placeholder needs the same ✱ email.
+**Privacy policy URL:** `https://pagouro.com/jigsaw-privacy.html` (LIVE since 2026-10-04; source `store/jigsaw-privacy.html`,
+published to `ericrwade/pagouro-site` with Eric's OK).
 
 **Graphics (ready):** icon `jigsaw/art/icon/icon_512.png` (512×512); feature graphic `store/feature_graphic.png`
 (1024×500, `tools_src/make_feature_graphic.py`); phone screenshots `store/screenshots/phone_1..5.png` (1080×2160, 2:1, the
@@ -110,3 +109,4 @@ Pixel 11 Pro XL after removing the USB test build (Eric's go-ahead), and runs: m
 
 - 2026-10-04: personal developer account started. Package `com.pagouro.jigsaw` (friendly name "Pagouro Jigsaw")
   registered with the release key's SHA-256 certificate fingerprint; status "in review".
+- 2026-10-04: privacy page published at https://pagouro.com/jigsaw-privacy.html (HTTP 200 checked); contact info@pagouro.com.
