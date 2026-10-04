@@ -27,7 +27,7 @@ var dragging: Node2D = null
 var drag_offset := Vector2.ZERO
 var started_ms := 0
 var is_solved := false
-var show_ghost := true
+var show_ghost := false  # the faint guide picture starts off (Eric, 2026-10-04); Menu, Hint turns it on
 var table_color := BelleStyle.PAPER
 var cut_style := PieceShape.Style.WHIMSICAL
 var tray_mode := false
@@ -201,10 +201,13 @@ func set_ghost(on: bool) -> void:
 		_draw_board()
 
 
+## Height of the screen's top bar, set by main; the title's own lines on a phone make it taller.
+var top_bar := 64.0
+
+
 func _fit_camera() -> void:
 	var table := _table_rect(tray_mode)
 	var view := get_viewport_rect().size
-	var top_bar := 64.0
 	var bottom_bar := 40.0 + (tray_height if tray_mode else 0.0)
 	var usable := Vector2(view.x, max(100.0, view.y - top_bar - bottom_bar))
 	var z: float = min(usable.x / table.size.x, usable.y / table.size.y)
@@ -218,7 +221,6 @@ func _fit_camera() -> void:
 func focus_board(reserved_bottom: float) -> void:
 	var size := texture.get_size() * 1.08  # the frame and its scrolls
 	var view := get_viewport_rect().size
-	var top_bar := 64.0
 	var usable := Vector2(view.x * 0.9, max(80.0, view.y - top_bar - reserved_bottom - 16.0))
 	var z: float = min(usable.x / size.x, usable.y / size.y)
 	var centre_screen_y := top_bar + 8.0 + usable.y * 0.5

@@ -1,6 +1,6 @@
 # Pagouro Play
 
-Free games sponsored by Pagouro (decision S-4 in `PAGOURO_SALON/docs/DECISIONS.md`). No ads, no tracking, no account, no
+Free games sponsored by Pagouro (decision S-4 in `PAGOURO_SALON/docs/DECISIONS.md`). No third-party ads, no tracking, no account, no
 paid unlock: one quiet line says the game is free thanks to Pagouro.
 
 ## Pagouro Jigsaw (`jigsaw/`)

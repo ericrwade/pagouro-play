@@ -29,6 +29,9 @@ var current_seed := 0
 @onready var puzzle: Puzzle = $Puzzle
 @onready var music: AudioStreamPlayer = $Music
 var title_label: Label
+var top_panel: PanelContainer
+var top_rows: VBoxContainer
+var hairline: ColorRect
 var status_label: Label
 var count_button: OptionButton
 var music_button: Button
@@ -166,20 +169,27 @@ func _build_ui() -> void:
 	bar_style.border_width_bottom = 2
 	top.add_theme_stylebox_override("panel", bar_style)
 	root.add_child(top)
-	var hairline := ColorRect.new()
+	top_panel = top
+	top.resized.connect(_on_top_resized)
+	hairline = ColorRect.new()
 	hairline.color = Color(BelleStyle.INK, 0.35)
 	hairline.set_anchors_preset(Control.PRESET_TOP_WIDE)
 	hairline.offset_top = 59
 	hairline.offset_bottom = 60
 	hairline.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	root.add_child(hairline)
+	top_rows = VBoxContainer.new()
+	top_rows.add_theme_constant_override("separation", 2)
+	top.add_child(top_rows)
 	bar = HBoxContainer.new()
 	bar.add_theme_constant_override("separation", 10)
-	top.add_child(bar)
+	top_rows.add_child(bar)
 	title_label = Label.new()
 	title_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	title_label.clip_text = true
-	title_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	title_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	title_label.max_lines_visible = 2
+	title_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	title_label.custom_minimum_size.x = 120  # a wrapping label needs a width
 	title_label.add_theme_font_override("font", BelleStyle.title_font())
 	title_label.add_theme_font_size_override("font_size", 24)
 	bar.add_child(title_label)
@@ -229,9 +239,9 @@ func _build_ui() -> void:
 	table_button.item_selected.connect(_set_table)
 	bar.add_child(table_button)
 	ghost_button = Button.new()
-	ghost_button.text = "Hint on"
+	ghost_button.text = "Hint off"
 	ghost_button.toggle_mode = true
-	ghost_button.button_pressed = true
+	ghost_button.button_pressed = false
 	ghost_button.toggled.connect(func(on):
 		puzzle.set_ghost(on)
 		ghost_button.text = "Hint on" if on else "Hint off")
@@ -286,7 +296,14 @@ func _build_ui() -> void:
 	finish_label.add_theme_font_override("font", BelleStyle.title_font())
 	finish_label.add_theme_font_size_override("font_size", 34)
 	finish_label.add_theme_color_override("font_color", BelleStyle.GREEN)
-	box.add_child(finish_label)
+	var finish_head := HBoxContainer.new()
+	var balance := Control.new()
+	balance.custom_minimum_size = Vector2(44, 0)
+	finish_head.add_child(balance)
+	finish_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	finish_head.add_child(finish_label)
+	finish_head.add_child(BelleStyle.close_x(_close_finish))
+	box.add_child(finish_head)
 	var credit := Label.new()
 	finish_credit = credit
 	credit.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -332,10 +349,24 @@ func _apply_layout() -> void:
 		var c: Control = in_menu[i]
 		if c.get_parent() != menu_box:
 			c.reparent(menu_box)
-		menu_box.move_child(c, i)
+		menu_box.move_child(c, i + 1)  # after the menu's own heading row
 		c.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	bar.move_child(menu_button, bar.get_child_count() - 1)
+	# a phone gives the title its own row under the buttons (two lines at most); a computer keeps it in the bar
+	if compact and title_label.get_parent() != top_rows:
+		title_label.reparent(top_rows)
+		var spacer := Control.new()
+		spacer.name = "TitleSpacer"
+		spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		bar.add_child(spacer)
+		bar.move_child(spacer, 0)
+	elif not compact and title_label.get_parent() != bar:
+		title_label.reparent(bar)
+		bar.move_child(title_label, 0)
+		if bar.has_node("TitleSpacer"):
+			bar.get_node("TitleSpacer").free()
 	title_label.add_theme_font_size_override("font_size", 20 if compact else 24)
+	title_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER if compact else HORIZONTAL_ALIGNMENT_LEFT
 	sponsor_label.text = "Free, thanks to Pagouro · pagouro.com" if compact else "Free, thanks to Pagouro · pictures by Pagouro BE, music by Pagouro Salon · pagouro.com"
 	_update_title()
 
@@ -356,6 +387,16 @@ func _build_menu(root: Control) -> void:
 	menu_box.custom_minimum_size.x = 230
 	menu_box.add_theme_constant_override("separation", 8)
 	menu_panel.add_child(menu_box)
+	var menu_head := HBoxContainer.new()
+	var menu_title := Label.new()
+	menu_title.text = "Menu"
+	menu_title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	menu_title.add_theme_font_override("font", BelleStyle.title_font())
+	menu_title.add_theme_font_size_override("font_size", 24)
+	menu_title.add_theme_color_override("font_color", BelleStyle.GREEN)
+	menu_head.add_child(menu_title)
+	menu_head.add_child(BelleStyle.close_x(_close_menu))
+	menu_box.add_child(menu_head)
 	var about := Button.new()
 	about.text = "About and credits"
 	about.pressed.connect(func():
@@ -370,11 +411,25 @@ func _open_menu() -> void:
 	menu_layer.visible = true
 	menu_panel.reset_size()
 	var view := get_viewport().get_visible_rect().size
-	menu_panel.position = Vector2(view.x - menu_panel.size.x - 8, 62)
+	menu_panel.position = Vector2(view.x - menu_panel.size.x - 8, top_panel.size.y + 6)
 
 
 func _close_menu() -> void:
 	menu_layer.visible = false
+
+
+## Closing the finish card leaves the finished picture to look at; Menu still offers the next one.
+func _close_finish() -> void:
+	finish_panel.visible = false
+	puzzle.focus_board(0.0)
+
+
+func _on_top_resized() -> void:
+	hairline.offset_top = top_panel.size.y + 3
+	hairline.offset_bottom = top_panel.size.y + 4
+	puzzle.top_bar = top_panel.size.y + 8
+	if menu_layer and menu_layer.visible:
+		_open_menu()
 
 
 ## Credits and licenses: everything in the game is free to share, and the engine's license asks for its notice.
@@ -405,7 +460,14 @@ func _build_about(root: Control) -> void:
 	heading.add_theme_font_override("font", BelleStyle.title_font())
 	heading.add_theme_font_size_override("font_size", 30)
 	heading.add_theme_color_override("font_color", BelleStyle.GREEN)
-	box.add_child(heading)
+	heading.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var about_head := HBoxContainer.new()
+	var balance := Control.new()  # keeps the heading centred against the close mark
+	balance.custom_minimum_size = Vector2(44, 0)
+	about_head.add_child(balance)
+	about_head.add_child(heading)
+	about_head.add_child(BelleStyle.close_x(func(): about_layer.visible = false))
+	box.add_child(about_head)
 	var scroll := ScrollContainer.new()
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -415,7 +477,7 @@ func _build_about(root: Control) -> void:
 	text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	text.add_theme_font_size_override("font_size", 16)
 	var lines := [
-		"Free, thanks to Pagouro (pagouro.com). No ads, no tracking, no account.",
+		"Free, thanks to Pagouro (pagouro.com). No third-party ads, no tracking, no account.",
 		"",
 		"Pictures: drawn by Pagouro BE, a free image model. CC0 1.0.",
 		"Music: composed by Pagouro Salon, a free music model; piano sound Upright Piano KW by FreePats (CC0); rendered with FluidSynth. CC0 1.0.",
@@ -451,15 +513,9 @@ func _build_about(root: Control) -> void:
 ## License texts come with hard line breaks; join each paragraph so it wraps cleanly on a narrow screen.
 func _reflow(text: String) -> String:
 	var paras := []
-	for para in text.replace("
-", "").split("
-
-"):
-		paras.append(" ".join(Array(para.split("
-")).map(func(l): return l.strip_edges())))
-	return "
-
-".join(paras)
+	for para in text.replace("\r", "").split("\n\n"):
+		paras.append(" ".join(Array(para.split("\n")).map(func(l): return l.strip_edges())))
+	return "\n\n".join(paras)
 
 
 ## Save the puzzle in progress (cheap: one small JSON file). Skipped while a saved puzzle is being put back.
@@ -504,6 +560,8 @@ func _notification(what: int) -> void:
 		# Android Back: close whatever is open, and only then leave the game (the puzzle is saved first)
 		if about_layer and about_layer.visible:
 			about_layer.visible = false
+		elif finish_panel and finish_panel.visible:
+			_close_finish()
 		elif menu_layer and menu_layer.visible:
 			_close_menu()
 		elif help_card and help_card.visible:

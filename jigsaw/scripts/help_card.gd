@@ -49,7 +49,14 @@ func _ready() -> void:
 	logo.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	logo.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	logo.custom_minimum_size = Vector2(0, 66)
-	box.add_child(logo)
+	logo.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var head := HBoxContainer.new()
+	box.add_child(head)
+	var balance := Control.new()  # keeps the logo centred against the close mark
+	balance.custom_minimum_size = Vector2(44, 0)
+	head.add_child(balance)
+	head.add_child(logo)
+	head.add_child(BelleStyle.close_x(func(): _end(_done.visible)))
 	_title = Label.new()
 	_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_title.add_theme_font_override("font", BelleStyle.title_font())

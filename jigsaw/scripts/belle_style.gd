@@ -39,6 +39,24 @@ static func box(fill: Color, border: Color, border_width: int, radius: int, pad:
 	return s
 
 
+## The close mark every card and menu carries in its top-right corner.
+static func close_x(on_close: Callable) -> Button:
+	var x := Button.new()
+	x.text = "×"
+	x.flat = true
+	x.tooltip_text = "Close"
+	x.custom_minimum_size = Vector2(44, 44)  # a fingertip's worth
+	x.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
+	x.add_theme_font_override("font", title_font())
+	x.add_theme_font_size_override("font_size", 34)
+	for c in ["font_color", "font_focus_color"]:
+		x.add_theme_color_override(c, INK)
+	for c in ["font_hover_color", "font_pressed_color", "font_hover_pressed_color"]:
+		x.add_theme_color_override(c, GOLD)
+	x.pressed.connect(on_close)
+	return x
+
+
 static func theme() -> Theme:
 	var t := Theme.new()
 	t.default_font = font(TEXT_FONT, 450)

@@ -536,7 +536,7 @@
   "id": "jigsaw-06",
   "topic": "jigsaw",
   "title": "Free, Simply",
-  "text": "Pagouro Jigsaw is free. No ads, no tracking, no account, no paid unlock. Just a quiet note that Pagouro made it.",
+  "text": "Pagouro Jigsaw is free. No third-party ads, no tracking, no account, no paid unlock. Just a quiet note that Pagouro made it.",
   "source": "PAGOURO_PLAY/README.md; PAGOURO_SALON/docs/DECISIONS.md S-4"
  },
  {
@@ -977,8 +977,8 @@
   "id": "freedom-12",
   "topic": "freedom",
   "title": "Free as in Free",
-  "text": "No ads, no tracking, no account. Some things can simply be free.",
-  "source": "none: opinion; PAGOURO_PLAY/README.md (no ads, no tracking, no account)"
+  "text": "No third-party ads, no tracking, no account. Some things can simply be free.",
+  "source": "none: opinion; PAGOURO_PLAY/README.md (no third-party ads, no tracking, no account)"
  },
  {
   "id": "freedom-13",
