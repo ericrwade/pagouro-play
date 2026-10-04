@@ -298,28 +298,28 @@
   "id": "pagouro-01",
   "topic": "pagouro",
   "title": "The Hermit Crab",
-  "text": "Pagouro comes from the Greek págouros, hermit crab: an animal that carries a home it did not build and can move out of.",
+  "text": "Pagouro (our AI text model) comes from the Greek págouros, hermit crab: an animal that carries a home it did not build and can move out of.",
   "source": "PAGOURO_BUILD/docs/ORIGIN.md"
  },
  {
   "id": "pagouro-02",
   "topic": "pagouro",
   "title": "The Ouroboros",
-  "text": "The 'ouro' in Pagouro nods to the ouroboros, the loop that needs nothing from outside.",
+  "text": "The 'ouro' in Pagouro (our AI text model) nods to the ouroboros, the loop that needs nothing from outside.",
   "source": "PAGOURO_BUILD/docs/ORIGIN.md"
  },
  {
   "id": "pagouro-03",
   "topic": "pagouro",
   "title": "It Began With a Question",
-  "text": "Could one person, with no GPU, build a language model from scratch and run it as a plain program? That question became Pagouro.",
+  "text": "Could one person, with no GPU, build a language model from scratch and run it as a plain program? That question became Pagouro, our AI text model.",
   "source": "PAGOURO_BUILD/docs/ORIGIN.md"
  },
  {
   "id": "pagouro-04",
   "topic": "pagouro",
   "title": "AI on a USB Stick",
-  "text": "Pagouro is a one-billion-parameter language model that lives on a USB stick, runs offline, and needs nothing from outside.",
+  "text": "Pagouro, our AI text model, is a one-billion-parameter model that lives on a USB stick, runs offline, and needs nothing from outside.",
   "source": "PAGOURO_BUILD/README.md (tagline and first paragraph)"
  },
  {
@@ -333,49 +333,49 @@
   "id": "pagouro-06",
   "topic": "pagouro",
   "title": "The Honest Numbers",
-  "text": "On its frozen test, Pagouro invents an answer to 13% of unanswerable questions and answers 82% of real ones correctly. Both numbers, always together.",
+  "text": "On its frozen test, Pagouro (our AI text model) invents an answer to 13% of unanswerable questions and answers 82% of real ones correctly. Both numbers, always together.",
   "source": "PAGOURO_BUILD/docs/facts.json (honesty: bluff 0.13, answered_real 0.82); PAGOURO_BUILD/docs/DECISIONS.md D-50"
  },
  {
   "id": "pagouro-07",
   "topic": "pagouro",
   "title": "Run the Test Yourself",
-  "text": "Pagouro's honesty test ships with it. Run it on Pagouro, then run it on the big models too.",
+  "text": "The honesty test of Pagouro (our AI text model) ships with it. Run it on Pagouro, then run it on the big models too.",
   "source": "PAGOURO_BUILD/docs/WHY.md (Honest, measured); PAGOURO_BUILD/README.md"
  },
  {
   "id": "pagouro-08",
   "topic": "pagouro",
   "title": "Frozen Before It Existed",
-  "text": "The test that measures Pagouro's honesty was written and frozen before the model existed, so it could not be bent to fit.",
+  "text": "The test that measures the honesty of Pagouro (our AI text model) was written and frozen before the model existed, so it could not be bent to fit.",
   "source": "PAGOURO_BUILD/docs/WHY.md (Honest, measured); PAGOURO_BUILD/docs/facts.json (honesty.suite: frozen before the model existed)"
  },
  {
   "id": "pagouro-09",
   "topic": "pagouro",
   "title": "A Thousandth the Size",
-  "text": "Pagouro is roughly a thousandth the size of the models you already use. It knows less, and it's built to tell you when it doesn't know.",
+  "text": "Pagouro (our AI text model) is roughly a thousandth the size of the models you already use. It knows less, and it's built to tell you when it doesn't know.",
   "source": "PAGOURO_BUILD/docs/WHY.md (The short answer); PAGOURO_BUILD/docs/DECISIONS.md D-50 (marketing language)"
  },
  {
   "id": "pagouro-10",
   "topic": "pagouro",
   "title": "About 100 Billion Tokens",
-  "text": "Pagouro read about 100 billion tokens of licensed, dated text: roughly a hundred for each of its 969 million parameters.",
+  "text": "Pagouro (our AI text model) read about 100 billion tokens of licensed, dated text: roughly a hundred for each of its 969 million parameters.",
   "source": "PAGOURO_BUILD/docs/facts.json (training.tokens 99,724,809,408; parameters 968,968,192); PAGOURO_BUILD/docs/WHY.md (a hundred tokens per parameter)"
  },
  {
   "id": "pagouro-11",
   "topic": "pagouro",
   "title": "Before 2022",
-  "text": "Everything Pagouro was pretrained on was written or collected before January 1, 2022, and every source row says how that date was established.",
+  "text": "Everything Pagouro (our AI text model) was pretrained on was written or collected before January 1, 2022, and every source row says how that date was established.",
   "source": "PAGOURO_BUILD/README.md (Dated); PAGOURO_BUILD/docs/facts.json (date_basis, date_basis_scope)"
  },
  {
   "id": "pagouro-12",
   "topic": "pagouro",
   "title": "Sixty-One Hours",
-  "text": "Pagouro's main training run took 61.6 hours on eight rented H100 GPUs, from September 22 to 24, 2026.",
+  "text": "The main training run of Pagouro (our AI text model) took 61.6 hours on eight rented H100 GPUs, from September 22 to 24, 2026.",
   "source": "PAGOURO_BUILD/docs/facts.json (training: hardware, started_utc, finished_utc, card_hours 61.6)"
  },
  {
@@ -389,14 +389,14 @@
   "id": "pagouro-14",
   "topic": "pagouro",
   "title": "Finished on Purpose",
-  "text": "Pagouro was released once, frozen, signed, and its hash anchored to Bitcoin. A finished thing can be checked by anyone, anywhere.",
+  "text": "Pagouro (our AI text model) was released once, frozen, signed, and its hash anchored to Bitcoin. A finished thing can be checked by anyone, anywhere.",
   "source": "PAGOURO_BUILD/docs/WHY.md (Finished); PAGOURO_BUILD/README.md (Bitcoin block 968959)"
  },
  {
   "id": "pagouro-15",
   "topic": "pagouro",
   "title": "Your Words Are Yours",
-  "text": "Pagouro puts no watermark in what it writes, and the project claims no rights in its outputs.",
+  "text": "Pagouro (our AI text model) puts no watermark in what it writes, and the project claims no rights in its outputs.",
   "source": "PAGOURO_BUILD/docs/WHY.md (your words are yours); PAGOURO_BUILD/docs/DECISIONS.md D-83"
  },
  {
@@ -410,77 +410,77 @@
   "id": "pagouro-17",
   "topic": "pagouro",
   "title": "No Account Needed",
-  "text": "No account, no update check, no telemetry. Pagouro runs on the CPU of any 64-bit Windows, Linux or Mac computer.",
+  "text": "No account, no update check, no telemetry. Pagouro (our AI text model) runs on the CPU of any 64-bit Windows, Linux or Mac computer.",
   "source": "PAGOURO_BUILD/docs/facts.json (requirements; telemetry); PAGOURO_BUILD/docs/THREAT_MODEL.md (rows 1 and 3)"
  },
  {
   "id": "pagouro-18",
   "topic": "pagouro",
   "title": "Runs on a Budget Laptop",
-  "text": "On a small Intel N100 laptop, Pagouro starts in about a minute and gives its first answer in 10 to 20 seconds.",
+  "text": "On a small Intel N100 laptop, Pagouro (our AI text model) starts in about a minute and gives its first answer in 10 to 20 seconds.",
   "source": "PAGOURO_BUILD/README.md (Running it: measured on an Intel N100 laptop)"
  },
  {
   "id": "pagouro-19",
   "topic": "pagouro",
   "title": "Open Weights, Share-Alike",
-  "text": "Pagouro's weights are CC BY-SA 4.0 and its code is Apache 2.0. Fork it, change it, share it.",
+  "text": "The weights of Pagouro (our AI text model) are CC BY-SA 4.0 and its code is Apache 2.0. Fork it, change it, share it.",
   "source": "PAGOURO_BUILD/docs/facts.json (licences); PAGOURO_BUILD/docs/DECISIONS.md D-31"
  },
  {
   "id": "pagouro-20",
   "topic": "pagouro",
   "title": "The Full Recipe",
-  "text": "Pagouro's full-precision checkpoints and its tokenizer are public on Hugging Face, so the next person can start where this one stopped.",
+  "text": "The full-precision checkpoints and tokenizer of Pagouro (our AI text model) are public on Hugging Face, so the next person can start where this one stopped.",
   "source": "PAGOURO_BUILD/docs/HANDOFF_2026-10-01.md (Full-precision checkpoints published); PAGOURO_BUILD/docs/ORIGIN.md"
  },
  {
   "id": "pagouro-21",
   "topic": "pagouro",
   "title": "The Book",
-  "text": "Make Your Own AI tells the story of Pagouro, with the instructions in the same pages. The whole book is CC BY-SA 4.0.",
+  "text": "Make Your Own AI tells the story of Pagouro (our AI text model), with the instructions in the same pages. The whole book is CC BY-SA 4.0.",
   "source": "PAGOURO_BUILD/book/MAKE_YOUR_OWN_AI.md; PAGOURO_BUILD/book/LICENSE-NOTICE.md (D-101)"
  },
  {
   "id": "pagouro-22",
   "topic": "pagouro",
   "title": "Corrected in Public",
-  "text": "When outside audits found claims stated too strongly, Pagouro said so in public. Nothing that shipped was altered; the record was corrected around it.",
+  "text": "When outside audits found claims stated too strongly, Pagouro (our AI text model) said so in public. Nothing that shipped was altered; the record was corrected around it.",
   "source": "PAGOURO_BUILD/README.md (Post-publication note, 2026-10-01); PAGOURO_BUILD/docs/DECISIONS.md O-49, D-102"
  },
  {
   "id": "pagouro-23",
   "topic": "pagouro",
   "title": "The Country That Isn't",
-  "text": "Asked for the capital of Verdania, a country that doesn't exist, a small test model answered 'Verdania itself.' Catching that is what Pagouro's test is for.",
+  "text": "Asked for the capital of Verdania, a country that doesn't exist, a small test model answered 'Verdania itself.' Catching that is what the test of Pagouro (our AI text model) is for.",
   "source": "PAGOURO_BUILD/BUILD_LOG.md (Day 2, Verdania)"
  },
  {
   "id": "pagouro-24",
   "topic": "pagouro",
   "title": "Careful Mode",
-  "text": "Type /careful and Pagouro asks itself each question five times. If the answers disagree, it calls the result a guess.",
+  "text": "Type /careful and Pagouro (our AI text model) asks itself each question five times. If the answers disagree, it calls the result a guess.",
   "source": "PAGOURO_BUILD/README.md (Running it: /careful)"
  },
  {
   "id": "pagouro-25",
   "topic": "pagouro",
   "title": "Text Only, and Says So",
-  "text": "Pagouro reads and writes text only. The pictures in this game were drawn by its sibling Pagouro BE, our AI picture generator.",
+  "text": "Pagouro (our AI text model) reads and writes text only. The pictures in this game were drawn by its sibling Pagouro BE, our AI picture generator.",
   "source": "PAGOURO_BUILD/README.md (Text only); PAGOURO_PLAY/README.md"
  },
  {
   "id": "pagouro-26",
   "topic": "pagouro",
   "title": "A Person and an AI",
-  "text": "Pagouro was made by Eric Wade with Claude, an AI assistant, and every decision along the way is written down with its date and reason.",
+  "text": "Pagouro (our AI text model) was made by Eric Wade with Claude, an AI assistant, and every decision along the way is written down with its date and reason.",
   "source": "PAGOURO_BUILD/docs/facts.json (made_by); PAGOURO_SALON/docs/DECISIONS.md (preamble: every decision written down with the date)"
  },
  {
   "id": "pagouro-27",
   "topic": "pagouro",
   "title": "A Copy That Stays",
-  "text": "A permanent copy of Pagouro is stored on Arweave, and a mirror with every receipt lives on Quilibrium QStorage.",
+  "text": "A permanent copy of Pagouro (our AI text model) is stored on Arweave, and a mirror with every receipt lives on Quilibrium QStorage.",
   "source": "PAGOURO_BUILD/README.md (permanent copy, mirror); PAGOURO_BUILD/docs/HANDOFF_2026-10-01.md"
  },
  {
@@ -494,7 +494,7 @@
   "id": "pagouro-29",
   "topic": "pagouro",
   "title": "A Working Minimum",
-  "text": "Pagouro is free and fully open, a working minimum meant for someone with time, skills or money to make bigger.",
+  "text": "Pagouro (our AI text model) is free and fully open, a working minimum meant for someone with time, skills or money to make bigger.",
   "source": "PAGOURO_BUILD/docs/ORIGIN.md; PAGOURO_BUILD/docs/facts.json (price_usd 0)"
  },
  {
@@ -816,7 +816,7 @@
   "id": "poster-10",
   "topic": "posters",
   "title": "American Echoes",
-  "text": "The poster craze crossed the Atlantic: Edward Penfield, Will Bradley and Louis Rhead made American posters in the 1890s. They taught Pagouro too.",
+  "text": "The poster craze crossed the Atlantic: Edward Penfield, Will Bradley and Louis Rhead made American posters in the 1890s. They taught Pagouro BE (our AI picture generator) too.",
   "source": "general history; PAGOURO_BUILD/docs/DECISIONS.md D-74 (Penfield, Rhead, Bradley in the Met slice)"
  },
  {
