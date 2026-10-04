@@ -19,7 +19,7 @@ separate program and never touches the Summer Engine editor.
 
 ```
 PLAY-JIGSAW.bat                                         play it on this PC
-tools\godot\Godot_v4.7.2-stable_win64_console.exe --path jigsaw -- --selftest
+tools\godot\Godot_v4.7.2-stable_win64_console.exe --path jigsaw --audio-driver Dummy --position -4000,-4000 -- --selftest
                                                         build, solve, screenshot, quit (screenshots in %APPDATA%\Godot\app_userdata\Pagouro Jigsaw)
 ```
 
