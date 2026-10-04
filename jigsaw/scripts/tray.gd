@@ -65,7 +65,8 @@ func rebuild() -> void:
 		thumb.uv = piece.uv
 		thumb.material = piece.material  # the same smooth cut
 		thumb.scale = Vector2(s, s)
-		thumb.position = _slot_centre(i) - piece.get_meta("centre") * s
+		thumb.rotation = cluster.rotation  # shown the way it will come out of the tray
+		thumb.position = _slot_centre(i) - (piece.get_meta("centre") * s).rotated(cluster.rotation)
 		_strip.add_child(thumb)
 	_strip.position.x = -scroll
 	queue_redraw()

@@ -66,6 +66,8 @@ Bump BOTH `application/config/version` in `jigsaw/project.godot` (shown in About
 - Necks at least half the head's width ("can't have tabs with a neck so narrow that it would just tear off").
 - Help = an informative "ad": 6 s, then Done; hints scale ~1 per 24 pieces, and past halfway by what is left (twice the pieces left, down to 1); first panel "Built with AI".
 - Music starts at a random piece each launch.
+- Rotation (Menu, off by default): pieces start at quarter turns; a tap turns one 90 degrees (right-click on a computer);
+  pieces join only facing the same way and lock only upright; Help turns its piece upright on the way home.
 - Shells (rewards) would be device-only, no login; not built.
 - Splash screen: Eric floated a 3-5 s logo splash; agreed short (2-3 s), skippable, launch only; not built beyond the
   crab on Godot's boot screen.
@@ -79,7 +81,7 @@ Bump BOTH `application/config/version` in `jigsaw/project.godot` (shown in About
    A RELEASE keystore must be made for the store build and kept OUTSIDE every repo, like the minisign key; losing it
    means never updating the app. The data-safety form is "collects nothing"; privacy policy goes on pagouro.com.
    Apple ($99/yr, Eric's Mac, TestFlight) after Android.
-3. Not built: piece rotation option, saving more than one puzzle, shells, the logo splash, a themed (monochrome) icon,
+3. Not built: saving more than one puzzle, shells, the logo splash, a themed (monochrome) icon,
    the round-2 Salon loop (B2L is the chosen model; its checkpoints are home in `PAGOURO_SALON/runs/salon_r2/B2L/best`).
 4. Solitaire (S-4) comes after the jigsaw.
 

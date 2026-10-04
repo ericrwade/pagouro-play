@@ -16,6 +16,8 @@ Pagouro Salon piano loop playing softly underneath. Runs on Windows and Android 
   self-test; every tab's neck is at least half its head's width (the cardboard rule).
 - **Play**: drag pieces; neighbors that fit join with a soft pulse and a click (Menu: Sounds); anything in its true place on the board locks; finishing the border sends a gold light around it. Drag the empty table
   to pan; pinch (phone) or the mouse wheel (computer) to zoom.
+- **Rotation** (Menu, off by default): pieces start turned by quarter turns; tap one to turn it (right-click on a
+  computer). Pieces join only when they face the same way, and lock only the right way up.
 - **Tray**: on a phone, loose pieces wait in a two-row tray along the bottom; swipe sideways to browse, swipe a piece up.
 - **Help**: a few seconds of one short panel about the project (144 of them, each with the source of its facts in
   `jigsaw/content/panels.json`), then a Done button and a hint that places about one piece per 24.

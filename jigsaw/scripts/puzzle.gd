@@ -42,6 +42,12 @@ var _touches := {}            # finger index -> screen position, for two-finger 
 var _pinch_dist := 0.0
 var _pinch_mid := Vector2.ZERO
 var border_done := false
+## Rotation (Eric, 2026-10-04): when on, pieces start turned by quarter turns and a tap turns one 90 degrees. Pieces
+## join only when they face the same way, and lock only the right way up. A cluster's quarter turns live in its
+## "turn" meta (0..3); its rotation is always turn * 90 degrees once a turn has finished.
+var rotation_on := false
+var _press_screen := Vector2.ZERO
+var _press_ms := 0
 var glow: BorderGlow
 
 @onready var camera: Camera2D = $Camera2D
@@ -95,6 +101,11 @@ func build(tex: Texture2D, piece_count: int, seed_value: int) -> void:
 			cluster.set_meta("scatter", cluster.position)
 			pieces_root.add_child(cluster)
 			clusters.append(cluster)
+	if rotation_on:
+		var turns := RandomNumberGenerator.new()
+		turns.seed = seed_value * 31 + 7
+		for cl in clusters:
+			_set_turn(cl, turns.randi_range(0, 3))
 	# smooth edges: one baked mask per piece
 	var pieces := []
 	var shapes := []
@@ -160,7 +171,7 @@ func _cluster_centre(c: Node2D) -> Vector2:
 	var sum := Vector2.ZERO
 	for p in c.get_children():
 		sum += p.get_meta("centre")
-	return c.position + sum / max(1, c.get_child_count())
+	return c.transform * (sum / max(1, c.get_child_count()))
 
 
 func _table_rect(for_tray: bool) -> Rect2:
@@ -253,9 +264,9 @@ func screen_to_world(screen: Vector2) -> Vector2:
 func _cluster_at(world: Vector2) -> Node2D:
 	for i in range(pieces_root.get_child_count() - 1, -1, -1):
 		var cluster: Node2D = pieces_root.get_child(i)
-		if not cluster.visible or cluster.has_meta("locked"):
+		if not cluster.visible or cluster.has_meta("locked") or cluster.has_meta("turning"):
 			continue  # placed pieces are locked down
-		var local := world - cluster.position
+		var local := cluster.transform.affine_inverse() * world
 		for piece in cluster.get_children():
 			if piece is Polygon2D and Geometry2D.is_point_in_polygon(local, piece.get_meta("shape")):
 				return cluster
@@ -336,10 +347,18 @@ func _unhandled_input(event: InputEvent) -> void:
 		zoom_at(event.position, 1.12 if event.button_index == MOUSE_BUTTON_WHEEL_UP else 1.0 / 1.12)
 		get_viewport().set_input_as_handled()
 		return
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed and rotation_on:
+		var turned := _cluster_at(screen_to_world(event.position))
+		if turned:
+			turn_cluster(turned)
+		get_viewport().set_input_as_handled()
+		return
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
 			var world := screen_to_world(event.position)
 			var hit := _cluster_at(world)
+			_press_screen = event.position
+			_press_ms = Time.get_ticks_msec()
 			if hit:
 				dragging = hit
 				drag_offset = hit.position - world
@@ -348,7 +367,13 @@ func _unhandled_input(event: InputEvent) -> void:
 				panning = true  # dragging the empty table moves the view
 			get_viewport().set_input_as_handled()
 		elif dragging:
-			end_drag(event.position)
+			# a tap (no real movement, quickly let go) turns the piece instead of dropping it
+			if rotation_on and event.position.distance_to(_press_screen) < 12.0 and Time.get_ticks_msec() - _press_ms < 400:
+				var tapped := dragging
+				dragging = null
+				turn_cluster(tapped)
+			else:
+				end_drag(event.position)
 			get_viewport().set_input_as_handled()
 		else:
 			panning = false
@@ -393,7 +418,7 @@ func snapshot() -> Dictionary:
 		for p in c.get_children():
 			var rc: Vector2i = p.get_meta("rc")
 			rcs.append([rc.x, rc.y])
-		out.append({"pieces": rcs, "x": c.position.x, "y": c.position.y, "locked": c.has_meta("locked"), "tray": tray.find(c)})
+		out.append({"pieces": rcs, "x": c.position.x, "y": c.position.y, "locked": c.has_meta("locked"), "tray": tray.find(c), "turn": turn_of(c)})
 	return {"clusters": out, "elapsed": (Time.get_ticks_msec() - started_ms) / 1000.0}
 
 
@@ -413,6 +438,8 @@ func restore(data: Dictionary) -> void:
 			var other: Node2D = by_rc.get(Vector2i(int(rcs[k][0]), int(rcs[k][1])))
 			if other and other != first and clusters.has(other):
 				_merge(first, other)
+		first.set_meta("turn", int(entry.get("turn", 0)))
+		first.rotation = int(entry.get("turn", 0)) * PI / 2.0
 		first.position = Vector2(float(entry.x), float(entry.y))
 		first.visible = true
 		if entry.get("locked", false):
@@ -444,17 +471,17 @@ func _settle(cluster: Node2D) -> void:
 		for other in clusters:
 			if other == cluster or not is_instance_valid(other) or not other.visible:
 				continue
-			if cluster.position.distance_to(other.position) <= snap and _are_neighbours(cluster, other):
+			if turn_of(cluster) == turn_of(other) and cluster.position.distance_to(other.position) <= snap and _are_neighbours(cluster, other):
 				_merge(other, cluster)  # keep the one already in place, move the dropped pieces into it
 				cluster = other
 				joined = true
 				joined_any = true
 				break
-	if cluster.position.length() <= snap:
+	if cluster.position.length() <= snap and turn_of(cluster) == 0:
 		cluster.position = Vector2.ZERO
-	if cluster.position == Vector2.ZERO:
+	if _is_home(cluster):
 		_lock(cluster)
-	if joined_any or (cluster.position == Vector2.ZERO and not was_locked):
+	if joined_any or (_is_home(cluster) and not was_locked):
 		_pulse_neighbours(cluster, dropped)
 		placed.emit()
 	if not border_done and _border_complete():
@@ -462,7 +489,7 @@ func _settle(cluster: Node2D) -> void:
 		glow.play(texture.get_size())
 		border_finished.emit()
 	progress.emit(piece_total() - clusters.size() + 1, piece_total())
-	if clusters.size() == 1 and cluster.position == Vector2.ZERO:
+	if clusters.size() == 1 and _is_home(cluster):
 		is_solved = true
 		# the seams melt away: the finished picture shows whole
 		var fade := create_tween().set_parallel(true)
@@ -518,6 +545,64 @@ func _border_complete() -> bool:
 	return true
 
 
+## In its true place: at the origin and the right way up.
+func _is_home(c: Node2D) -> bool:
+	return c.position == Vector2.ZERO and turn_of(c) == 0
+
+
+func turn_of(c: Node2D) -> int:
+	return int(c.get_meta("turn", 0))
+
+
+## Set a cluster's quarter turns at once, turning it about its own centre.
+func _set_turn(c: Node2D, turn: int) -> void:
+	var about := _cluster_centre(c)
+	var delta := (turn - turn_of(c)) * PI / 2.0
+	c.position = about + (c.position - about).rotated(delta)
+	c.rotation = turn * PI / 2.0
+	c.set_meta("turn", turn)
+
+
+## A tap: turn a quarter clockwise about the cluster's centre, briskly animated, then settle (it may now fit).
+func turn_cluster(c: Node2D) -> void:
+	if c.has_meta("turning") or c.has_meta("locked"):
+		return
+	var about := _cluster_centre(c)
+	var from_pos := c.position
+	var from_rot := c.rotation
+	var turn := (turn_of(c) + 1) % 4
+	c.set_meta("turning", true)
+	c.set_meta("turn", turn)
+	var tw := create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tw.tween_method(func(a: float):
+		c.rotation = from_rot + a
+		c.position = about + (from_pos - about).rotated(a), 0.0, PI / 2.0, 0.14)
+	tw.tween_callback(func():
+		if not is_instance_valid(c):
+			return
+		c.rotation = turn * PI / 2.0
+		c.position = about + (from_pos - about).rotated(PI / 2.0)
+		c.remove_meta("turning")
+		if clusters.has(c):
+			_settle(c))
+
+
+## Menu: Rotation. Turning it on spins the loose single pieces (tray included); turning it off sets every loose
+## piece upright where it lies.
+func set_rotation_mode(on: bool) -> void:
+	rotation_on = on
+	if texture == null or is_solved:
+		return
+	for c in clusters:
+		if c.has_meta("locked") or c.has_meta("hinting"):
+			continue
+		if on and c.get_child_count() == 1:
+			_set_turn(c, randi_range(0, 3))
+		elif not on and turn_of(c) != 0:
+			_set_turn(c, 0)
+	tray_changed.emit()
+
+
 func _are_neighbours(a: Node2D, b: Node2D) -> bool:
 	var cells_b := {}
 	for p in b.get_children():
@@ -554,7 +639,7 @@ func hint() -> bool:
 	var placed := {}
 	var flying := {}
 	for c in clusters:
-		if c.position == Vector2.ZERO and c.visible:
+		if _is_home(c) and c.visible:
 			for p in c.get_children():
 				placed[p.get_meta("rc")] = true
 		if c.has_meta("hinting"):
@@ -564,7 +649,7 @@ func hint() -> bool:
 	var tiers := [[], [], []]  # 0: border while it is open, 1: fits placed work, 2: any loose piece
 	var smallest: Node2D = null
 	for c in clusters:
-		if (c.position == Vector2.ZERO and c.visible) or c.has_meta("hinting"):
+		if (_is_home(c) and c.visible) or c.has_meta("hinting"):
 			continue
 		if c.get_child_count() > 1:
 			if smallest == null or c.get_child_count() < smallest.get_child_count():
@@ -611,9 +696,13 @@ func hint() -> bool:
 	pieces_root.move_child(best, pieces_root.get_child_count() - 1)
 	var t := create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	t.tween_property(best, "position", Vector2.ZERO, 0.9)
+	if turn_of(best) != 0:
+		t.parallel().tween_property(best, "rotation", 0.0 if turn_of(best) <= 2 else TAU, 0.9)
+	best.set_meta("turn", 0)
 	t.tween_callback(func():
 		if is_instance_valid(best) and clusters.has(best):
 			best.remove_meta("hinting")
+			best.rotation = 0.0
 			_settle(best))
 	return true
 
@@ -642,5 +731,7 @@ func solve_all_for_test() -> void:
 	for c in clusters.duplicate():
 		if is_instance_valid(c) and clusters.has(c):
 			c.visible = true
+			c.set_meta("turn", 0)
+			c.rotation = 0.0
 			c.position = Vector2.ZERO
 			_settle(c)

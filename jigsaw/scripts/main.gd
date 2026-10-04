@@ -38,6 +38,7 @@ var status_label: Label
 var count_button: OptionButton
 var music_button: Button
 var sounds_button: Button
+var rotation_button: Button
 var click: AudioStreamPlayer
 var ghost_button: Button
 var table_button: OptionButton
@@ -84,6 +85,10 @@ func _ready() -> void:
 	var cut_index := clampi(int(cfg.get_value("play", "cut", 0)), 0, 1)
 	cut_button.select(cut_index)
 	puzzle.cut_style = PieceShape.Style.WHIMSICAL if cut_index == 0 else PieceShape.Style.CLASSIC
+	var rotation_on := bool(cfg.get_value("play", "rotation", false))
+	rotation_button.set_pressed_no_signal(rotation_on)
+	rotation_button.text = "Rotation on" if rotation_on else "Rotation off"
+	puzzle.rotation_on = rotation_on
 	# the tray starts on for a tall (phone-shaped) window, off for a wide one; the player's choice is kept
 	var view := get_viewport().get_visible_rect().size
 	var tray_on := bool(cfg.get_value("play", "tray", view.y > view.x))
@@ -247,6 +252,16 @@ func _build_ui() -> void:
 	tray_button.tooltip_text = "Keep loose pieces in a tray along the bottom (best on a phone)"
 	tray_button.toggled.connect(_set_tray)
 	bar.add_child(tray_button)
+	rotation_button = Button.new()
+	rotation_button.text = "Rotation off"
+	rotation_button.toggle_mode = true
+	rotation_button.tooltip_text = "Pieces start turned; tap one to turn it (right-click on a computer)"
+	rotation_button.toggled.connect(func(on):
+		rotation_button.text = "Rotation on" if on else "Rotation off"
+		puzzle.set_rotation_mode(on)
+		_save("rotation", on)
+		_save_progress())
+	bar.add_child(rotation_button)
 	table_button = OptionButton.new()
 	for t in TABLES:
 		var swatch := Image.create(14, 14, false, Image.FORMAT_RGBA8)
@@ -367,7 +382,7 @@ func _apply_layout() -> void:
 		return
 	compact = get_viewport().get_visible_rect().size.x < 900
 	var in_bar := [] if compact else [daily_button, random_button, count_button]
-	var in_menu := ([daily_button, random_button, count_button] if compact else []) + [cut_button, tray_button, table_button, ghost_button, music_button, sounds_button]
+	var in_menu := ([daily_button, random_button, count_button] if compact else []) + [cut_button, tray_button, rotation_button, table_button, ghost_button, music_button, sounds_button]
 	for c in in_bar:
 		if c.get_parent() != bar:
 			c.reparent(bar)
@@ -740,7 +755,7 @@ func _layout_signature() -> Array:
 		for p in c.get_children():
 			rcs.append(p.get_meta("rc"))
 		rcs.sort()
-		sig.append([str(rcs), c.position.round(), c.has_meta("locked")])
+		sig.append([str(rcs), c.position.round(), c.has_meta("locked"), puzzle.turn_of(c)])
 	sig.sort()
 	return sig
 
@@ -855,6 +870,39 @@ func _selftest() -> void:
 	puzzle.solve_all_for_test()
 	report.append("after solve: %d cluster(s), solved=%s" % [puzzle.clusters.size(), str(puzzle.is_solved)])
 	report.append("border glow played=%s; Help pieces at 156 with 156/78/40/10 left: %s" % [str(puzzle.border_done), str([156, 78, 40, 10].map(func(l): return max(1, int(round(min(156, 2 * l) / 24.0)))))])
+	# rotation: pieces start turned; four quarter turns come back; a turned piece is grabbed where it shows; a turned
+	# piece at home does not lock and an upright one does; save and restore keep every turn
+	puzzle.rotation_on = true
+	current_count = 12
+	_start(77)
+	var turned_start: int = puzzle.clusters.filter(func(c): return puzzle.turn_of(c) != 0).size()
+	await get_tree().process_frame
+	await RenderingServer.frame_post_draw
+	get_viewport().get_texture().get_image().save_png("user://selftest_rotation.png")
+	var r0: Node2D = puzzle.clusters[0]
+	var t_before := r0.transform
+	for k in range(4):
+		puzzle._set_turn(r0, (puzzle.turn_of(r0) + 1) % 4)
+	var round_trip := r0.transform.is_equal_approx(t_before)
+	var r1: Node2D = puzzle.clusters[1]
+	puzzle._set_turn(r1, 3)
+	r1.visible = true
+	var grab_turned: bool = puzzle._cluster_at(r1.transform * r1.get_child(0).get_meta("centre")) == r1
+	puzzle._set_turn(r0, 1)
+	r0.visible = true
+	r0.position = Vector2.ZERO
+	puzzle._settle(r0)
+	var locks_turned := r0.has_meta("locked")
+	puzzle._set_turn(r0, 0)
+	r0.position = Vector2.ZERO
+	puzzle._settle(r0)
+	var locks_upright := r0.has_meta("locked")
+	var rsnap := puzzle.snapshot()
+	var rsig := _layout_signature()
+	_start(77)
+	puzzle.restore(rsnap)
+	report.append("rotation: %d of 12 start turned, four quarter turns round-trip=%s, turned piece grabbable=%s, turned piece at home locks=%s, upright locks=%s, restore identical=%s" % [turned_start, str(round_trip), str(grab_turned), str(locks_turned), str(locks_upright), str(_layout_signature() == rsig)])
+	puzzle.rotation_on = false
 	await get_tree().create_timer(0.8).timeout  # the border light mid-run
 	await RenderingServer.frame_post_draw
 	get_viewport().get_texture().get_image().save_png("user://selftest_glow.png")
