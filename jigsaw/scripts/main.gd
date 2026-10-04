@@ -298,19 +298,29 @@ func _layout_tray() -> void:
 	sponsor_label.offset_bottom = -(height if on else 0.0)
 
 
-## The next panel in a fixed shuffle of all of them; the place is kept, so a player sees every panel before any repeats.
+## The next panel. The very first Help a player ever presses shows the panel marked "first" (Eric, 2026-10-04: the
+## first one says most of this was built with AI); after that, a fixed shuffle of the rest whose place is kept, so a
+## player sees every panel before any repeats.
 func next_panel() -> Dictionary:
 	var cfg := ConfigFile.new()
 	cfg.load(SETTINGS)
 	var n := int(cfg.get_value("play", "help_next", 0))
-	var order := range(panels.size())
+	if not bool(cfg.get_value("play", "help_intro_seen", false)):
+		for p in panels:
+			if p.get("first", false):
+				_save("help_intro_seen", true)
+				return p
+	var rest := panels.filter(func(p): return not p.get("first", false))
+	if rest.is_empty():
+		rest = panels
+	var order := range(rest.size())
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 1900  # the Paris Exposition Universelle
 	for i in range(order.size() - 1, 0, -1):
 		var j := rng.randi_range(0, i)
 		var t = order[i]; order[i] = order[j]; order[j] = t
-	_save("help_next", (n + 1) % panels.size())
-	return panels[order[n % panels.size()]]
+	_save("help_next", (n + 1) % rest.size())
+	return rest[order[n % rest.size()]]
 
 
 func _on_help() -> void:
@@ -402,6 +412,12 @@ func _selftest() -> void:
 	var grab_loose = puzzle._cluster_at(free.position + free.get_child(0).get_meta("centre"))
 	report.append("locked clusters %d, placed piece grabbable=%s, loose piece grabbable=%s" % [locked.size(), str(grab_locked != null), str(grab_loose == free)])
 	help_card.show_panel(panels[0])
+	var keep_settings := FileAccess.get_file_as_string(SETTINGS)
+	_save("help_intro_seen", false)
+	report.append("first help panels: %s, %s" % [next_panel().get("id"), next_panel().get("id")])
+	var f := FileAccess.open(SETTINGS, FileAccess.WRITE)
+	f.store_string(keep_settings)
+	f.close()
 	await get_tree().create_timer(0.4).timeout
 	await RenderingServer.frame_post_draw
 	get_viewport().get_texture().get_image().save_png("user://selftest_help.png")
