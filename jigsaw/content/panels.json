@@ -11,7 +11,7 @@
   "id": "art-01",
   "topic": "art",
   "title": "Painted From the Public Domain",
-  "text": "Every picture in this puzzle was drawn by Pagouro BE, a small model that learned its style from about 3,000 public-domain posters and prints.",
+  "text": "Every picture in this puzzle was drawn by Pagouro BE, our small AI picture generator, which learned its style from about 3,000 public-domain posters and prints.",
   "source": "PAGOURO_BE/README.md (Status table: Our corpus 3,043 images); PAGOURO_PLAY/README.md (Pictures drawn by Pagouro BE)"
  },
  {
@@ -25,63 +25,63 @@
   "id": "art-03",
   "topic": "art",
   "title": "All Made Before 1929",
-  "text": "Every poster Pagouro BE studied was made before 1929. Art that belongs to everyone, put to work teaching something new.",
+  "text": "Every poster Pagouro BE (our AI picture generator) studied was made before 1929. Art that belongs to everyone, put to work teaching something new.",
   "source": "PAGOURO_BE/README.md (Dated; Status table: all pre-1929)"
  },
  {
   "id": "art-04",
   "topic": "art",
   "title": "A Clean Starting Point",
-  "text": "Pagouro BE is built on CommonCanvas, a base model trained only on Creative Commons photographs. It was chosen because its data has a license statement that holds up.",
+  "text": "Pagouro BE (our AI picture generator) is built on CommonCanvas, a base model trained only on Creative Commons photographs. It was chosen because its data has a license statement that holds up.",
   "source": "PAGOURO_BE/README.md (Not from random weights); PAGOURO_BE/docs/MODEL_CARD.md"
  },
  {
   "id": "art-05",
   "topic": "art",
   "title": "Yours to Keep",
-  "text": "Pictures drawn by Pagouro BE are CC0. Print them, frame them, remix them. No permission needed; credit welcome.",
+  "text": "Pictures drawn by Pagouro BE (our AI picture generator) are CC0. Print them, frame them, remix them. No permission needed; credit welcome.",
   "source": "PAGOURO_BE/showcase/x180/README.md (Rights); PAGOURO_BE/README.md (Licences: outputs CC0)"
  },
  {
   "id": "art-06",
   "topic": "art",
   "title": "No Watermark",
-  "text": "Pagouro BE puts no watermark in its pictures. What it draws for you is yours.",
+  "text": "Pagouro BE (our AI picture generator) puts no watermark in its pictures. What it draws for you is yours.",
   "source": "PAGOURO_BE/README.md (Yours. Outputs are CC0. No watermark.)"
  },
  {
   "id": "art-07",
   "topic": "art",
   "title": "Draws on Your Own Computer",
-  "text": "Pagouro BE draws on an ordinary CPU, offline, from a USB stick. Nothing you type leaves the machine.",
+  "text": "Pagouro BE (our AI picture generator) draws on an ordinary CPU, offline, from a USB stick. Nothing you type leaves the machine.",
   "source": "PAGOURO_BE/README.md (intro; Yours); PAGOURO_BUILD/docs/THREAT_MODEL.md (row 1)"
  },
  {
   "id": "art-08",
   "topic": "art",
   "title": "Patience Is Part of It",
-  "text": "On an idle desktop, Pagouro BE paints a picture in about 95 seconds. On a small budget laptop, most of an hour. Either way, on your own machine.",
+  "text": "On an idle desktop, Pagouro BE (our AI picture generator) paints a picture in about 95 seconds. On a small budget laptop, most of an hour. Either way, on your own machine.",
   "source": "PAGOURO_BE/README.md (Status: 95 s per picture on idle 16-core desktop; 52 min on Intel N100 laptop)"
  },
  {
   "id": "art-09",
   "topic": "art",
   "title": "Under Ten Dollars",
-  "text": "The fine-tune that taught Pagouro BE the poster style cost $7.72 of rented GPU time, read from the bill.",
+  "text": "The fine-tune that taught Pagouro BE (our AI picture generator) the poster style cost $7.72 of rented GPU time, read from the bill.",
   "source": "PAGOURO_BE/README.md (Status table: Training, $7.72 read from the bill)"
  },
  {
   "id": "art-10",
   "topic": "art",
   "title": "Measured, Not Promised",
-  "text": "Asked for a subject, Pagouro BE drew it in 34 of 40 pictures scored by a person. The test was written before training began.",
+  "text": "Asked for a subject, Pagouro BE (our AI picture generator) drew it in 34 of 40 pictures scored by a person. The test was written before training began.",
   "source": "PAGOURO_BE/docs/MODEL_CARD.md (The numbers on the box: subject drawn 34/40; gate committed before any training)"
  },
  {
   "id": "art-11",
   "topic": "art",
   "title": "Honest About Its Flaws",
-  "text": "Pagouro BE often adds lettering nobody asked for, and it can't be read. The box says so. A tool that names its flaws is one you can trust.",
+  "text": "Pagouro BE (our AI picture generator) often adds lettering nobody asked for, and it can't be read. The box says so. A tool that names its flaws is one you can trust.",
   "source": "PAGOURO_BE/docs/MODEL_CARD.md (What it does badly; unasked lettering 136/160)"
  },
  {
@@ -95,7 +95,7 @@
   "id": "art-13",
   "topic": "art",
   "title": "Signed and Timestamped",
-  "text": "Pagouro BE 1.0 was signed, and its manifest timestamped in Bitcoin block 969239. Anyone can check that their copy is the real one.",
+  "text": "Pagouro BE (our AI picture generator) 1.0 was signed, and its manifest timestamped in Bitcoin block 969239. Anyone can check that their copy is the real one.",
   "source": "PAGOURO_BE/README.md (Status: manifest signed, timestamped on Bitcoin block 969239)"
  },
  {
@@ -109,7 +109,7 @@
   "id": "art-15",
   "topic": "art",
   "title": "Six More Styles",
-  "text": "Pagouro BE Styles adds six looks: Southwest rock art, ukiyo-e, Egyptian tomb painting, Greek vase painting, natural-history plates and Dutch painting.",
+  "text": "Pagouro BE Styles, an add-on for our AI picture generator, adds six looks: Southwest rock art, ukiyo-e, Egyptian tomb painting, Greek vase painting, natural-history plates and Dutch painting.",
   "source": "PAGOURO_BE/docs/README_STYLES.md (The styles); PAGOURO_BUILD/docs/DECISIONS.md D-103"
  },
  {
@@ -130,7 +130,7 @@
   "id": "art-18",
   "topic": "art",
   "title": "It Learned the Scanner Too",
-  "text": "Sometimes Pagouro BE paints a poster as if photographed in an archive, color strip and all. It learned from museum scans, and it learned the scanning.",
+  "text": "Sometimes Pagouro BE (our AI picture generator) paints a poster as if photographed in an archive, color strip and all. It learned from museum scans, and it learned the scanning.",
   "source": "PAGOURO_BE/docs/CORPUS.md (What it also learned, noticed 2026-10-01)"
  },
  {
@@ -144,14 +144,14 @@
   "id": "art-20",
   "topic": "art",
   "title": "Enlarged, Not Repainted",
-  "text": "Pagouro BE paints at 512 pixels. These pictures were enlarged twice over by Real-ESRGAN, an openly licensed upscaler. Nothing was painted in by hand.",
+  "text": "Pagouro BE (our AI picture generator) paints at 512 pixels. These pictures were enlarged twice over by Real-ESRGAN, an openly licensed upscaler. Nothing was painted in by hand.",
   "source": "PAGOURO_BE/showcase/x180/README.md (Size: 2x Real-ESRGAN upscale, BSD-3 weights; not retouched)"
  },
  {
   "id": "music-01",
   "topic": "music",
   "title": "Composed, Not Recorded",
-  "text": "The piano you hear was composed by Pagouro Salon, a small model that writes music as notes. A free instrument plays them.",
+  "text": "The piano you hear was composed by Pagouro Salon, our small AI music generator, which writes music as notes. A free instrument plays them.",
   "source": "PAGOURO_SALON/README.md; PAGOURO_PLAY/README.md (Licenses: Music)"
  },
  {
@@ -186,7 +186,7 @@
   "id": "music-06",
   "topic": "music",
   "title": "Learned From Public Scores",
-  "text": "Pagouro Salon studied public-domain scores, including pieces typeset by volunteers at the Mutopia Project, each with its license recorded.",
+  "text": "Pagouro Salon (our AI music generator) studied public-domain scores, including pieces typeset by volunteers at the Mutopia Project, each with its license recorded.",
   "source": "PAGOURO_SALON/docs/DECISIONS.md S-2, S-6"
  },
  {
@@ -207,7 +207,7 @@
   "id": "music-09",
   "topic": "music",
   "title": "Notes, Not Old Records",
-  "text": "Salon learned from scores, not old recordings, so it composes clean notes instead of imitating the hiss of a gramophone.",
+  "text": "Pagouro Salon (our AI music generator) learned from scores, not old recordings, so it composes clean notes instead of imitating the hiss of a gramophone.",
   "source": "PAGOURO_SALON/docs/DECISIONS.md S-1 (period recordings are acoustic 78s and would teach the model to sound like a gramophone)"
  },
  {
@@ -228,21 +228,21 @@
   "id": "music-12",
   "topic": "music",
   "title": "No Endless Loops",
-  "text": "Small music models tend to repeat themselves. Salon blocks exact repeats of any phrase about six notes long, which brought it closest to real Satie.",
+  "text": "Small music models tend to repeat themselves. Pagouro Salon (our AI music generator) blocks exact repeats of any phrase about six notes long, which brought it closest to real Satie.",
   "source": "PAGOURO_SALON/docs/BUILD_LOG.md (Sampler sweep: block any repeated 24-token phrase, about six notes; closest to real Satie on both numbers)"
  },
  {
   "id": "music-13",
   "topic": "music",
   "title": "Mistakes on the Record",
-  "text": "One early Salon model learned to predict the wrong note entirely. The bug, the fix and the lesson are all written in the build log.",
+  "text": "One early model of Pagouro Salon (our AI music generator) learned to predict the wrong note entirely. The bug, the fix and the lesson are all written in the build log.",
   "source": "PAGOURO_SALON/docs/BUILD_LOG.md (Round 1a, a bug of mine, kept here)"
  },
  {
   "id": "music-14",
   "topic": "music",
   "title": "The Salon Repertoire",
-  "text": "Salon aims at the salon and café piano of about 1860 to 1920: Satie, Debussy, Fauré, Joplin and their neighbors.",
+  "text": "Pagouro Salon (our AI music generator) aims at the salon and café piano of about 1860 to 1920: Satie, Debussy, Fauré, Joplin and their neighbors.",
   "source": "PAGOURO_SALON/docs/DECISIONS.md S-1"
  },
  {
@@ -256,7 +256,7 @@
   "id": "music-16",
   "topic": "music",
   "title": "Same Seed, Same Song",
-  "text": "Give Pagouro Salon the same seed and settings, and it composes the same piece again. Music you can reproduce exactly.",
+  "text": "Give Pagouro Salon (our AI music generator) the same seed and settings, and it composes the same piece again. Music you can reproduce exactly.",
   "source": "PAGOURO_SALON/docs/DECISIONS.md S-1 (deterministic from a seed); PAGOURO_SALON/scripts/generate.py (docstring: Deterministic for a given seed)"
  },
  {
@@ -277,21 +277,21 @@
   "id": "music-19",
   "topic": "music",
   "title": "The Third Sibling",
-  "text": "Pagouro Salon is the third member of the Pagouro family, after the text model and the poster model. Same rules: licensed, ledgered, measured.",
+  "text": "Pagouro Salon (our AI music generator) is the third member of the Pagouro family, after the text model and the poster model. Same rules: licensed, ledgered, measured.",
   "source": "PAGOURO_SALON/README.md"
  },
  {
   "id": "music-20",
   "topic": "music",
   "title": "Art Songs, Minus the Words",
-  "text": "The next Salon round added the piano parts of 1,244 art songs from the CC0 OpenScore Lieder collection, vocal lines removed.",
+  "text": "The next round of Pagouro Salon (our AI music generator) added the piano parts of 1,244 art songs from the CC0 OpenScore Lieder collection, vocal lines removed.",
   "source": "PAGOURO_SALON/docs/DECISIONS.md S-8"
  },
  {
   "id": "music-21",
   "topic": "music",
   "title": "The Speed Dial",
-  "text": "In round two, asking Salon for its slowest setting gave about 2.3 notes a second, the speed of the real Gymnopédies.",
+  "text": "In round two, asking Pagouro Salon (our AI music generator) for its slowest setting gave about 2.3 notes a second, the speed of the real Gymnopédies.",
   "source": "PAGOURO_SALON/docs/BUILD_LOG.md (Round 2b, B2L: the speed label steers)"
  },
  {
@@ -466,7 +466,7 @@
   "id": "pagouro-25",
   "topic": "pagouro",
   "title": "Text Only, and Says So",
-  "text": "Pagouro reads and writes text only. The pictures in this game were drawn by its sibling, Pagouro BE.",
+  "text": "Pagouro reads and writes text only. The pictures in this game were drawn by its sibling Pagouro BE, our AI picture generator.",
   "source": "PAGOURO_BUILD/README.md (Text only); PAGOURO_PLAY/README.md"
  },
  {
@@ -732,7 +732,7 @@
   "id": "belle-24",
   "topic": "belle-epoque",
   "title": "The Salon",
-  "text": "In a Belle Époque salon, music was played at home among friends. Pagouro Salon is named for the room this music was written for.",
+  "text": "In a Belle Époque salon, music was played at home among friends. Pagouro Salon (our AI music generator) is named for the room this music was written for.",
   "source": "general history; PAGOURO_SALON/docs/DECISIONS.md S-1 (Salon is the room the music was written for)"
  },
  {
@@ -788,7 +788,7 @@
   "id": "poster-06",
   "topic": "posters",
   "title": "The Most-Studied Artist",
-  "text": "Toulouse-Lautrec is the artist with the most pictures in Pagouro BE's first training corpus: 365 of them.",
+  "text": "Toulouse-Lautrec is the artist with the most pictures in the first training corpus of Pagouro BE (our AI picture generator): 365 of them.",
   "source": "PAGOURO_BE/docs/CORPUS.md (round 1: Top artists by image count, Toulouse-Lautrec 365)"
  },
  {
@@ -830,7 +830,7 @@
   "id": "poster-12",
   "topic": "posters",
   "title": "The Met's Gift",
-  "text": "The Met shares its public-domain works as CC0 through Open Access. 533 of its prints and posters helped teach Pagouro BE.",
+  "text": "The Met shares its public-domain works as CC0 through Open Access. 533 of its prints and posters helped teach Pagouro BE (our AI picture generator).",
   "source": "PAGOURO_BE/README.md (The Met Open Access (CC0); Status table: Met 533)"
  },
  {
@@ -872,7 +872,7 @@
   "id": "poster-18",
   "topic": "posters",
   "title": "Lettered by Hand",
-  "text": "Belle Époque poster titles were drawn by hand, as part of the picture. Lettering is still the hardest thing for Pagouro BE to get right.",
+  "text": "Belle Époque poster titles were drawn by hand, as part of the picture. Lettering is still the hardest thing for Pagouro BE (our AI picture generator) to get right.",
   "source": "PAGOURO_BUILD/docs/DECISIONS.md D-74 (hand-lettered titles); PAGOURO_BE/docs/MODEL_CARD.md (asked-for words legible 0/6)"
  },
  {
