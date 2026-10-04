@@ -167,6 +167,7 @@ func _start(seed_value: int) -> void:
 	img.generate_mipmaps()
 	var tex := ImageTexture.create_from_image(img)
 	puzzle.build(tex, current_count, seed_value)
+	_layout_tray()  # a new puzzle: the sponsor line goes back above the tray
 	_update_title()
 	_save_progress()
 
@@ -463,7 +464,7 @@ func _close_menu() -> void:
 ## Closing the finish card leaves the finished picture to look at; Menu still offers the next one.
 func _close_finish() -> void:
 	finish_panel.visible = false
-	puzzle.focus_board(0.0)
+	puzzle.focus_board(40.0)  # keep clear of the sponsor line at the bottom
 
 
 func _on_top_resized() -> void:
@@ -662,9 +663,10 @@ func _layout_tray() -> void:
 	tray_panel.offset_top = -height
 	tray_panel.offset_bottom = 0
 	puzzle.tray_height = height if on else 0.0
-	# the sponsor line sits just above the tray when there is one
-	sponsor_label.offset_top = -30 - (height if on else 0.0)
-	sponsor_label.offset_bottom = -(height if on else 0.0)
+	# the sponsor line sits just above the tray while there is one, and drops to the bottom once the puzzle is done
+	var shown := on and not puzzle.is_solved
+	sponsor_label.offset_top = -30 - (height if shown else 0.0)
+	sponsor_label.offset_bottom = -(height if shown else 0.0)
 
 
 ## The next panel. The very first Help a player ever presses shows the panel marked "first" (Eric, 2026-10-04: the
@@ -737,6 +739,7 @@ func _on_solved(seconds: float) -> void:
 	finish_credit.custom_minimum_size.x = min(560.0, get_viewport().get_visible_rect().size.x - 110.0)
 	finish_panel.visible = true
 	tray_panel.visible = false
+	_layout_tray()  # the sponsor line comes down to the bottom
 	finish_panel.modulate.a = 0.0
 	await get_tree().process_frame  # let the wrapped text settle before measuring the card
 	# below the finished picture, so the picture stays in view
@@ -867,9 +870,23 @@ func _selftest() -> void:
 	report.append("hints per Help at 49 pieces: %d" % puzzle.hint_count())
 	report.append("hint given=%s pieces left %d -> %d" % [str(hinted), before_hint, puzzle.pieces_left()])
 	report.append("%d help panels" % panels.size())
+	# finish with the tray on, the way a phone plays: the sponsor line must come down when the tray goes
+	tray_button.set_pressed_no_signal(true)
+	_set_tray(true, false)
 	puzzle.solve_all_for_test()
 	report.append("after solve: %d cluster(s), solved=%s" % [puzzle.clusters.size(), str(puzzle.is_solved)])
 	report.append("border glow played=%s; Help pieces at 156 with 156/78/40/10 left: %s" % [str(puzzle.border_done), str([156, 78, 40, 10].map(func(l): return max(1, int(round(min(156, 2 * l) / 24.0)))))])
+	await get_tree().create_timer(0.8).timeout  # the border light mid-run
+	await RenderingServer.frame_post_draw
+	get_viewport().get_texture().get_image().save_png("user://selftest_glow.png")
+	await get_tree().create_timer(0.9).timeout  # let the seams fade
+	await RenderingServer.frame_post_draw
+	get_viewport().get_texture().get_image().save_png("user://selftest_solved.png")
+	# the finished card closed: the picture recentres and the sponsor line sits clear below it (Eric, 2026-10-04)
+	_close_finish()
+	await get_tree().create_timer(1.1).timeout
+	await RenderingServer.frame_post_draw
+	get_viewport().get_texture().get_image().save_png("user://selftest_closed.png")
 	# rotation: pieces start turned; four quarter turns come back; a turned piece is grabbed where it shows; a turned
 	# piece at home does not lock and an upright one does; save and restore keep every turn
 	puzzle.rotation_on = true
@@ -903,12 +920,6 @@ func _selftest() -> void:
 	puzzle.restore(rsnap)
 	report.append("rotation: %d of 12 start turned, four quarter turns round-trip=%s, turned piece grabbable=%s, turned piece at home locks=%s, upright locks=%s, restore identical=%s" % [turned_start, str(round_trip), str(grab_turned), str(locks_turned), str(locks_upright), str(_layout_signature() == rsig)])
 	puzzle.rotation_on = false
-	await get_tree().create_timer(0.8).timeout  # the border light mid-run
-	await RenderingServer.frame_post_draw
-	get_viewport().get_texture().get_image().save_png("user://selftest_glow.png")
-	await get_tree().create_timer(0.9).timeout  # let the seams fade
-	await RenderingServer.frame_post_draw
-	get_viewport().get_texture().get_image().save_png("user://selftest_solved.png")
 	report.append("daily index today: %d (%s)" % [today_index(), pictures[today_index()].caption])
 	report.append("screenshots in " + ProjectSettings.globalize_path("user://"))
 	print("SELFTEST " + " | ".join(report))
