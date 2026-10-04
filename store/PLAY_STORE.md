@@ -66,7 +66,7 @@ With thanks to Summer Engine (summerengine.com), the AI game engine that got us 
 
 **Category:** Game › Puzzle. **Tags:** jigsaw, puzzle, art, relaxing, offline.
 
-**Contact email:** `info@pagouro.com` (public on the listing; Eric to confirm it delivers). **Website:** `https://pagouro.com`.
+**Contact email:** `info@pagouro.com` (public on the listing; test email delivered 2026-10-04). **Website:** `https://pagouro.com`.
 
 **Privacy policy URL:** `https://pagouro.com/jigsaw-privacy.html` (LIVE since 2026-10-04; source `store/jigsaw-privacy.html`,
 published to `ericrwade/pagouro-site` with Eric's OK).
