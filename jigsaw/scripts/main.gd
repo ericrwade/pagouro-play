@@ -290,6 +290,7 @@ func _build_ui() -> void:
 	var credit := Label.new()
 	finish_credit = credit
 	credit.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	credit.custom_minimum_size.x = 560  # a wrapping label needs a width, or it measures absurdly tall
 	credit.text = "This picture was drawn by Pagouro BE, a free image model that runs offline.\nNot every picture it draws is a masterpiece; this one made the cut."
 	credit.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	credit.add_theme_font_size_override("font_size", 17)
@@ -450,7 +451,8 @@ func _build_about(root: Control) -> void:
 ## License texts come with hard line breaks; join each paragraph so it wraps cleanly on a narrow screen.
 func _reflow(text: String) -> String:
 	var paras := []
-	for para in text.replace("", "").split("
+	for para in text.replace("
+", "").split("
 
 "):
 		paras.append(" ".join(Array(para.split("
@@ -624,10 +626,13 @@ func _on_solved(seconds: float) -> void:
 	finish_credit.custom_minimum_size.x = min(560.0, get_viewport().get_visible_rect().size.x - 110.0)
 	finish_panel.visible = true
 	tray_panel.visible = false
+	finish_panel.modulate.a = 0.0
+	await get_tree().process_frame  # let the wrapped text settle before measuring the card
 	# below the finished picture, so the picture stays in view
 	var view := get_viewport().get_visible_rect().size
 	finish_panel.reset_size()
 	finish_panel.position = Vector2((view.x - finish_panel.size.x) * 0.5, view.y - finish_panel.size.y - 44)
+	finish_panel.modulate.a = 1.0
 	puzzle.focus_board(finish_panel.size.y + 52)
 
 
