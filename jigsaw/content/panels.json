@@ -53,7 +53,7 @@
   "id": "art-07",
   "topic": "art",
   "title": "Draws on Your Own Computer",
-  "text": "Pagouro BE (our AI picture generator) draws on an ordinary CPU, offline, from a USB stick. Nothing you type leaves the machine.",
+  "text": "Pagouro BE (our AI picture generator) draws on an ordinary CPU, offline, from any folder, even a USB stick. Nothing you type leaves the machine.",
   "source": "PAGOURO_BE/README.md (intro; Yours); PAGOURO_BUILD/docs/THREAT_MODEL.md (row 1)"
  },
  {
@@ -319,7 +319,7 @@
   "id": "pagouro-04",
   "topic": "pagouro",
   "title": "AI on a USB Stick",
-  "text": "Pagouro, our AI text model, is a one-billion-parameter model that lives on a USB stick, runs offline, and needs nothing from outside.",
+  "text": "Pagouro, our AI text model, is a one-billion-parameter model that runs offline from any folder, even a USB stick, and needs nothing from outside.",
   "source": "PAGOURO_BUILD/README.md (tagline and first paragraph)"
  },
  {
@@ -907,7 +907,7 @@
   "id": "freedom-02",
   "topic": "freedom",
   "title": "Open Weights",
-  "text": "Open weights mean nobody can take the model back. Once it's on your stick, it's yours.",
+  "text": "Open weights mean nobody can take the model back. Once it's on your computer or your stick, it's yours.",
   "source": "none: opinion"
  },
  {
