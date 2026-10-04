@@ -1,0 +1,4 @@
+tools/
+jigsaw/.godot/
+build/
+*.import.tmp

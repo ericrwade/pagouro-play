@@ -1,0 +1,182 @@
+[
+ {
+  "file": "res://art/be/002-poplars-river-sunset.jpg",
+  "caption": "a row of tall poplar trees along a river at sunset",
+  "category": "landscapes",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/003-woman-watering-flowers.jpg",
+  "caption": "a woman watering potted geraniums on a balcony",
+  "category": "everyday",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/004-eiffel-tower-spring.jpg",
+  "caption": "the Eiffel Tower seen from a chestnut-lined avenue in spring",
+  "category": "travel",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/006-grape-harvest-baskets.jpg",
+  "caption": "grape pickers with baskets in a vineyard at harvest",
+  "category": "wine",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/008-lighthouse-storm-waves.jpg",
+  "caption": "a lighthouse in a storm with waves breaking around it",
+  "category": "lighthouses",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/010-locomotive-steam-platform.jpg",
+  "caption": "a black steam locomotive at a station platform with steam rising",
+  "category": "trains",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/012-hot-air-balloon-rooftops.jpg",
+  "caption": "a striped hot-air balloon rising over city rooftops",
+  "category": "balloons",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/014-black-cat-red-cushion.jpg",
+  "caption": "a black cat sitting on a red cushion",
+  "category": "animals",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/015-irises-vase.jpg",
+  "caption": "purple irises in a tall vase",
+  "category": "flowers",
+  "seed": 1001
+ },
+ {
+  "file": "res://art/be/017-skier-alpine-slope.jpg",
+  "caption": "a skier in a wool sweater speeding down an alpine slope",
+  "category": "winter",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/020-lavender-fields-provence.jpg",
+  "caption": "rolling fields of lavender under a hot blue sky",
+  "category": "landscapes",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/024-vineyard-hillside-sunset.jpg",
+  "caption": "rows of vines on a hillside at sunset",
+  "category": "wine",
+  "seed": 1001
+ },
+ {
+  "file": "res://art/be/030-balloon-festival-sky.jpg",
+  "caption": "many colorful hot-air balloons filling the sky over a meadow",
+  "category": "balloons",
+  "seed": 1001
+ },
+ {
+  "file": "res://art/be/032-peacock-garden.jpg",
+  "caption": "a peacock with its tail spread in a garden",
+  "category": "animals",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/033-poppies-field-red.jpg",
+  "caption": "a field of red poppies under a blue sky",
+  "category": "flowers",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/036-fish-market-quay.jpg",
+  "caption": "a fish market on a quay with baskets of fish and oysters",
+  "category": "markets",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/037-woman-large-hat-portrait.jpg",
+  "caption": "portrait of a woman in an enormous feathered hat, looking over her shoulder",
+  "category": "people",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/039-laundry-courtyard.jpg",
+  "caption": "women hanging white laundry in a sunny courtyard",
+  "category": "everyday",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/040-montmartre-windmill.jpg",
+  "caption": "a windmill on a hill in Montmartre with steps leading up",
+  "category": "travel",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/044-lighthouse-red-white-stripes.jpg",
+  "caption": "a red and white striped lighthouse on a headland",
+  "category": "lighthouses",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/045-yacht-race-regatta.jpg",
+  "caption": "yachts racing with white sails leaning in the wind",
+  "category": "sailing",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/046-train-viaduct-valley.jpg",
+  "caption": "a train crossing a tall stone viaduct over a valley",
+  "category": "trains",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/054-fruit-market-apples-pears.jpg",
+  "caption": "a market stall piled with apples, pears and grapes",
+  "category": "markets",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/055-couple-boulevard-evening.jpg",
+  "caption": "an elegant couple strolling arm in arm along a lamplit boulevard at dusk",
+  "category": "people",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/061-canoe-mountain-lake.jpg",
+  "caption": "a canoe on a mountain lake",
+  "category": "boats",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/065-aeroplane-crowd-airfield.jpg",
+  "caption": "a crowd watching a biplane take off from a grass airfield",
+  "category": "aeroplanes",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/079-ferry-crossing-passengers.jpg",
+  "caption": "a small ferry crossing a river with passengers under parasols",
+  "category": "boats",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/081-fishing-smack-brown-sails.jpg",
+  "caption": "a fishing boat with brown sails in a choppy sea",
+  "category": "sailing",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/085-nightclub-dancing-couples.jpg",
+  "caption": "couples dancing in a smoky nightclub under colored lights",
+  "category": "cabaret",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/088-motor-car-seaside-road.jpg",
+  "caption": "a red motor car on a coastal road above the sea",
+  "category": "motorcars",
+  "seed": 1000
+ }
+]

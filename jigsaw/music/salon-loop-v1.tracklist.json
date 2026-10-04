@@ -1,0 +1,152 @@
+{
+ "minutes": 62.1,
+ "pieces": 20,
+ "gap_seconds": 2.5,
+ "rms_target": 0.035,
+ "model": "Pagouro Salon round 1 model B (12 layers x 512), phrase blocking 24 tokens, puzzle mode (2 notes/s, softened)",
+ "soundfont": "Upright Piano KW (CC0, FreePats)",
+ "renderer": "FluidSynth 2.6.1",
+ "license": "CC0 1.0",
+ "tracklist": [
+  {
+   "name": "chill_Chopin_s6015",
+   "label": "Chopin",
+   "source": "runs/salon_r1/B_r1c/puzzle\\chill_Chopin_s6015.wav",
+   "seconds": 290.4,
+   "starts_at": "0:00"
+  },
+  {
+   "name": "chill_Other_s7008",
+   "label": "Other",
+   "source": "runs/salon_r1/B_r1c/puzzle\\chill_Other_s7008.wav",
+   "seconds": 61.5,
+   "starts_at": "4:52"
+  },
+  {
+   "name": "chill_Chopin_s6018",
+   "label": "Chopin",
+   "source": "runs/salon_r1/B_r1c/puzzle\\chill_Chopin_s6018.wav",
+   "seconds": 264.0,
+   "starts_at": "5:56"
+  },
+  {
+   "name": "chill_Other_s7029",
+   "label": "Other",
+   "source": "runs/salon_r1/B_r1c/puzzle\\chill_Other_s7029.wav",
+   "seconds": 67.6,
+   "starts_at": "10:23"
+  },
+  {
+   "name": "chill_Chopin_s6024",
+   "label": "Chopin",
+   "source": "runs/salon_r1/B_r1c/puzzle\\chill_Chopin_s6024.wav",
+   "seconds": 256.8,
+   "starts_at": "11:33"
+  },
+  {
+   "name": "chill_Other_s4000",
+   "label": "Other",
+   "source": "runs/salon_r1/B_nr24/puzzle\\chill_Other_s4000.wav",
+   "seconds": 96.9,
+   "starts_at": "15:52"
+  },
+  {
+   "name": "chill_Chopin_s6010",
+   "label": "Chopin",
+   "source": "runs/salon_r1/B_r1c/puzzle\\chill_Chopin_s6010.wav",
+   "seconds": 216.0,
+   "starts_at": "17:32"
+  },
+  {
+   "name": "chill_Other_s7027",
+   "label": "Other",
+   "source": "runs/salon_r1/B_r1c/puzzle\\chill_Other_s7027.wav",
+   "seconds": 105.0,
+   "starts_at": "21:10"
+  },
+  {
+   "name": "chill_Chopin_s6014",
+   "label": "Chopin",
+   "source": "runs/salon_r1/B_r1c/puzzle\\chill_Chopin_s6014.wav",
+   "seconds": 210.4,
+   "starts_at": "22:58"
+  },
+  {
+   "name": "chill_Other_s7025",
+   "label": "Other",
+   "source": "runs/salon_r1/B_r1c/puzzle\\chill_Other_s7025.wav",
+   "seconds": 157.9,
+   "starts_at": "26:31"
+  },
+  {
+   "name": "chill_Chopin_s4004",
+   "label": "Chopin",
+   "source": "runs/salon_r1/B_nr24/puzzle\\chill_Chopin_s4004.wav",
+   "seconds": 204.6,
+   "starts_at": "29:11"
+  },
+  {
+   "name": "chill_Other_s4002",
+   "label": "Other",
+   "source": "runs/salon_r1/B_nr24/puzzle\\chill_Other_s4002.wav",
+   "seconds": 166.4,
+   "starts_at": "32:38"
+  },
+  {
+   "name": "chill_Chopin_s6002",
+   "label": "Chopin",
+   "source": "runs/salon_r1/B_r1c/puzzle\\chill_Chopin_s6002.wav",
+   "seconds": 204.1,
+   "starts_at": "35:27"
+  },
+  {
+   "name": "chill_Other_s7028",
+   "label": "Other",
+   "source": "runs/salon_r1/B_r1c/puzzle\\chill_Other_s7028.wav",
+   "seconds": 187.4,
+   "starts_at": "38:54"
+  },
+  {
+   "name": "chill_Chopin_s6007",
+   "label": "Chopin",
+   "source": "runs/salon_r1/B_r1c/puzzle\\chill_Chopin_s6007.wav",
+   "seconds": 203.6,
+   "starts_at": "42:04"
+  },
+  {
+   "name": "chill_Other_s7001",
+   "label": "Other",
+   "source": "runs/salon_r1/B_r1c/puzzle\\chill_Other_s7001.wav",
+   "seconds": 198.6,
+   "starts_at": "45:30"
+  },
+  {
+   "name": "chill_Chopin_s6022",
+   "label": "Chopin",
+   "source": "runs/salon_r1/B_r1c/puzzle\\chill_Chopin_s6022.wav",
+   "seconds": 192.4,
+   "starts_at": "48:51"
+  },
+  {
+   "name": "chill_Other_s7022",
+   "label": "Other",
+   "source": "runs/salon_r1/B_r1c/puzzle\\chill_Other_s7022.wav",
+   "seconds": 206.1,
+   "starts_at": "52:06"
+  },
+  {
+   "name": "chill_Chopin_s6021",
+   "label": "Chopin",
+   "source": "runs/salon_r1/B_r1c/puzzle\\chill_Chopin_s6021.wav",
+   "seconds": 173.5,
+   "starts_at": "55:34"
+  },
+  {
+   "name": "chill_Other_s7016",
+   "label": "Other",
+   "source": "runs/salon_r1/B_r1c/puzzle\\chill_Other_s7016.wav",
+   "seconds": 211.6,
+   "starts_at": "58:30"
+  }
+ ]
+}
