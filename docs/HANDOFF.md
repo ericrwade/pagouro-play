@@ -8,7 +8,8 @@ of `docs/BUILD_LOG.md` (the story, with every measurement and every mistake).
 Pagouro Jigsaw: a free jigsaw of the 30 lettering-free Pagouro BE showcase pictures, with the Pagouro Salon piano loop.
 Sponsored by Pagouro (S-4 in `PAGOURO_SALON/docs/DECISIONS.md`): no ads, no tracking, no account, no paid unlock.
 Godot 4.7.2 (GL Compatibility). Windows build plays from `PLAY-JIGSAW.bat`; Android test build 0.1.0 exists
-(`build/pagouro-jigsaw.apk`, debug-signed, not in any store). Not yet played by Eric on a phone.
+(`build/pagouro-jigsaw.apk`, debug-signed, not in any store; also attached to the private prerelease
+`android-test-0.1.0` on GitHub, SHA-256 `e2a0140b…dd398`, verified by download). Not yet played by Eric on a phone.
 
 Repository: local `C:\Users\Eric Wade\PAGOURO_PLAY`; GitHub `ericrwade/pagouro-play`, created PRIVATE on 2026-10-04 as a
 backup (making it public, and any GitHub Pages site, is Eric's call).
