@@ -53,6 +53,7 @@ func build(tex: Texture2D, piece_count: int, seed_value: int) -> void:
 	dragging = null
 	is_solved = false
 	texture = tex
+	_edge_zoom = 0.0  # new outlines: size them on the next frame
 	var size := tex.get_size()
 	# a grid near the asked count with near-square cells
 	cols = max(2, int(round(sqrt(piece_count * size.x / size.y))))
@@ -68,6 +69,7 @@ func build(tex: Texture2D, piece_count: int, seed_value: int) -> void:
 			for p in PieceShape.piece_outline(cut, r, c):
 				poly.append(Vector2(p.x * cell.x, p.y * cell.y))
 			var piece := Polygon2D.new()
+			piece.antialiased = true  # smooth curved edges (2D MSAA is unavailable in GL Compatibility)
 			piece.texture = tex
 			piece.polygon = poly
 			piece.uv = poly
@@ -76,6 +78,7 @@ func build(tex: Texture2D, piece_count: int, seed_value: int) -> void:
 			var centre: Vector2 = (k[r][c] + k[r][c + 1] + k[r + 1][c] + k[r + 1][c + 1]) * 0.25
 			piece.set_meta("centre", Vector2(centre.x * cell.x, centre.y * cell.y))
 			var edge := Line2D.new()
+			edge.antialiased = true  # smooth curved edges (2D MSAA is unavailable in GL Compatibility)
 			edge.points = poly
 			edge.closed = true
 			edge.width = max(1.5, cell.x * 0.012)
@@ -174,6 +177,7 @@ func _draw_board() -> void:
 		child.queue_free()
 	var size := texture.get_size()
 	var frame := Polygon2D.new()
+	frame.antialiased = true  # smooth curved edges (2D MSAA is unavailable in GL Compatibility)
 	frame.polygon = PackedVector2Array([Vector2.ZERO, Vector2(size.x, 0), size, Vector2(0, size.y)])
 	# the board is a shade off the table, darker on a light table and lighter on a dark one
 	frame.color = table_color.darkened(0.07) if table_color.get_luminance() > 0.45 else table_color.lightened(0.10)
@@ -203,6 +207,23 @@ func set_ghost(on: bool) -> void:
 
 ## Height of the screen's top bar, set by main; the title's own lines on a phone make it taller.
 var top_bar := 64.0
+var _edge_zoom := 0.0  # the zoom the piece outlines were last sized for
+
+
+## Piece outlines stay at least about one screen pixel wide at every zoom. Polygon2D's own antialiasing does nothing in
+## GL Compatibility (tested 2026-10-04), so the antialiased outline is what smooths a piece's curved edge; thinner than a
+## pixel, it breaks up and the edge looks grainy (Eric, on the PC).
+func _process(_delta: float) -> void:
+	var z: float = camera.zoom.x
+	if is_equal_approx(z, _edge_zoom):
+		return
+	_edge_zoom = z
+	var w: float = max(cell.x * 0.012, 1.8 / z)
+	for cluster in clusters:
+		for piece in cluster.get_children():
+			for edge in piece.get_children():
+				if edge is Line2D:
+					edge.width = w
 
 
 func _fit_camera() -> void:

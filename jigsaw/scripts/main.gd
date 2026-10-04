@@ -141,7 +141,10 @@ func _start(seed_value: int) -> void:
 	finish_panel.visible = false
 	tray_panel.visible = puzzle.tray_mode
 	_select_count(current_count)
-	var tex: Texture2D = load(current.file)
+	# smooth when shrunk: give the picture mipmaps here (in memory, so the app download stays the same size)
+	var img: Image = (load(current.file) as Texture2D).get_image()
+	img.generate_mipmaps()
+	var tex := ImageTexture.create_from_image(img)
 	puzzle.build(tex, current_count, seed_value)
 	_update_title()
 	_save_progress()
@@ -477,7 +480,9 @@ func _build_about(root: Control) -> void:
 	text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	text.add_theme_font_size_override("font_size", 16)
 	var lines := [
-		"Free, thanks to Pagouro (pagouro.com). No third-party ads, no tracking, no account.",
+		"Free, thanks to Pagouro (pagouro.com). No ads, no tracking, no account.",
+		"",
+		"Find Pagouro: pagouro.com; X @pagouro; Reddit r/pagouro; GitHub ericrwade/pagouro and ericrwade/pagouro-be; Hugging Face, under Pagouro.",
 		"",
 		"Pictures: drawn by Pagouro BE, a free image model. CC0 1.0.",
 		"Music: composed by Pagouro Salon, a free music model; piano sound Upright Piano KW by FreePats (CC0); rendered with FluidSynth. CC0 1.0.",

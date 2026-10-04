@@ -6,7 +6,7 @@ of `docs/BUILD_LOG.md` (the story, with every measurement and every mistake).
 ## What it is
 
 Pagouro Jigsaw: a free jigsaw of the 30 lettering-free Pagouro BE showcase pictures, with the Pagouro Salon piano loop.
-Sponsored by Pagouro (S-4 in `PAGOURO_SALON/docs/DECISIONS.md`): no third-party ads, no tracking, no account, no paid unlock.
+Sponsored by Pagouro (S-4 in `PAGOURO_SALON/docs/DECISIONS.md`): no ads, no tracking, no account, no paid unlock.
 Godot 4.7.2 (GL Compatibility). Windows build plays from `PLAY-JIGSAW.bat`; Android test build 0.1.0 exists
 (`build/pagouro-jigsaw.apk`, debug-signed, not in any store; also attached to the private prerelease
 `android-test-0.1.0` on GitHub, SHA-256 `e2a0140b…dd398`, verified by download). Not yet played by Eric on a phone.
@@ -24,7 +24,7 @@ backup (making it public, and any GitHub Pages site, is Eric's call).
 | `jigsaw/scripts/tray.gd` | the two-row phone tray |
 | `jigsaw/scripts/help_card.gd` | the Help card (6 s countdown, then Done) |
 | `jigsaw/scripts/belle_style.gd` | the house look: D-74 palette values only, fonts, frame with corner scrolls |
-| `jigsaw/content/panels.json` | 152 Help panels, each with `source` for its facts; `intro-01` is pinned first |
+| `jigsaw/content/panels.json` | 144 Help panels, each with `source` for its facts; `intro-01` is pinned first |
 | `jigsaw/music/salon-loop-v1.*` | the loop, its tracklist, and the per-piece start times used for the random start |
 | `jigsaw/art/be/` | 30 pictures (JPEG, imported lossy 0.9) + `pictures.json` (prompts, seeds) |
 | `jigsaw/art/icon/` | crab icons (cropped from `PAGOURO_BUILD/brand/pagouro_mark_1024.png`) |

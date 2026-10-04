@@ -536,7 +536,7 @@
   "id": "jigsaw-06",
   "topic": "jigsaw",
   "title": "Free, Simply",
-  "text": "Pagouro Jigsaw is free. No third-party ads, no tracking, no account, no paid unlock. Just a quiet note that Pagouro made it.",
+  "text": "Pagouro Jigsaw is free. No ads, no tracking, no account, no paid unlock. Just a quiet note that Pagouro made it.",
   "source": "PAGOURO_PLAY/README.md; PAGOURO_SALON/docs/DECISIONS.md S-4"
  },
  {
@@ -977,8 +977,8 @@
   "id": "freedom-12",
   "topic": "freedom",
   "title": "Free as in Free",
-  "text": "No third-party ads, no tracking, no account. Some things can simply be free.",
-  "source": "none: opinion; PAGOURO_PLAY/README.md (no third-party ads, no tracking, no account)"
+  "text": "No ads, no tracking, no account. Some things can simply be free.",
+  "source": "none: opinion; PAGOURO_PLAY/README.md (no ads, no tracking, no account)"
  },
  {
   "id": "freedom-13",
@@ -1007,61 +1007,5 @@
   "title": "Open Makes It Better",
   "text": "An AI built in the open can be checked, fixed and improved by anyone. That's how good tools get made.",
   "source": "none: opinion"
- },
- {
-  "id": "follow-01",
-  "topic": "follow",
-  "title": "Follow Us",
-  "text": "Follow us on X @pagouro.",
-  "source": "PAGOURO_BUILD/docs/HANDOFF_2026-10-01.md (Accounts: X @pagouro)"
- },
- {
-  "id": "follow-02",
-  "topic": "follow",
-  "title": "A Picture a Day",
-  "text": "180 Pagouro BE pictures were made for a six-month daily showcase on X. Follow @pagouro.",
-  "source": "PAGOURO_BE/showcase/x180/README.md; PAGOURO_BUILD/docs/HANDOFF_2026-10-01.md (X @pagouro)"
- },
- {
-  "id": "follow-03",
-  "topic": "follow",
-  "title": "Join r/pagouro",
-  "text": "Questions, pictures, finished puzzles? Join us on Reddit at r/pagouro.",
-  "source": "PAGOURO_BUILD/docs/HANDOFF_2026-10-01.md (Accounts: Reddit u/pagouro + r/pagouro)"
- },
- {
-  "id": "follow-04",
-  "topic": "follow",
-  "title": "Visit pagouro.com",
-  "text": "The whole Pagouro family, with its story and its downloads, is at pagouro.com.",
-  "source": "PAGOURO_BUILD/docs/HANDOFF_2026-10-01.md (Front page https://pagouro.com, sections for both models)"
- },
- {
-  "id": "follow-05",
-  "topic": "follow",
-  "title": "Sponsor Pagouro",
-  "text": "Pagouro is free. If it made your day a little better, you can sponsor it on GitHub at ericrwade.",
-  "source": "PAGOURO_BUILD/docs/HANDOFF_2026-10-01.md (GitHub Sponsors ericrwade); PAGOURO_BUILD/README.md (sponsors link)"
- },
- {
-  "id": "follow-06",
-  "topic": "follow",
-  "title": "Read the Source",
-  "text": "Everything is on GitHub: github.com/ericrwade/pagouro and github.com/ericrwade/pagouro-be.",
-  "source": "PAGOURO_BUILD/docs/HANDOFF_2026-10-01.md (Repository rows)"
- },
- {
-  "id": "follow-07",
-  "topic": "follow",
-  "title": "Weights to Keep",
-  "text": "The models are on Hugging Face under Pagouro. Download them, keep them, share them.",
-  "source": "PAGOURO_BUILD/docs/HANDOFF_2026-10-01.md (Weights: huggingface.co/Pagouro/pagouro-1.0, pagouro-be-1.0); PAGOURO_BUILD/docs/facts.json (licences)"
- },
- {
-  "id": "follow-08",
-  "topic": "follow",
-  "title": "Enjoying the Puzzle?",
-  "text": "Enjoying the puzzle? Follow us on X @pagouro.",
-  "source": "PAGOURO_BUILD/docs/HANDOFF_2026-10-01.md (Accounts: X @pagouro)"
  }
 ]
