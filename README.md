@@ -27,7 +27,8 @@ Pagouro Salon piano loop playing softly underneath. Runs on Windows and Android 
 - **Phones**: a 480-wide layout on tall screens, a Menu for the settings, About with every credit and license, and the
   Android Back button closes cards and menus before leaving.
 
-Built with Godot 4.7.2, the engine Summer Engine is built on, so the project can move into Summer later. It runs as a
+With thanks to [Summer Engine](https://summerengine.com), the AI game engine that got us making games. Built with Godot
+4.7.2, the open-source engine Summer is built on, so the project can move into Summer later. It runs as a
 separate program and never touches the Summer Engine editor or its settings.
 
 ```

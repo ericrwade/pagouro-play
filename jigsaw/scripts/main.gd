@@ -535,6 +535,7 @@ func _build_about(root: Control) -> void:
 		"Lettering: Cormorant Garamond and EB Garamond, SIL Open Font License 1.1.",
 		"Game code: Apache License 2.0.",
 		"Made with the Godot Engine (godotengine.org).",
+		"With thanks to Summer Engine (summerengine.com), the AI game engine that got us making games. This jigsaw is built on Godot, the open-source engine Summer is built on.",
 		"",
 		"GODOT ENGINE LICENSE",
 		_reflow(Engine.get_license_text()),
