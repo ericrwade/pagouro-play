@@ -67,7 +67,7 @@ var _restoring := false
 func _ready() -> void:
 	get_tree().quit_on_go_back = false  # Back closes menus and cards first (see _notification)
 	_apply_scale()
-	if "--selftest" in OS.get_cmdline_user_args():
+	if "--selftest" in OS.get_cmdline_user_args() or "--shots" in OS.get_cmdline_user_args():
 		progress_path = "user://selftest_progress.json"  # never touch the player's own saved puzzle
 	pictures = JSON.parse_string(FileAccess.get_file_as_string(PICTURES))
 	if FileAccess.file_exists(PANELS):
@@ -127,6 +127,8 @@ func _ready() -> void:
 	create_tween().tween_property(music, "volume_db", -14.0, 2.5)
 	if "--selftest" in OS.get_cmdline_user_args():
 		_selftest.call_deferred()
+	elif "--shots" in OS.get_cmdline_user_args():
+		_shots.call_deferred()
 	elif not _restore_progress():
 		start_daily()
 
@@ -772,6 +774,69 @@ func _touch(index: int, at: Vector2, down: bool) -> void:
 	e.position = get_tree().root.get_final_transform() * at  # layout units to window pixels, as a real finger arrives
 	e.pressed = down
 	Input.parse_input_event(e)
+
+
+## Store screenshots (`-- --shots`, run silently and off-screen like the self-test): staged phone screens saved as
+## user://shot_N.png. Uses its own progress file and never saves settings.
+func _shots() -> void:
+	var by_file := func(part: String) -> Dictionary:
+		for p in pictures:
+			if String(p.file).contains(part):
+				return p
+		return pictures[0]
+	tray_button.set_pressed_no_signal(true)
+	_set_tray(true, false)
+	table_button.select(0)
+	_set_table(0, false)
+	var shoot := func(n: int) -> void:
+		await get_tree().create_timer(0.6).timeout
+		await RenderingServer.frame_post_draw
+		get_viewport().get_texture().get_image().save_png("user://shot_%d.png" % n)
+	# 1: a fresh puzzle, pieces waiting in the tray
+	current = by_file.call("black-cat")
+	current_count = 49
+	is_daily = false
+	_start(1101)
+	await shoot.call(1)
+	# 2: halfway, on a darker table
+	current = by_file.call("irises")
+	current_count = 49
+	table_button.select(6)
+	_set_table(6, false)
+	_start(1102)
+	var all := puzzle.clusters.duplicate()
+	for k in range(all.size() * 3 / 5):
+		var c: Node2D = all[k]
+		if is_instance_valid(c) and puzzle.clusters.has(c):
+			puzzle.tray.erase(c)
+			c.visible = true
+			c.position = Vector2.ZERO
+			puzzle._settle(c)
+	puzzle.tray_changed.emit()
+	await shoot.call(2)
+	# 3: Help, the informative card in place of an ad
+	help_card.show_panel(panels[3])
+	await shoot.call(3)
+	help_card._end(false)
+	# 4: finished
+	current = by_file.call("eiffel")
+	table_button.select(0)
+	_set_table(0, false)
+	_start(1104)
+	puzzle.solve_all_for_test()
+	await get_tree().create_timer(1.8).timeout
+	finish_label.text = "Finished in 21:37"
+	await shoot.call(4)
+	# 5: the menu
+	current = by_file.call("balloon")
+	table_button.select(3)
+	_set_table(3, false)
+	_start(1105)
+	_open_menu()
+	await shoot.call(5)
+	_close_menu()
+	print("SHOTS written to ", ProjectSettings.globalize_path("user://"))
+	get_tree().quit()
 
 func _selftest() -> void:
 	var report := []

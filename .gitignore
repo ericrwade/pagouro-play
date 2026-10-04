@@ -2,3 +2,4 @@ tools/
 jigsaw/.godot/
 build/
 *.import.tmp
+jigsaw/android/

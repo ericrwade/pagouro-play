@@ -77,7 +77,9 @@ Bump BOTH `application/config/version` in `jigsaw/project.godot` (shown in About
 1. **Played on Eric's Pixel 11 Pro XL**, 0.2.3 installed (2026-10-04). Install over USB with
    `tools/android-sdk/platform-tools/adb.exe install -r build/pagouro-jigsaw.apk`; check the foreground app before
    ever sending adb input. Tag `v0.2.3` marks this build.
-2. Store path (needs Eric's word and money): Google Play developer account ($25 once); new personal accounts must run a
+2. **Google Play kit is ready in `store/PLAY_STORE.md`** (bundle: `python tools_src/build_aab.py`). Remaining is Eric's:
+   the developer account, a public contact email, publishing `store/jigsaw-privacy.html` to pagouro.com, testers.
+   Background, as first written: Store path (needs Eric's word and money): Google Play developer account ($25 once); new personal accounts must run a
    closed test with at least 12 testers for 14 days before production (as of my training data — check at sign-up).
    A RELEASE keystore must be made for the store build and kept OUTSIDE every repo, like the minisign key; losing it
    means never updating the app. The data-safety form is "collects nothing"; privacy policy goes on pagouro.com.

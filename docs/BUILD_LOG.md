@@ -230,3 +230,18 @@ APK replaced on the private prerelease `android-test-0.1.0`.
 
 Mistake to remember: an adb test swipe went to the phone while Eric had Telegram open and landed on his keyboard. Never
 send adb input without checking the foreground app first.
+
+## 2026-10-04 (afternoon) — 0.2.4: ready for Google Play
+
+- Summer Engine thanked in About and the README (Eric: a fair rep, not overdone).
+- Release (upload) key made outside every repo: `%USERPROFILE%\.ssh\pagouro-jigsaw-release.keystore`, password in the
+  `.password.txt` beside it (generated, never printed). Cert SHA-256 89:05:8D:…:68:BB:22. Eric to back both up offline.
+- Play bundle: second preset "Android Play" (Gradle build, AAB), built by `tools_src/build_aab.py` (keys through env vars
+  only; Gradle cache in `tools/gradle-home`; build template in the ignored `jigsaw/android/`). First run 12 min of
+  downloads; later runs 34 s. A Gradle daemon left running held Godot's output open, so the script turns the daemon off.
+- Verified the release build itself: bundletool 1.18.3 made device APKs; with Eric's go-ahead the USB test build was
+  removed and the release installed on his Pixel; it runs (49 masks in 823 ms, no errors).
+- Store kit in `store/`: PLAY_STORE.md (listing text, form answers, release path), jigsaw-privacy.html (for pagouro.com,
+  not published), feature_graphic.png, screenshots/phone_1..5.png (from the new `-- --shots` mode).
+- Pagouro Salon backed up: private repo ericrwade/pagouro-salon (code and docs) plus a private release holding the B2L
+  model and loop v2 (checksums verified by download).
