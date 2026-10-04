@@ -150,3 +150,47 @@ had varied tabs but ruler-straight edges and square corners. Now: corners wander
 edges carry a faint S-wave (0.006-0.016), and tabs vary a bit more in place (0.42-0.58), lean (+-0.035) and shape
 (round to slightly oval, 0.86-1.14). Measured: worst largest/smallest 1.10 (was 1.06); necks still at least half
 their heads; same tab mix.
+
+## 2026-10-04 (overnight) — ready for a phone
+
+Eric, going to sleep: "Yes, I have a droid so go ahead and build it ... If I 'wake up with my game ready' then we can
+brag in the morning, right?" Done unattended; nothing below needed him.
+
+**Phone layout.** On a tall screen the game lays itself out 480 units wide instead of 1280, so everything is about two
+and a half times larger on a phone. The top bar keeps the title, progress, Help and a new Menu; the menu holds Daily,
+New picture and the piece count (on a phone) plus cut, tray, table color, hint, music and About. On a computer the bar
+keeps Daily, New picture and the count, and the full puzzle title now fits. Help and finish cards size to the screen.
+
+**Zoom and pan.** Pinch with two fingers (a carried piece is put down first), the mouse wheel or a trackpad pinch on a
+computer; drag the empty table to pan. Never further out than the whole table, never past four times in; at the
+whole-table zoom the view cannot drift.
+
+**Saved as you go.** After every move and whenever the app is put away, the puzzle is written to
+`user://progress.json`: picture, count, seed, cut, and each cluster's pieces, position, lock and tray place. On launch
+an unfinished puzzle comes back (rebuilt from its seed, then put back); finishing deletes it. Self-test: a half-done
+puzzle rebuilt and restored has an identical layout. The self-test writes its own progress file, never the player's.
+
+**Android Back** closes About, the menu or the Help card first, and only then saves and leaves.
+
+**About and credits** (in the menu): Pagouro, pictures, music, piano sound, fonts and code licenses, then Godot's MIT
+license, its third-party components and their license texts from the engine itself (reflowed to wrap on a phone).
+Added the Apache 2.0 `LICENSE` file the README promised.
+
+**Android build.** Toolchain fetched into `tools/` and checked: Godot 4.7.2 export templates (SHA-512 from the official
+list; my first check reported a mismatch because the list has two template lines, the hashes were identical), Temurin
+JDK 17.0.20.1 (SHA-256 from Adoptium), Android command-line tools (SHA-1 from Google's index), build-tools 36.1.0 and
+platform 36. Google's `sdkmanager` now announces it is deprecated and silently installed nothing; the new `android`
+tool did it. Android's batch tools break on the space in the user folder, so their paths go in as 8.3 short names.
+Exports run from a self-contained Godot copy so nothing touches `%APPDATA%\Godot`, which Summer Engine shares.
+
+First APK: 109.5 MB. Two causes: a 32-bit engine copy (29 MB; dropped, every current phone and Play require 64-bit)
+and the pictures imported lossless (29 MB; now lossy at 0.9, no visible difference in the finished-picture screenshot).
+Result: **57.5 MB**, package `com.pagouro.jigsaw`, version 0.1.0, min Android 7.0, target Android 16, arm64, **no
+permissions**, launcher icon the hermit crab from the Pagouro mark (cropped above the lettering). The crab also
+replaces Godot's logo on the boot screen.
+
+**Found by looking at screenshots, fixed:** the finish card ballooned off the top of the screen (a word-wrapping label
+with no width yet measures absurdly tall; it now has a width from the start and is measured a frame later); and a
+duplicated block of declarations when I applied a patch script twice (Godot refused to parse; removed).
+
+Not tested: a real phone. An emulator needs a hypervisor driver, and installs of that kind wait for Eric.
