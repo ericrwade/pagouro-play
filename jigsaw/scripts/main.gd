@@ -361,6 +361,14 @@ func _on_solved(seconds: float) -> void:
 
 func _selftest() -> void:
 	var report := []
+	for style in [PieceShape.Style.WHIMSICAL, PieceShape.Style.CLASSIC]:
+		var worst := [0.0, 0.0]
+		var off := 0
+		for sd in range(20):
+			var ar := PieceShape.area_report(7, 7, 1000 + sd, style)
+			worst = [max(worst[0], ar[0]), max(worst[1], ar[1])]
+			off += ar[2]
+		report.append("%s areas, worst of 20 cuts at 49 pieces: inside largest/smallest %.2f, all %.2f, inside pieces not two-and-two %d of 500" % ["whimsical" if style == PieceShape.Style.WHIMSICAL else "classic", worst[0], worst[1], off])
 	for n in [12, 48]:
 		current = pictures[today_index()]
 		current_count = n

@@ -87,3 +87,22 @@ sits beneath loose pieces and glints once as it settles. Self-test: a placed pie
 I had. The self-test runs the real game in a real window, solves it programmatically and shows the finish card, so each
 run popped up on his desktop (with a burst of music). Not a timing bug: his own rounds measured correctly. The self-test
 now runs silent and off-screen (`--audio-driver Dummy --position -4000,-4000`), which still renders the screenshots.
+
+**Whimsical cut reined in (Eric: "Some pieces are 1.5x the landmass of others ... You're not doing this all by
+freehand, are you?").** I was: the corner wander and tab sizes were picked by eye and never measured. Now measured in
+the self-test (`PieceShape.area_report`: worst largest-to-smallest piece area over 20 cuts of 49 pieces):
+
+| step | whimsical, inside pieces | classic, inside pieces |
+|---|---|---|
+| as first built (coin-toss tabs, corners wander 0.13 cell) | 1.98 | 1.47 |
+| tab directions balanced (greedy, then repair) | 1.37 | 1.23 |
+| balanced exactly: Euler circuit, every inside piece two tabs and two blanks | 1.33 | 1.06 |
+| every tab scaled to the same area (+-8 %) whatever its shape | 1.37 | 1.02 |
+| S-waves only (area-neutral), corners wander 0.035 | **1.17** | **1.02** |
+
+What it took: (1) real puzzles mostly give a piece two tabs and two blanks, and coin tosses don't; walking an Euler
+circuit over the pieces and giving each edge's tab to the piece the walk leaves balances every inside piece exactly while
+staying random. (2) A fat bulb holds several times a spike's picture, so each tab is scaled to one area. (3) A
+one-hump wave bows a whole edge out; an S-wave goes out as much as in. Draradech's open-source generator (the common
+reference) keeps the grid straight and jitters only the tab shapes, by 4 %; ours still lets corners wander a little,
+since that is most of the whimsical look.
