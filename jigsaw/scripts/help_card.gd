@@ -2,7 +2,8 @@ class_name HelpCard
 extends Control
 ## The Help card (Eric, 2026-10-04). Paid jigsaws make you watch an ad for a hint; here the "ad" is a few seconds of one
 ## short panel about the project: where the pictures and music came from, Pagouro, the Belle Époque and its posters.
-## A gold rule runs down while it shows; when it ends the hint is given. "Not now" closes it with no hint.
+## A gold rule runs down while it shows; when it ends a Done button appears, and the hint comes when the player presses
+## it, so anyone reading can stay as long as they like (Eric, 2026-10-04). "Not now" closes it early with no hint.
 
 signal finished(give_hint: bool)
 
@@ -16,6 +17,8 @@ var _bar: ColorRect
 var _bar_full := 0.0
 var _left := 0.0
 var _running := false
+var _skip: Button
+var _done: Button
 
 
 func _ready() -> void:
@@ -75,10 +78,15 @@ func _ready() -> void:
 	_count.add_theme_font_size_override("font_size", 16)
 	_count.add_theme_color_override("font_color", BelleStyle.INK_SOFT)
 	row.add_child(_count)
-	var close := Button.new()
-	close.text = "Not now"
-	close.pressed.connect(func(): _end(false))
-	row.add_child(close)
+	_skip = Button.new()
+	_skip.text = "Not now"
+	_skip.pressed.connect(func(): _end(false))
+	row.add_child(_skip)
+	_done = Button.new()
+	_done.text = "Done"
+	_done.visible = false
+	_done.pressed.connect(func(): _end(true))
+	row.add_child(_done)
 
 
 func show_panel(panel: Dictionary) -> void:
@@ -86,6 +94,8 @@ func show_panel(panel: Dictionary) -> void:
 	_text.text = String(panel.get("text", ""))
 	_left = SECONDS
 	_running = true
+	_skip.visible = true
+	_done.visible = false
 	visible = true
 	_card.modulate.a = 0.0
 	create_tween().tween_property(_card, "modulate:a", 1.0, 0.25)
@@ -96,9 +106,13 @@ func _process(delta: float) -> void:
 		return
 	_left -= delta
 	_bar.size.x = _bar_full * clamp(_left / SECONDS, 0.0, 1.0)
-	_count.text = "Your hint in %d…" % int(ceil(max(_left, 0.0)))
-	if _left <= 0.0:
-		_end(true)
+	if _left > 0.0:
+		_count.text = "Your hint in %d…" % int(ceil(_left))
+	elif not _done.visible:
+		_count.text = "Your hint is ready."
+		_skip.visible = false
+		_done.visible = true
+		_done.grab_focus()
 
 
 func _end(give_hint: bool) -> void:

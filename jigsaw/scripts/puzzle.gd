@@ -369,7 +369,7 @@ func hint() -> bool:
 	var best: Node2D = null
 	var best_score := -1
 	for c in clusters:
-		if c.position == Vector2.ZERO and c.visible:
+		if (c.position == Vector2.ZERO and c.visible) or c.has_meta("hinting"):
 			continue
 		var score := 0
 		if c.get_child_count() == 1:
@@ -394,11 +394,21 @@ func hint() -> bool:
 		var view := get_viewport_rect().size
 		best.position += screen_to_world(Vector2(view.x * 0.5, view.y - tray_height * 0.5)) - _cluster_centre(best)
 		best.visible = true
+	best.set_meta("hinting", true)
 	pieces_root.move_child(best, pieces_root.get_child_count() - 1)
 	var t := create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	t.tween_property(best, "position", Vector2.ZERO, 0.9)
-	t.tween_callback(func(): if is_instance_valid(best) and clusters.has(best): _settle(best))
+	t.tween_callback(func():
+		if is_instance_valid(best) and clusters.has(best):
+			best.remove_meta("hinting")
+			_settle(best))
 	return true
+
+
+## How many pieces one Help places: about one per 24 pieces (12 and 24 get 1, 48 gets 2, 96 gets 4, 150 gets 6), so
+## help is worth about the same share of any puzzle (Eric, 2026-10-04).
+func hint_count() -> int:
+	return max(1, int(round(piece_total() / 24.0)))
 
 
 ## Test helper: move every cluster home and settle, one by one (used by the self-test, never by the player).

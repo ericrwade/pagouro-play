@@ -132,3 +132,15 @@ holds the start of each of the loop's 20 pieces, computed from the Salon trackli
 all 20 agree with the tracklist's rounded times, and the computed 62.08 minutes matches the file's length to 0.3 s).
 At launch the game picks one, starts a second before it inside the pause, and fades in over 2.5 s. Three launches
 started at 951.8, 2126.5 and 3333.7 s, each exactly one second before a piece.
+
+**Help waits for the reader; hints scale with the puzzle (Eric, same day).** The 6-second countdown now ends in a Done
+button instead of closing the card, so someone reading can stay as long as they like; the hint comes on Done. "Not
+now" is there during the countdown (no hint). One Help places about one piece per 24 (12 and 24 pieces: 1; 48: 2; 96:
+4; 150: 6), a quarter second apart; pieces already gliding home are not picked twice. Self-test: Done hidden during the
+countdown, shown after it with the card still open; one Help on the 49-piece puzzle took 26 clusters to 24. Found by
+looking at the screenshot: a focused button drew its label in the engine's pale default, so "Done" was nearly
+invisible; the theme now gives focused buttons the house green.
+
+Design note, not built: "shells" earned for solving need no login or cookie for one player on one device; they would
+sit in `user://` beside the settings (phone app storage until uninstall; browser storage on the web). Accounts and a
+server only come in for shells that follow a player across devices, leaderboards, or shells worth cheating for.

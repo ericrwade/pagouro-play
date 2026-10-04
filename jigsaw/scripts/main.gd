@@ -234,7 +234,7 @@ func _build_ui() -> void:
 	root.add_child(tray_panel)
 	help_card = HelpCard.new()
 	root.add_child(help_card)
-	help_card.finished.connect(func(give): if give: puzzle.hint())
+	help_card.finished.connect(_give_hints)
 	finish_panel = PanelContainer.new()
 	finish_panel.set_anchors_preset(Control.PRESET_CENTER)
 	finish_panel.visible = false
@@ -330,6 +330,16 @@ func next_panel() -> Dictionary:
 		var t = order[i]; order[i] = order[j]; order[j] = t
 	_save("help_next", (n + 1) % rest.size())
 	return rest[order[n % rest.size()]]
+
+
+## The hint: several pieces on bigger puzzles, a quarter second apart so each can be seen landing.
+func _give_hints(give: bool) -> void:
+	if not give:
+		return
+	for i in range(puzzle.hint_count()):
+		if not puzzle.hint():
+			break
+		await get_tree().create_timer(0.25).timeout
 
 
 func _on_help() -> void:
@@ -442,10 +452,17 @@ func _selftest() -> void:
 	await get_tree().create_timer(0.4).timeout
 	await RenderingServer.frame_post_draw
 	get_viewport().get_texture().get_image().save_png("user://selftest_help.png")
+	var done_early: bool = help_card._done.visible
+	await get_tree().create_timer(HelpCard.SECONDS + 0.5).timeout
+	await RenderingServer.frame_post_draw
+	get_viewport().get_texture().get_image().save_png("user://selftest_help_done.png")
+	report.append("help card: Done shown during countdown=%s, after=%s, card still open=%s" % [str(done_early), str(help_card._done.visible), str(help_card.visible)])
 	help_card._end(false)
 	var before_hint := puzzle.clusters.size()
-	var hinted := puzzle.hint()
-	await get_tree().create_timer(1.2).timeout
+	var hinted := true
+	_give_hints(true)
+	await get_tree().create_timer(2.0).timeout
+	report.append("hints per Help at 49 pieces: %d" % puzzle.hint_count())
 	report.append("hint given=%s clusters %d -> %d" % [str(hinted), before_hint, puzzle.clusters.size()])
 	report.append("%d help panels" % panels.size())
 	puzzle.solve_all_for_test()

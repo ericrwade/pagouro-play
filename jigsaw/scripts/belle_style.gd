@@ -48,6 +48,10 @@ static func theme() -> Theme:
 	t.set_color("font_hover_color", "Button", GREEN)
 	t.set_color("font_pressed_color", "Button", GREEN)
 	t.set_color("font_hover_color", "OptionButton", GREEN)
+	# a focused button (e.g. Done, which takes focus when it appears) keeps readable ink, not the engine's pale default
+	for cls in ["Button", "OptionButton"]:
+		t.set_color("font_focus_color", cls, GREEN)
+		t.set_color("font_hover_pressed_color", cls, GREEN)
 	var normal := box(PAPER, Color(INK, 0.55), 1, 3, Vector4(12, 4, 12, 5))
 	var hover := box(PAPER.lightened(0.25), GOLD, 1, 3, Vector4(12, 4, 12, 5))
 	var pressed := box(PAPER_DEEP, GREEN, 1, 3, Vector4(12, 4, 12, 5))
