@@ -79,7 +79,7 @@ Bump BOTH `application/config/version` in `jigsaw/project.godot` (shown in About
    ever sending adb input. Tag `v0.2.3` marks this build.
 2. **Google Play kit is ready in `store/PLAY_STORE.md`** (bundle: `python tools_src/build_aab.py`). Remaining is Eric's:
    the developer account, a public contact email, publishing `store/jigsaw-privacy.html` to pagouro.com, testers.
-   Background, as first written: Store path (needs Eric's word and money): Google Play developer account ($25 once); new personal accounts must run a
+   Background, as first written: Store path (needs Eric's word and money): Google Play developer account ($25 once, plus $25 for the separate Android Developer Console registration, both paid 2026-10-04); new personal accounts must run a
    closed test with at least 12 testers for 14 days before production (as of my training data — check at sign-up).
    A RELEASE keystore must be made for the store build and kept OUTSIDE every repo, like the minisign key; losing it
    means never updating the app. The data-safety form is "collects nothing"; privacy policy goes on pagouro.com.
