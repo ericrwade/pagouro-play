@@ -82,3 +82,8 @@ is").** Decision: anything that reaches its true place on the board locks and ca
 free-floating, so chunks can still be built on the side and carried in. Unlike the commercial game, an inside piece
 dropped exactly on its spot locks too, without the border being done first: a right placement is right. Locked work
 sits beneath loose pieces and glints once as it settles. Self-test: a placed piece cannot be picked up, a loose one can.
+
+**A "Finished in 0:01" that was the self-test.** Eric saw a finish card reading 0:01 and thought I had done the puzzle;
+I had. The self-test runs the real game in a real window, solves it programmatically and shows the finish card, so each
+run popped up on his desktop (with a burst of music). Not a timing bug: his own rounds measured correctly. The self-test
+now runs silent and off-screen (`--audio-driver Dummy --position -4000,-4000`), which still renders the screenshots.
