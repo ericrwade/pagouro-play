@@ -1,0 +1,26 @@
+{
+ "about": "Start time in seconds of each piece in salon-loop-v1.ogg, computed from the loop's tracklist (piece seconds + 2.5 s gaps); the game starts the music at one of these, chosen at random.",
+ "loop_seconds": 3724.8,
+ "starts": [
+  0.0,
+  292.9,
+  356.9,
+  623.4,
+  693.5,
+  952.8,
+  1052.2,
+  1270.7,
+  1378.2,
+  1591.1,
+  1751.5,
+  1958.6,
+  2127.5,
+  2334.1,
+  2524.0,
+  2730.1,
+  2931.2,
+  3126.1,
+  3334.7,
+  3510.7
+ ]
+}

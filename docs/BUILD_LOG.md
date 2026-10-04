@@ -125,3 +125,10 @@ tab's neck is now at least half as wide as the head it carries (`NECK_TO_HEAD` 0
 the same 20 cuts per style: before, the narrowest neck was 0.058 of a cell and a quarter of its head's width
 (whimsical; 0.082 and 0.36 classic); now 0.105 and one half in both cuts. Areas and the tab mix are unchanged
 (1.19 / 1.06; same 0-4 tab counts).
+
+**Music starts at a random piece (Eric: "start the music at a random time code ... so we don't always start with the
+exact same few notes").** Not a random second, which would often land mid-phrase: `music/salon-loop-v1.starts.json`
+holds the start of each of the loop's 20 pieces, computed from the Salon tracklist (piece lengths plus 2.5 s pauses;
+all 20 agree with the tracklist's rounded times, and the computed 62.08 minutes matches the file's length to 0.3 s).
+At launch the game picks one, starts a second before it inside the pause, and fades in over 2.5 s. Three launches
+started at 951.8, 2126.5 and 3333.7 s, each exactly one second before a piece.

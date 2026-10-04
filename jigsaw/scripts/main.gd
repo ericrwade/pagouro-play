@@ -70,8 +70,17 @@ func _ready() -> void:
 	if stream is AudioStreamOggVorbis:
 		stream.loop = true
 	music.stream = stream
-	music.volume_db = -14.0
-	music.play()
+	# start at a random piece of the loop, not always the same opening notes (Eric, 2026-10-04): a second before the piece,
+	# inside the 2.5 s pause, with a short fade in
+	var start := 0.0
+	var starts_file := MUSIC.get_basename() + ".starts.json"
+	if FileAccess.file_exists(starts_file):
+		var info = JSON.parse_string(FileAccess.get_file_as_string(starts_file))
+		if info is Dictionary and info.get("starts", []).size() > 0:
+			start = max(0.0, float(info.starts.pick_random()) - 1.0)
+	music.volume_db = -40.0
+	music.play(start)
+	create_tween().tween_property(music, "volume_db", -14.0, 2.5)
 	if "--selftest" in OS.get_cmdline_user_args():
 		_selftest.call_deferred()
 	else:
@@ -361,6 +370,7 @@ func _on_solved(seconds: float) -> void:
 
 func _selftest() -> void:
 	var report := []
+	report.append("music at %.1f s of the loop" % music.get_playback_position())
 	for style in [PieceShape.Style.WHIMSICAL, PieceShape.Style.CLASSIC]:
 		var worst := [0.0, 0.0]
 		var mix := [0, 0, 0, 0, 0]
