@@ -109,16 +109,26 @@ func _gui_input(event: InputEvent) -> void:
 	elif event is InputEventMouseMotion and _pressed:
 		var d: Vector2 = event.position - _press
 		if _mode == "":
-			if _hit >= 0 and -d.y > LIFT and -d.y > abs(d.x):
-				_mode = "lift"
+			_mode = decide(d, _hit >= 0, _max_scroll() > 0.0)
+			if _mode == "lift":
 				puzzle.begin_drag_from_tray(puzzle.tray[_hit], event.global_position)
-			elif abs(d.x) > SLIDE:
-				_mode = "scroll"
 		if _mode == "scroll":
 			_scroll_by(-event.relative.x)
 		elif _mode == "lift":
 			puzzle.drag_to(event.global_position)
 		accept_event()
+
+
+## Lift or scroll, from how a touch on the tray has moved so far ("" = not yet decided). A piece lifts when the
+## finger heads upward at all steeply (within about 60 degrees of straight up), and in any direction when the tray
+## has nothing to scroll: Eric's last two pieces would not come out on a natural diagonal drag toward their holes,
+## because it read as a scroll of a tray that could not scroll (2026-10-04).
+static func decide(d: Vector2, on_piece: bool, can_scroll: bool) -> String:
+	if on_piece and d.length() > LIFT and (not can_scroll or -d.y > abs(d.x) * 0.55):
+		return "lift"
+	if can_scroll and abs(d.x) > SLIDE and abs(d.x) > abs(d.y):
+		return "scroll"
+	return ""
 
 
 func _scroll_by(dx: float) -> void:

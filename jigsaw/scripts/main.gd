@@ -763,6 +763,15 @@ func _layout_signature() -> Array:
 	return sig
 
 
+
+## Self-test helper: a finger touching or leaving the screen, as Android would send it.
+func _touch(index: int, at: Vector2, down: bool) -> void:
+	var e := InputEventScreenTouch.new()
+	e.index = index
+	e.position = get_tree().root.get_final_transform() * at  # layout units to window pixels, as a real finger arrives
+	e.pressed = down
+	Input.parse_input_event(e)
+
 func _selftest() -> void:
 	var report := []
 	report.append("music at %.1f s of the loop" % music.get_playback_position())
@@ -841,6 +850,25 @@ func _selftest() -> void:
 	var free: Node2D = loose[0]
 	var grab_loose = puzzle._cluster_at(free.position + free.get_child(0).get_meta("centre"))
 	report.append("locked clusters %d, placed piece grabbable=%s, loose piece grabbable=%s" % [locked.size(), str(grab_locked != null), str(grab_loose == free)])
+	# a pinch whose second finger lifts over the top bar must not leave a ghost finger behind, and one finger must
+	# then pick a piece up again (Eric, 2026-10-04: after zooming on the phone, the last pieces would not move)
+	var view_size := get_viewport().get_visible_rect().size
+	var table_pt := view_size * Vector2(0.5, 0.45)
+	_touch(0, table_pt, true)
+	_touch(1, table_pt + Vector2(80, 0), true)
+	await get_tree().process_frame
+	_touch(1, Vector2(view_size.x * 0.3, 20), false)  # lifted over the top bar
+	_touch(0, table_pt, false)
+	await get_tree().process_frame
+	var ghosts: int = puzzle._touches.size()
+	var piece_screen: Vector2 = puzzle.get_canvas_transform() * (free.transform * free.get_child(0).get_meta("centre"))
+	_touch(0, piece_screen, true)
+	await get_tree().process_frame
+	var picked: bool = puzzle.dragging != null
+	_touch(0, piece_screen, false)
+	await get_tree().process_frame
+	report.append("ghost fingers after a pinch lifted over the bar: %d, one finger then picks a piece up=%s" % [ghosts, str(picked)])
+	report.append("tray drag reads as: diagonal up-right, nothing to scroll -> %s; 45 degrees up -> %s; sideways -> %s; sideways, nothing to scroll -> %s" % [Tray.decide(Vector2(40, -22), true, false), Tray.decide(Vector2(20, -20), true, true), Tray.decide(Vector2(30, -6), true, true), Tray.decide(Vector2(30, -6), true, false)])
 	# save and restore: the half-done puzzle is rebuilt from its seed and put back exactly
 	var snap := puzzle.snapshot()
 	var sig_before := _layout_signature()
