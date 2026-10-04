@@ -5,8 +5,10 @@ extends Node
 
 const PICTURES := "res://art/be/pictures.json"
 const MUSIC := "res://music/salon-loop-v1.ogg"
-const COUNTS := [12, 24, 48, 96, 150]
-const DAILY_COUNT := 48
+## Pieces on offer, as the true counts the grid gives a square picture (Eric, 2026-10-04: "is that a true 150? because
+## it seems like 156"). Near-square pieces can't make every number: 150 would be 12 x 12.5.
+const COUNTS := [12, 25, 49, 100, 156]
+const DAILY_COUNT := 49
 ## Table colours to play on, so a picture never disappears into its background (Eric, 2026-10-03). Every one is a
 ## colour of the locked D-74 house palette (Belle Epoque poster), light to dark; the choice is kept between sessions.
 const TABLES := [
@@ -35,6 +37,8 @@ var hairline: ColorRect
 var status_label: Label
 var count_button: OptionButton
 var music_button: Button
+var sounds_button: Button
+var click: AudioStreamPlayer
 var ghost_button: Button
 var table_button: OptionButton
 var sponsor_label: Label
@@ -89,6 +93,18 @@ func _ready() -> void:
 	_apply_layout()
 	puzzle.solved.connect(_on_solved)
 	puzzle.progress.connect(_on_progress)
+	var sounds_on := bool(cfg.get_value("play", "sounds", true))
+	sounds_button.set_pressed_no_signal(sounds_on)
+	sounds_button.text = "Sounds on" if sounds_on else "Sounds off"
+	click = AudioStreamPlayer.new()
+	click.stream = ClickSound.make()
+	click.volume_db = -8.0
+	click.max_polyphony = 3
+	add_child(click)
+	puzzle.placed.connect(func():
+		if sounds_button.button_pressed:
+			click.pitch_scale = randf_range(0.94, 1.06)  # never quite the same twice
+			click.play())
 	var stream: AudioStream = load(MUSIC)
 	if stream is AudioStreamOggVorbis:
 		stream.loop = true
@@ -257,6 +273,14 @@ func _build_ui() -> void:
 		music.stream_paused = not on
 		music_button.text = "Music on" if on else "Music off")
 	bar.add_child(music_button)
+	sounds_button = Button.new()
+	sounds_button.text = "Sounds on"
+	sounds_button.toggle_mode = true
+	sounds_button.button_pressed = true
+	sounds_button.toggled.connect(func(on):
+		sounds_button.text = "Sounds on" if on else "Sounds off"
+		_save("sounds", on))
+	bar.add_child(sounds_button)
 	menu_button = Button.new()
 	menu_button.text = "Menu"
 	menu_button.pressed.connect(_open_menu)
@@ -343,7 +367,7 @@ func _apply_layout() -> void:
 		return
 	compact = get_viewport().get_visible_rect().size.x < 900
 	var in_bar := [] if compact else [daily_button, random_button, count_button]
-	var in_menu := ([daily_button, random_button, count_button] if compact else []) + [cut_button, tray_button, table_button, ghost_button, music_button]
+	var in_menu := ([daily_button, random_button, count_button] if compact else []) + [cut_button, tray_button, table_button, ghost_button, music_button, sounds_button]
 	for c in in_bar:
 		if c.get_parent() != bar:
 			c.reparent(bar)
@@ -677,9 +701,12 @@ func _save(key: String, value) -> void:
 
 
 func _select_count(n: int) -> void:
-	var i := COUNTS.find(n)
-	if i >= 0:
-		count_button.select(i)
+	# nearest, so a puzzle saved under the old labels (24, 48, 96, 150) still shows its row
+	var i := 0
+	for k in range(COUNTS.size()):
+		if abs(COUNTS[k] - n) < abs(COUNTS[i] - n):
+			i = k
+	count_button.select(i)
 
 
 func _on_progress(joined: int, total: int) -> void:
@@ -827,7 +854,11 @@ func _selftest() -> void:
 	report.append("%d help panels" % panels.size())
 	puzzle.solve_all_for_test()
 	report.append("after solve: %d cluster(s), solved=%s" % [puzzle.clusters.size(), str(puzzle.is_solved)])
-	await get_tree().create_timer(1.5).timeout  # let the seams fade
+	report.append("border glow played=%s; Help pieces at 156 with 156/78/40/10 left: %s" % [str(puzzle.border_done), str([156, 78, 40, 10].map(func(l): return max(1, int(round(min(156, 2 * l) / 24.0)))))])
+	await get_tree().create_timer(0.8).timeout  # the border light mid-run
+	await RenderingServer.frame_post_draw
+	get_viewport().get_texture().get_image().save_png("user://selftest_glow.png")
+	await get_tree().create_timer(0.9).timeout  # let the seams fade
 	await RenderingServer.frame_post_draw
 	get_viewport().get_texture().get_image().save_png("user://selftest_solved.png")
 	report.append("daily index today: %d (%s)" % [today_index(), pictures[today_index()].caption])

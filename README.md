@@ -8,13 +8,13 @@ paid unlock: one quiet line says the game is free thanks to Pagouro.
 A jigsaw puzzle of Belle Époque posters drawn by [Pagouro BE](https://github.com/ericrwade/pagouro-be), with the
 Pagouro Salon piano loop playing softly underneath. Runs on Windows and Android (a test build; not in any store yet).
 
-- **Daily puzzle**: the same picture for every player each day, 48 pieces, chosen from the date by a fixed shuffle
+- **Daily puzzle**: the same picture for every player each day, 49 pieces, chosen from the date by a fixed shuffle
   (works offline, no server).
-- **Any picture**: 30 pictures bundled; 12, 24, 48, 96 or 150 pieces.
+- **Any picture**: 30 pictures bundled; 12, 25, 49, 100 or 156 pieces (true counts: near-square pieces cannot make every number).
 - **Two cuts**: *Whimsical* (the default: corners off the grid, waving edges, round, bulbous, cap and arrowhead tabs) and
   *Classic* (a traditional die-cut look with mild hand-cut variation). Piece sizes are held close and measured by the
   self-test; every tab's neck is at least half its head's width (the cardboard rule).
-- **Play**: drag pieces; neighbors that fit join; anything in its true place on the board locks. Drag the empty table
+- **Play**: drag pieces; neighbors that fit join with a soft pulse and a click (Menu: Sounds); anything in its true place on the board locks; finishing the border sends a gold light around it. Drag the empty table
   to pan; pinch (phone) or the mouse wheel (computer) to zoom.
 - **Tray**: on a phone, loose pieces wait in a two-row tray along the bottom; swipe sideways to browse, swipe a piece up.
 - **Help**: a few seconds of one short panel about the project (144 of them, each with the source of its facts in

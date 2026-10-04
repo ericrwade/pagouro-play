@@ -64,7 +64,7 @@ Bump BOTH `application/config/version` in `jigsaw/project.godot` (shown in About
 - Whimsical cut is the default; Classic has mild hand-cut variation. Real tab mix (about 55 % two-and-two, about 40 %
   three-and-one, about 4 % four-and-none), sizes held by bowed edges. Eric rejected "exactly two-and-two everywhere".
 - Necks at least half the head's width ("can't have tabs with a neck so narrow that it would just tear off").
-- Help = an informative "ad": 6 s, then Done; hints scale ~1 per 24 pieces; first panel "Built with AI".
+- Help = an informative "ad": 6 s, then Done; hints scale ~1 per 24 pieces, and past halfway by what is left (twice the pieces left, down to 1); first panel "Built with AI".
 - Music starts at a random piece each launch.
 - Shells (rewards) would be device-only, no login; not built.
 - Splash screen: Eric floated a 3-5 s logo splash; agreed short (2-3 s), skippable, launch only; not built beyond the

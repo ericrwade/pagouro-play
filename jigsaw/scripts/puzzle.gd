@@ -12,6 +12,8 @@ extends Node2D
 signal solved(seconds: float)
 signal progress(joined: int, total: int)
 signal tray_changed
+signal placed  # pieces joined or locked into place: the screen plays the click
+signal border_finished  # the last border piece locked in
 
 const SNAP_FRACTION := 0.18   # snap when within this fraction of a cell
 const MARGIN := 0.3           # scatter margin around the board, as a fraction of the board size
@@ -39,6 +41,8 @@ var panning := false
 var _touches := {}            # finger index -> screen position, for two-finger pinch and pan on phones
 var _pinch_dist := 0.0
 var _pinch_mid := Vector2.ZERO
+var border_done := false
+var glow: BorderGlow
 
 @onready var camera: Camera2D = $Camera2D
 @onready var board: Node2D = $Board
@@ -52,6 +56,7 @@ func build(tex: Texture2D, piece_count: int, seed_value: int) -> void:
 	tray.clear()
 	dragging = null
 	is_solved = false
+	border_done = false
 	texture = tex
 	var size := tex.get_size()
 	# a grid near the asked count with near-square cells
@@ -236,6 +241,8 @@ func focus_board(reserved_bottom: float) -> void:
 
 
 func _ready() -> void:
+	glow = BorderGlow.new()
+	add_child(glow)  # after the pieces, so it draws over them
 	get_viewport().size_changed.connect(func(): if texture and not is_solved: _fit_camera())
 
 
@@ -418,6 +425,7 @@ func restore(data: Dictionary) -> void:
 		t[1].visible = false
 		tray.append(t[1])
 	tray_changed.emit()
+	border_done = _border_complete()  # a restored puzzle does not replay the glow
 	started_ms = Time.get_ticks_msec() - int(float(data.get("elapsed", 0.0)) * 1000.0)
 	progress.emit(piece_total() - clusters.size() + 1, piece_total())
 
@@ -425,6 +433,11 @@ func restore(data: Dictionary) -> void:
 ## After a drop: join any neighbouring cluster that sits at (nearly) the same position, and snap to the board.
 func _settle(cluster: Node2D) -> void:
 	var snap := cell.x * SNAP_FRACTION
+	var dropped := {}
+	for p in cluster.get_children():
+		dropped[p.get_meta("rc")] = true
+	var was_locked := cluster.has_meta("locked")
+	var joined_any := false
 	var joined := true
 	while joined:
 		joined = false
@@ -435,11 +448,19 @@ func _settle(cluster: Node2D) -> void:
 				_merge(other, cluster)  # keep the one already in place, move the dropped pieces into it
 				cluster = other
 				joined = true
+				joined_any = true
 				break
 	if cluster.position.length() <= snap:
 		cluster.position = Vector2.ZERO
 	if cluster.position == Vector2.ZERO:
 		_lock(cluster)
+	if joined_any or (cluster.position == Vector2.ZERO and not was_locked):
+		_pulse_neighbours(cluster, dropped)
+		placed.emit()
+	if not border_done and _border_complete():
+		border_done = true
+		glow.play(texture.get_size())
+		border_finished.emit()
 	progress.emit(piece_total() - clusters.size() + 1, piece_total())
 	if clusters.size() == 1 and cluster.position == Vector2.ZERO:
 		is_solved = true
@@ -461,6 +482,40 @@ func _lock(cluster: Node2D) -> void:
 	pieces_root.move_child(cluster, 0)
 	cluster.modulate = Color(1.22, 1.18, 1.08)
 	create_tween().tween_property(cluster, "modulate", Color.WHITE, 0.45 if first else 0.3)
+
+
+## The pieces a drop just fitted against give a soft pulse (Eric, 2026-10-04: his commercial app "mildly pulses the
+## pieces directly attached when you drop a piece in"). When the drop only met the board, the dropped pieces pulse.
+func _pulse_neighbours(cluster: Node2D, dropped: Dictionary) -> void:
+	var hit := []
+	for p in cluster.get_children():
+		var rc: Vector2i = p.get_meta("rc")
+		if dropped.has(rc):
+			continue
+		for d in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+			if dropped.has(rc + d):
+				hit.append(p)
+				break
+	if hit.is_empty():
+		for p in cluster.get_children():
+			if dropped.has(p.get_meta("rc")):
+				hit.append(p)
+	for p in hit:
+		p.modulate = Color(1.28, 1.24, 1.12)
+		create_tween().tween_property(p, "modulate", Color.WHITE, 0.35).set_ease(Tween.EASE_OUT)
+
+
+## Every border piece is on the board and locked.
+func _border_complete() -> bool:
+	for c in clusters:
+		var home := c.position == Vector2.ZERO and c.has_meta("locked")
+		if home:
+			continue
+		for p in c.get_children():
+			var rc: Vector2i = p.get_meta("rc")
+			if rc.x == 0 or rc.y == 0 or rc.x == cols - 1 or rc.y == rows - 1:
+				return false
+	return true
 
 
 func _are_neighbours(a: Node2D, b: Node2D) -> bool:
@@ -537,10 +592,21 @@ func hint() -> bool:
 	return true
 
 
-## How many pieces one Help places: about one per 24 pieces (12 and 24 get 1, 48 gets 2, 96 gets 4, 150 gets 6), so
-## help is worth about the same share of any puzzle (Eric, 2026-10-04).
+## How many pieces one Help places: about one per 24 pieces of the puzzle (12 and 25 get 1, 49 gets 2, 100 gets 4,
+## 156 gets 7), so help is worth about the same share of any puzzle (Eric, 2026-10-04). Past halfway it scales with
+## what is left instead, down to one (Eric: "if you only have 10 pieces left ... and a help does 6 of them is that
+## what we want?"): count twice the pieces still to place, capped at the whole puzzle.
 func hint_count() -> int:
-	return max(1, int(round(piece_total() / 24.0)))
+	return max(1, int(round(min(piece_total(), 2 * pieces_left()) / 24.0)))
+
+
+## Pieces not yet locked in their true place.
+func pieces_left() -> int:
+	var n := 0
+	for c in clusters:
+		if not (c.position == Vector2.ZERO and c.has_meta("locked")):
+			n += c.get_child_count()
+	return n
 
 
 ## Test helper: move every cluster home and settle, one by one (used by the self-test, never by the player).
