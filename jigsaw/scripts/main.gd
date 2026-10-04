@@ -14,6 +14,9 @@ const TABLES := [
 	["Prussian blue", Color("2d6fa0")], ["Deep sage", Color("3a4a34")], ["Plum", Color("7a3c4a")], ["Prussian night", Color("0e2a44")], ["Warm black", Color("1a1410")],
 ]
 const SETTINGS := "user://settings.cfg"
+## The puzzle in progress, saved after every move and whenever the app is put away, so a phone that closes the app in
+## the background never loses a half-done puzzle.
+const PROGRESS := "user://progress.json"
 const PANELS := "res://content/panels.json"
 const EPOCH_DAY := 20454  # 2026-01-01 as days since 1970-01-01 (UTC); day 0 of the daily list
 
@@ -39,9 +42,25 @@ var help_card: HelpCard
 var panels: Array = []
 var finish_panel: PanelContainer
 var finish_label: Label
+var finish_credit: Label
+var bar: HBoxContainer
+var daily_button: Button
+var random_button: Button
+var menu_button: Button
+var menu_layer: Control
+var menu_panel: PanelContainer
+var menu_box: VBoxContainer
+var about_layer: Control
+var compact := false
+var progress_path := PROGRESS
+var _restoring := false
 
 
 func _ready() -> void:
+	get_tree().quit_on_go_back = false  # Back closes menus and cards first (see _notification)
+	_apply_scale()
+	if "--selftest" in OS.get_cmdline_user_args():
+		progress_path = "user://selftest_progress.json"  # never touch the player's own saved puzzle
 	pictures = JSON.parse_string(FileAccess.get_file_as_string(PICTURES))
 	if FileAccess.file_exists(PANELS):
 		var parsed = JSON.parse_string(FileAccess.get_file_as_string(PANELS))
@@ -63,7 +82,8 @@ func _ready() -> void:
 	var tray_on := bool(cfg.get_value("play", "tray", view.y > view.x))
 	tray_button.set_pressed_no_signal(tray_on)
 	_set_tray(tray_on, false)
-	get_viewport().size_changed.connect(_layout_tray)
+	get_viewport().size_changed.connect(_on_resized)
+	_apply_layout()
 	puzzle.solved.connect(_on_solved)
 	puzzle.progress.connect(_on_progress)
 	var stream: AudioStream = load(MUSIC)
@@ -83,7 +103,7 @@ func _ready() -> void:
 	create_tween().tween_property(music, "volume_db", -14.0, 2.5)
 	if "--selftest" in OS.get_cmdline_user_args():
 		_selftest.call_deferred()
-	else:
+	elif not _restore_progress():
 		start_daily()
 
 
@@ -120,7 +140,14 @@ func _start(seed_value: int) -> void:
 	_select_count(current_count)
 	var tex: Texture2D = load(current.file)
 	puzzle.build(tex, current_count, seed_value)
-	title_label.text = ("Today's puzzle: " if is_daily else "") + String(current.caption).capitalize()
+	_update_title()
+	_save_progress()
+
+
+func _update_title() -> void:
+	if current.is_empty():
+		return
+	title_label.text = ("Today's puzzle: " if is_daily and not compact else "") + String(current.caption).capitalize()
 
 
 func _build_ui() -> void:
@@ -146,7 +173,7 @@ func _build_ui() -> void:
 	hairline.offset_bottom = 60
 	hairline.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	root.add_child(hairline)
-	var bar := HBoxContainer.new()
+	bar = HBoxContainer.new()
 	bar.add_theme_constant_override("separation", 10)
 	top.add_child(bar)
 	title_label = Label.new()
@@ -164,10 +191,11 @@ func _build_ui() -> void:
 	help.pressed.connect(_on_help)
 	bar.add_child(help)
 	var daily := Button.new()
+	daily_button = daily
 	daily.text = "Daily"
 	daily.pressed.connect(start_daily)
 	bar.add_child(daily)
-	var random_button := Button.new()
+	random_button = Button.new()
 	random_button.text = "New picture"
 	random_button.pressed.connect(start_random)
 	bar.add_child(random_button)
@@ -185,7 +213,7 @@ func _build_ui() -> void:
 	cut_button.item_selected.connect(_set_cut)
 	bar.add_child(cut_button)
 	tray_button = Button.new()
-	tray_button.text = "Tray"
+	tray_button.text = "Tray off"
 	tray_button.toggle_mode = true
 	tray_button.tooltip_text = "Keep loose pieces in a tray along the bottom (best on a phone)"
 	tray_button.toggled.connect(_set_tray)
@@ -216,6 +244,10 @@ func _build_ui() -> void:
 		music.stream_paused = not on
 		music_button.text = "Music on" if on else "Music off")
 	bar.add_child(music_button)
+	menu_button = Button.new()
+	menu_button.text = "Menu"
+	menu_button.pressed.connect(_open_menu)
+	bar.add_child(menu_button)
 	# the only "ad": one quiet line at the bottom
 	var sponsor := Label.new()
 	sponsor_label = sponsor
@@ -232,6 +264,8 @@ func _build_ui() -> void:
 	tray_panel.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
 	tray_panel.visible = false
 	root.add_child(tray_panel)
+	_build_menu(root)
+	_build_about(root)
 	help_card = HelpCard.new()
 	root.add_child(help_card)
 	help_card.finished.connect(_give_hints)
@@ -254,6 +288,8 @@ func _build_ui() -> void:
 	finish_label.add_theme_color_override("font_color", BelleStyle.GREEN)
 	box.add_child(finish_label)
 	var credit := Label.new()
+	finish_credit = credit
+	credit.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	credit.text = "This picture was drawn by Pagouro BE, a free image model that runs offline.\nNot every picture it draws is a masterpiece; this one made the cut."
 	credit.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	credit.add_theme_font_size_override("font_size", 17)
@@ -262,6 +298,219 @@ func _build_ui() -> void:
 	again.text = "Another picture"
 	again.pressed.connect(start_random)
 	box.add_child(again)
+
+
+## Phones: when the window is taller than wide, lay the screen out for a 480-unit width, which makes everything about
+## two and a half times larger on a phone than the 1280-wide computer layout would.
+func _apply_scale() -> void:
+	var win := DisplayServer.window_get_size()
+	var want := Vector2i(480, 800) if win.y > win.x else Vector2i(1280, 800)
+	if get_tree().root.content_scale_size != want:
+		get_tree().root.content_scale_size = want
+
+
+func _on_resized() -> void:
+	_apply_scale()
+	_apply_layout()
+	_layout_tray()
+
+
+## Wide screens keep Daily, New picture and the piece count in the bar; narrow ones move them into the Menu too.
+## The rest (cut, tray, table, hint, music, About) always live in the Menu.
+func _apply_layout() -> void:
+	if bar == null or menu_box == null:
+		return
+	compact = get_viewport().get_visible_rect().size.x < 900
+	var in_bar := [] if compact else [daily_button, random_button, count_button]
+	var in_menu := ([daily_button, random_button, count_button] if compact else []) + [cut_button, tray_button, table_button, ghost_button, music_button]
+	for c in in_bar:
+		if c.get_parent() != bar:
+			c.reparent(bar)
+		c.size_flags_horizontal = Control.SIZE_FILL
+	for i in range(in_menu.size()):
+		var c: Control = in_menu[i]
+		if c.get_parent() != menu_box:
+			c.reparent(menu_box)
+		menu_box.move_child(c, i)
+		c.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	bar.move_child(menu_button, bar.get_child_count() - 1)
+	title_label.add_theme_font_size_override("font_size", 20 if compact else 24)
+	sponsor_label.text = "Free, thanks to Pagouro · pagouro.com" if compact else "Free, thanks to Pagouro · pictures by Pagouro BE, music by Pagouro Salon · pagouro.com"
+	_update_title()
+
+
+func _build_menu(root: Control) -> void:
+	menu_layer = Control.new()
+	menu_layer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	menu_layer.mouse_filter = Control.MOUSE_FILTER_STOP
+	menu_layer.visible = false
+	menu_layer.gui_input.connect(func(e):
+		if e is InputEventMouseButton and e.pressed:
+			_close_menu())
+	root.add_child(menu_layer)
+	menu_panel = PanelContainer.new()
+	menu_panel.add_theme_stylebox_override("panel", BelleStyle.box(BelleStyle.PAPER, BelleStyle.GOLD, 2, 2, Vector4(14, 12, 14, 12)))
+	menu_layer.add_child(menu_panel)
+	menu_box = VBoxContainer.new()
+	menu_box.custom_minimum_size.x = 230
+	menu_box.add_theme_constant_override("separation", 8)
+	menu_panel.add_child(menu_box)
+	var about := Button.new()
+	about.text = "About and credits"
+	about.pressed.connect(func():
+		_close_menu()
+		about_layer.visible = true)
+	menu_box.add_child(about)
+	daily_button.pressed.connect(_close_menu)
+	random_button.pressed.connect(_close_menu)
+
+
+func _open_menu() -> void:
+	menu_layer.visible = true
+	menu_panel.reset_size()
+	var view := get_viewport().get_visible_rect().size
+	menu_panel.position = Vector2(view.x - menu_panel.size.x - 8, 62)
+
+
+func _close_menu() -> void:
+	menu_layer.visible = false
+
+
+## Credits and licenses: everything in the game is free to share, and the engine's license asks for its notice.
+func _build_about(root: Control) -> void:
+	about_layer = Control.new()
+	about_layer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	about_layer.mouse_filter = Control.MOUSE_FILTER_STOP
+	about_layer.visible = false
+	root.add_child(about_layer)
+	var dim := ColorRect.new()
+	dim.color = Color(BelleStyle.INK, 0.45)
+	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	about_layer.add_child(dim)
+	var margin := MarginContainer.new()
+	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	for side in ["left", "right", "top", "bottom"]:
+		margin.add_theme_constant_override("margin_" + side, 18)
+	about_layer.add_child(margin)
+	var card := PanelContainer.new()
+	card.add_theme_stylebox_override("panel", BelleStyle.box(BelleStyle.PAPER, BelleStyle.GOLD, 2, 2, Vector4(22, 16, 22, 14)))
+	margin.add_child(card)
+	var box := VBoxContainer.new()
+	box.add_theme_constant_override("separation", 10)
+	card.add_child(box)
+	var heading := Label.new()
+	heading.text = "Pagouro Jigsaw"
+	heading.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	heading.add_theme_font_override("font", BelleStyle.title_font())
+	heading.add_theme_font_size_override("font_size", 30)
+	heading.add_theme_color_override("font_color", BelleStyle.GREEN)
+	box.add_child(heading)
+	var scroll := ScrollContainer.new()
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	box.add_child(scroll)
+	var text := Label.new()
+	text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	text.add_theme_font_size_override("font_size", 16)
+	var lines := [
+		"Free, thanks to Pagouro (pagouro.com). No ads, no tracking, no account.",
+		"",
+		"Pictures: drawn by Pagouro BE, a free image model. CC0 1.0.",
+		"Music: composed by Pagouro Salon, a free music model; piano sound Upright Piano KW by FreePats (CC0); rendered with FluidSynth. CC0 1.0.",
+		"Lettering: Cormorant Garamond and EB Garamond, SIL Open Font License 1.1.",
+		"Game code: Apache License 2.0.",
+		"Made with the Godot Engine (godotengine.org).",
+		"",
+		"GODOT ENGINE LICENSE",
+		_reflow(Engine.get_license_text()),
+		"THIRD-PARTY COMPONENTS IN THE GODOT ENGINE",
+	]
+	for info in Engine.get_copyright_info():
+		var licenses := []
+		for part in info.get("parts", []):
+			if not licenses.has(part.get("license", "")):
+				licenses.append(part.get("license", ""))
+		lines.append("%s: %s" % [info.get("name", ""), ", ".join(licenses)])
+	lines.append("")
+	lines.append("LICENSE TEXTS")
+	var license_info := Engine.get_license_info()
+	for key in license_info.keys():
+		lines.append("")
+		lines.append(String(key))
+		lines.append(_reflow(String(license_info[key])))
+	text.text = "\n".join(lines)
+	scroll.add_child(text)
+	var close := Button.new()
+	close.text = "Close"
+	close.pressed.connect(func(): about_layer.visible = false)
+	box.add_child(close)
+
+
+## License texts come with hard line breaks; join each paragraph so it wraps cleanly on a narrow screen.
+func _reflow(text: String) -> String:
+	var paras := []
+	for para in text.replace("", "").split("
+
+"):
+		paras.append(" ".join(Array(para.split("
+")).map(func(l): return l.strip_edges())))
+	return "
+
+".join(paras)
+
+
+## Save the puzzle in progress (cheap: one small JSON file). Skipped while a saved puzzle is being put back.
+func _save_progress() -> void:
+	if _restoring or puzzle.texture == null or puzzle.is_solved or current.is_empty():
+		return
+	var data := {"version": 1, "file": current.file, "caption": current.caption, "count": current_count, "seed": current_seed,
+		"cut": puzzle.cut_style, "daily": is_daily, "day": int(Time.get_unix_time_from_system() / 86400.0), "state": puzzle.snapshot()}
+	var f := FileAccess.open(progress_path, FileAccess.WRITE)
+	if f:
+		f.store_string(JSON.stringify(data))
+		f.close()
+
+
+## Put back the puzzle that was in progress when the app last closed. False if there is none (or it can't be read).
+func _restore_progress() -> bool:
+	if not FileAccess.file_exists(progress_path):
+		return false
+	var data = JSON.parse_string(FileAccess.get_file_as_string(progress_path))
+	if not (data is Dictionary) or not ResourceLoader.exists(String(data.get("file", ""))):
+		return false
+	current = {"file": data.file, "caption": data.get("caption", "")}
+	current_count = int(data.get("count", DAILY_COUNT))
+	is_daily = bool(data.get("daily", false)) and int(data.get("day", -1)) == int(Time.get_unix_time_from_system() / 86400.0)
+	puzzle.cut_style = int(data.get("cut", PieceShape.Style.WHIMSICAL))
+	cut_button.select(0 if puzzle.cut_style == PieceShape.Style.WHIMSICAL else 1)
+	_restoring = true
+	_start(int(data.get("seed", 0)))
+	puzzle.restore(data.get("state", {}))
+	_restoring = false
+	_save_progress()
+	return true
+
+
+func _clear_progress() -> void:
+	if FileAccess.file_exists(progress_path):
+		DirAccess.remove_absolute(ProjectSettings.globalize_path(progress_path))
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_GO_BACK_REQUEST:
+		# Android Back: close whatever is open, and only then leave the game (the puzzle is saved first)
+		if about_layer and about_layer.visible:
+			about_layer.visible = false
+		elif menu_layer and menu_layer.visible:
+			_close_menu()
+		elif help_card and help_card.visible:
+			help_card._end(help_card._done.visible)
+		else:
+			_save_progress()
+			get_tree().quit()
+	elif what == NOTIFICATION_APPLICATION_PAUSED or what == NOTIFICATION_APPLICATION_FOCUS_OUT or what == NOTIFICATION_WM_CLOSE_REQUEST:
+		_save_progress()
 
 
 func _set_table(i: int, save := true) -> void:
@@ -285,6 +534,7 @@ func _set_cut(i: int) -> void:
 
 
 func _set_tray(on: bool, save := true) -> void:
+	tray_button.text = "Tray on" if on else "Tray off"
 	if save:
 		_save("tray", on)
 	_layout_tray()
@@ -363,12 +613,15 @@ func _select_count(n: int) -> void:
 
 func _on_progress(joined: int, total: int) -> void:
 	status_label.text = "%d / %d" % [joined, total]
+	_save_progress()
 
 
 func _on_solved(seconds: float) -> void:
 	var m := int(seconds) / 60
 	var s := int(seconds) % 60
 	finish_label.text = "Finished in %d:%02d" % [m, s]
+	_clear_progress()
+	finish_credit.custom_minimum_size.x = min(560.0, get_viewport().get_visible_rect().size.x - 110.0)
 	finish_panel.visible = true
 	tray_panel.visible = false
 	# below the finished picture, so the picture stays in view
@@ -376,6 +629,19 @@ func _on_solved(seconds: float) -> void:
 	finish_panel.reset_size()
 	finish_panel.position = Vector2((view.x - finish_panel.size.x) * 0.5, view.y - finish_panel.size.y - 44)
 	puzzle.focus_board(finish_panel.size.y + 52)
+
+
+## Self-test helper: every cluster's pieces, position and lock, as a sorted list, to compare two puzzle states.
+func _layout_signature() -> Array:
+	var sig := []
+	for c in puzzle.clusters:
+		var rcs := []
+		for p in c.get_children():
+			rcs.append(p.get_meta("rc"))
+		rcs.sort()
+		sig.append([str(rcs), c.position.round(), c.has_meta("locked")])
+	sig.sort()
+	return sig
 
 
 func _selftest() -> void:
@@ -401,6 +667,17 @@ func _selftest() -> void:
 	await get_tree().process_frame
 	await RenderingServer.frame_post_draw
 	get_viewport().get_texture().get_image().save_png("user://selftest_scattered.png")
+	_open_menu()
+	await get_tree().process_frame
+	await RenderingServer.frame_post_draw
+	get_viewport().get_texture().get_image().save_png("user://selftest_menu.png")
+	_close_menu()
+	about_layer.visible = true
+	await get_tree().process_frame
+	await RenderingServer.frame_post_draw
+	get_viewport().get_texture().get_image().save_png("user://selftest_about.png")
+	about_layer.visible = false
+	report.append("layout compact=%s viewport %s" % [str(compact), str(get_viewport().get_visible_rect().size)])
 	puzzle.cut_style = PieceShape.Style.CLASSIC
 	_start(42)
 	await get_tree().process_frame
@@ -442,6 +719,12 @@ func _selftest() -> void:
 	var free: Node2D = loose[0]
 	var grab_loose = puzzle._cluster_at(free.position + free.get_child(0).get_meta("centre"))
 	report.append("locked clusters %d, placed piece grabbable=%s, loose piece grabbable=%s" % [locked.size(), str(grab_locked != null), str(grab_loose == free)])
+	# save and restore: the half-done puzzle is rebuilt from its seed and put back exactly
+	var snap := puzzle.snapshot()
+	var sig_before := _layout_signature()
+	_start(42)
+	puzzle.restore(snap)
+	report.append("restore: clusters %d, layout identical=%s" % [puzzle.clusters.size(), str(_layout_signature() == sig_before)])
 	help_card.show_panel(panels[0])
 	var keep_settings := FileAccess.get_file_as_string(SETTINGS)
 	_save("help_intro_seen", false)

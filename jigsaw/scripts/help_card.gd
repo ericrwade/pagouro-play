@@ -92,6 +92,7 @@ func _ready() -> void:
 func show_panel(panel: Dictionary) -> void:
 	_title.text = String(panel.get("title", "Pagouro"))
 	_text.text = String(panel.get("text", ""))
+	_text.custom_minimum_size.x = min(520.0, get_viewport_rect().size.x - 110.0)  # narrower on a phone
 	_left = SECONDS
 	_running = true
 	_skip.visible = true

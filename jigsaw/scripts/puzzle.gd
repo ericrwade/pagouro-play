@@ -16,6 +16,7 @@ signal tray_changed
 const SNAP_FRACTION := 0.18   # snap when within this fraction of a cell
 const MARGIN := 0.3           # scatter margin around the board, as a fraction of the board size
 const TRAY_MARGIN := 0.05     # in tray mode, the little table left around the board
+const MAX_ZOOM := 4.0         # how far in the player can zoom, relative to the whole-table view
 
 var texture: Texture2D
 var rows := 0
@@ -32,6 +33,12 @@ var cut_style := PieceShape.Style.WHIMSICAL
 var tray_mode := false
 var tray_height := 0.0        # screen pixels the tray covers at the bottom (set by the screen)
 var tray: Array[Node2D] = []  # clusters waiting in the tray, in tray order
+var fit_zoom := 1.0           # the zoom that shows the whole table; the player may zoom in from it up to MAX_ZOOM times
+var fit_centre := Vector2.ZERO  # where the whole-table view puts the camera
+var panning := false
+var _touches := {}            # finger index -> screen position, for two-finger pinch and pan on phones
+var _pinch_dist := 0.0
+var _pinch_mid := Vector2.ZERO
 
 @onready var camera: Camera2D = $Camera2D
 @onready var board: Node2D = $Board
@@ -203,6 +210,8 @@ func _fit_camera() -> void:
 	var z: float = min(usable.x / table.size.x, usable.y / table.size.y)
 	camera.zoom = Vector2(z, z)
 	camera.position = table.get_center() + Vector2(0, (bottom_bar - top_bar) * 0.5 / z)
+	fit_zoom = z
+	fit_centre = camera.position
 
 
 ## Glide the view to frame the finished picture in the space above a card of `reserved_bottom` pixels.
@@ -273,6 +282,46 @@ func end_drag(screen: Vector2) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if is_solved or texture == null:
 		return
+	# two fingers on a phone: pinch to zoom, move together to pan (a piece being carried is put down first)
+	if event is InputEventScreenTouch:
+		if event.pressed:
+			_touches[event.index] = event.position
+		else:
+			_touches.erase(event.index)
+		if _touches.size() == 2:
+			if dragging:
+				end_drag(get_viewport().get_mouse_position())
+			panning = false
+			var pts: Array = _touches.values()
+			_pinch_dist = pts[0].distance_to(pts[1])
+			_pinch_mid = (pts[0] + pts[1]) * 0.5
+		return
+	if event is InputEventScreenDrag:
+		_touches[event.index] = event.position
+		if _touches.size() == 2:
+			var pts: Array = _touches.values()
+			var dist: float = pts[0].distance_to(pts[1])
+			var mid: Vector2 = (pts[0] + pts[1]) * 0.5
+			if _pinch_dist > 0.0:
+				zoom_at(mid, dist / _pinch_dist)
+			pan_by(mid - _pinch_mid)
+			_pinch_dist = dist
+			_pinch_mid = mid
+			get_viewport().set_input_as_handled()
+		return
+	if _touches.size() >= 2:
+		return  # the emulated mouse from the first finger is ignored while pinching
+	# trackpads and mice on a computer
+	if event is InputEventMagnifyGesture:
+		zoom_at(event.position, event.factor)
+		return
+	if event is InputEventPanGesture:
+		pan_by(-event.delta * 12.0)
+		return
+	if event is InputEventMouseButton and event.pressed and (event.button_index == MOUSE_BUTTON_WHEEL_UP or event.button_index == MOUSE_BUTTON_WHEEL_DOWN):
+		zoom_at(event.position, 1.12 if event.button_index == MOUSE_BUTTON_WHEEL_UP else 1.0 / 1.12)
+		get_viewport().set_input_as_handled()
+		return
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
 			var world := screen_to_world(event.position)
@@ -281,13 +330,89 @@ func _unhandled_input(event: InputEvent) -> void:
 				dragging = hit
 				drag_offset = hit.position - world
 				pieces_root.move_child(hit, pieces_root.get_child_count() - 1)
-				get_viewport().set_input_as_handled()
+			else:
+				panning = true  # dragging the empty table moves the view
+			get_viewport().set_input_as_handled()
 		elif dragging:
 			end_drag(event.position)
 			get_viewport().set_input_as_handled()
+		else:
+			panning = false
 	elif event is InputEventMouseMotion and dragging:
 		drag_to(event.position)
 		get_viewport().set_input_as_handled()
+	elif event is InputEventMouseMotion and panning:
+		pan_by(event.relative)
+		get_viewport().set_input_as_handled()
+
+
+## Zoom by `factor` keeping the point under `screen` fixed; never further out than the whole table, never past MAX_ZOOM.
+func zoom_at(screen: Vector2, factor: float) -> void:
+	var before := screen_to_world(screen)
+	var z: float = clamp(camera.zoom.x * factor, fit_zoom, fit_zoom * MAX_ZOOM)
+	camera.zoom = Vector2(z, z)
+	camera.position += before - screen_to_world(screen)
+	_clamp_camera()
+
+
+## Move the view by a screen-space amount (the table follows the finger).
+func pan_by(screen_delta: Vector2) -> void:
+	camera.position -= screen_delta / camera.zoom.x
+	_clamp_camera()
+
+
+## Keep the view over the table: at the whole-table zoom it sits exactly where the fit put it; zoomed in, its centre
+## stays over the table.
+func _clamp_camera() -> void:
+	if camera.zoom.x <= fit_zoom * 1.001:
+		camera.position = fit_centre
+		return
+	var table := _table_rect(tray_mode)
+	camera.position = Vector2(clamp(camera.position.x, table.position.x, table.end.x), clamp(camera.position.y, table.position.y, table.end.y))
+
+
+## Everything needed to put this puzzle back exactly as it is (the cut itself is rebuilt from its seed).
+func snapshot() -> Dictionary:
+	var out := []
+	for c in clusters:
+		var rcs := []
+		for p in c.get_children():
+			var rc: Vector2i = p.get_meta("rc")
+			rcs.append([rc.x, rc.y])
+		out.append({"pieces": rcs, "x": c.position.x, "y": c.position.y, "locked": c.has_meta("locked"), "tray": tray.find(c)})
+	return {"clusters": out, "elapsed": (Time.get_ticks_msec() - started_ms) / 1000.0}
+
+
+## Put a freshly built puzzle (same picture, count, seed and cut) back into a saved state.
+func restore(data: Dictionary) -> void:
+	var by_rc := {}
+	for c in clusters:
+		by_rc[c.get_child(0).get_meta("rc")] = c
+	tray.clear()
+	var in_tray := []
+	for entry in data.get("clusters", []):
+		var rcs: Array = entry.pieces
+		var first: Node2D = by_rc.get(Vector2i(int(rcs[0][0]), int(rcs[0][1])))
+		if first == null:
+			continue
+		for k in range(1, rcs.size()):
+			var other: Node2D = by_rc.get(Vector2i(int(rcs[k][0]), int(rcs[k][1])))
+			if other and other != first and clusters.has(other):
+				_merge(first, other)
+		first.position = Vector2(float(entry.x), float(entry.y))
+		first.visible = true
+		if entry.get("locked", false):
+			first.set_meta("locked", true)
+			pieces_root.move_child(first, 0)
+		if int(entry.get("tray", -1)) >= 0:
+			in_tray.append([int(entry.tray), first])
+	in_tray.sort_custom(func(a, b): return a[0] < b[0])
+	for t in in_tray:
+		t[1].visible = false
+		tray.append(t[1])
+	tray_changed.emit()
+	started_ms = Time.get_ticks_msec() - int(float(data.get("elapsed", 0.0)) * 1000.0)
+	progress.emit(piece_total() - clusters.size() + 1, piece_total())
 
 
 ## After a drop: join any neighbouring cluster that sits at (nearly) the same position, and snap to the board.
