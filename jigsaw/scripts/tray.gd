@@ -60,17 +60,10 @@ func rebuild() -> void:
 		var cluster: Node2D = puzzle.tray[i]
 		var piece: Polygon2D = cluster.get_child(0)
 		var thumb := Polygon2D.new()
-		thumb.antialiased = true  # smooth curved edges (2D MSAA is unavailable in GL Compatibility)
 		thumb.texture = piece.texture
 		thumb.polygon = piece.polygon
 		thumb.uv = piece.uv
-		var edge := Line2D.new()
-		edge.antialiased = true  # smooth curved edges (2D MSAA is unavailable in GL Compatibility)
-		edge.points = piece.polygon
-		edge.closed = true
-		edge.width = 1.2 / s
-		edge.default_color = Color(BelleStyle.INK, 0.6)
-		thumb.add_child(edge)
+		thumb.material = piece.material  # the same smooth cut
 		thumb.scale = Vector2(s, s)
 		thumb.position = _slot_centre(i) - piece.get_meta("centre") * s
 		_strip.add_child(thumb)

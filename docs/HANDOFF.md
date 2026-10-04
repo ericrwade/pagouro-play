@@ -22,6 +22,7 @@ backup (making it public, and any GitHub Pages site, is Eric's call).
 | `jigsaw/scripts/puzzle.gd` | the table: build, drag, join, lock, tray hand-off, hints, zoom/pan/pinch, snapshot/restore |
 | `jigsaw/scripts/piece_shape.gd` | the cut: corner lattice, Euler-balanced tabs plus a 20 % flip, tab kinds, equal tab areas, bowed edges, neck rule, `area_report` |
 | `jigsaw/scripts/tray.gd` | the two-row phone tray |
+| `jigsaw/scripts/piece_masks.gd`, `piece.gdshader` | smooth cut edges: a 16-sample mask per piece, baked when a puzzle starts (0.2 s on the PC at 49 pieces, 1.0 s on a Pixel 11 Pro XL at 156); the shader cuts the picture with it and draws the ink cut line. Polygon2D antialiasing and 2D MSAA do nothing in GL Compatibility |
 | `jigsaw/scripts/help_card.gd` | the Help card (6 s countdown, then Done) |
 | `jigsaw/scripts/belle_style.gd` | the house look: D-74 palette values only, fonts, frame with corner scrolls |
 | `jigsaw/content/panels.json` | 144 Help panels, each with `source` for its facts; `intro-01` is pinned first |
@@ -31,6 +32,11 @@ backup (making it public, and any GitHub Pages site, is Eric's call).
 | `jigsaw/export_presets.cfg` | Android preset: `com.pagouro.jigsaw`, arm64 only, no permissions, version 0.1.0 / code 1 |
 | `tools/` (gitignored) | `godot/` (play + self-test), `godot-export/` (self-contained copy for exports), `jdk17/`, `android-sdk/`, `dl/` |
 | `build/` (gitignored) | the APK and `INSTALL-ON-ANDROID.txt` |
+
+## Version
+
+Bump BOTH `application/config/version` in `jigsaw/project.godot` (shown in About) and `version/name` + `version/code` in
+`jigsaw/export_presets.cfg` (what Android sees) for every build that goes to a phone.
 
 ## How to
 

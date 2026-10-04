@@ -116,7 +116,7 @@ static func frame_nodes(size: Vector2) -> Array[Node2D]:
 	for spec in [[gap * 2.2, w_outer, GOLD], [gap, w_inner, Color(INK, 0.5)]]:
 		var g: float = spec[0]
 		var line := Line2D.new()
-		line.antialiased = true  # smooth curved edges (2D MSAA is unavailable in GL Compatibility)
+		line.antialiased = true  # smooth scrollwork (Line2D antialiasing does work in GL Compatibility)
 		line.points = PackedVector2Array([Vector2(-g, -g), Vector2(size.x + g, -g), Vector2(size.x + g, size.y + g), Vector2(-g, size.y + g)])
 		line.closed = true
 		line.width = spec[1]
@@ -133,7 +133,7 @@ static func frame_nodes(size: Vector2) -> Array[Node2D]:
 	]
 	for c in corners:
 		var curl := Line2D.new()
-		curl.antialiased = true  # smooth curved edges (2D MSAA is unavailable in GL Compatibility)
+		curl.antialiased = true  # smooth scrollwork (Line2D antialiasing does work in GL Compatibility)
 		# the scroll sits outside the picture: it curls away from the board, never over it
 		curl.points = scroll_points(c[0], c[1], -c[2], s)
 		curl.width = w_outer * 0.9

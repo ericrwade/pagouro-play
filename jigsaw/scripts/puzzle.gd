@@ -53,7 +53,6 @@ func build(tex: Texture2D, piece_count: int, seed_value: int) -> void:
 	dragging = null
 	is_solved = false
 	texture = tex
-	_edge_zoom = 0.0  # new outlines: size them on the next frame
 	var size := tex.get_size()
 	# a grid near the asked count with near-square cells
 	cols = max(2, int(round(sqrt(piece_count * size.x / size.y))))
@@ -69,22 +68,15 @@ func build(tex: Texture2D, piece_count: int, seed_value: int) -> void:
 			for p in PieceShape.piece_outline(cut, r, c):
 				poly.append(Vector2(p.x * cell.x, p.y * cell.y))
 			var piece := Polygon2D.new()
-			piece.antialiased = true  # smooth curved edges (2D MSAA is unavailable in GL Compatibility)
 			piece.texture = tex
-			piece.polygon = poly
-			piece.uv = poly
+			piece.set_meta("shape", poly)  # the exact cut: grabbing and the outline use this
+			var drawn := PieceMasks.grown(poly)  # drawn a little larger; the mask makes the edge
+			piece.polygon = drawn
+			piece.uv = drawn
 			piece.set_meta("rc", Vector2i(c, r))
 			var k: Array = cut.corners
 			var centre: Vector2 = (k[r][c] + k[r][c + 1] + k[r + 1][c] + k[r + 1][c + 1]) * 0.25
 			piece.set_meta("centre", Vector2(centre.x * cell.x, centre.y * cell.y))
-			var edge := Line2D.new()
-			edge.antialiased = true  # smooth curved edges (2D MSAA is unavailable in GL Compatibility)
-			edge.points = poly
-			edge.closed = true
-			edge.width = max(1.5, cell.x * 0.012)
-			edge.default_color = Color(BelleStyle.INK, 0.5)
-			edge.joint_mode = Line2D.LINE_JOINT_ROUND
-			piece.add_child(edge)
 			var cluster := Node2D.new()
 			cluster.add_child(piece)
 			# scatter: anywhere on the table, mostly off the board
@@ -98,6 +90,16 @@ func build(tex: Texture2D, piece_count: int, seed_value: int) -> void:
 			cluster.set_meta("scatter", cluster.position)
 			pieces_root.add_child(cluster)
 			clusters.append(cluster)
+	# smooth edges: one baked mask per piece
+	var pieces := []
+	var shapes := []
+	for cl in clusters:
+		pieces.append(cl.get_child(0))
+		shapes.append(cl.get_child(0).get_meta("shape"))
+	var t0 := Time.get_ticks_msec()
+	mask_scale = PieceMasks.apply(self, pieces, shapes, size)
+	mask_ms = Time.get_ticks_msec() - t0
+	print("Pagouro Jigsaw: %d edge masks baked in %d ms" % [pieces.size(), mask_ms])
 	# the tray takes the pieces in a shuffled order, the way they would fall out of a box
 	var order := clusters.duplicate()
 	for i in range(order.size() - 1, 0, -1):
@@ -177,7 +179,6 @@ func _draw_board() -> void:
 		child.queue_free()
 	var size := texture.get_size()
 	var frame := Polygon2D.new()
-	frame.antialiased = true  # smooth curved edges (2D MSAA is unavailable in GL Compatibility)
 	frame.polygon = PackedVector2Array([Vector2.ZERO, Vector2(size.x, 0), size, Vector2(0, size.y)])
 	# the board is a shade off the table, darker on a light table and lighter on a dark one
 	frame.color = table_color.darkened(0.07) if table_color.get_luminance() > 0.45 else table_color.lightened(0.10)
@@ -207,25 +208,8 @@ func set_ghost(on: bool) -> void:
 
 ## Height of the screen's top bar, set by main; the title's own lines on a phone make it taller.
 var top_bar := 64.0
-var _edge_zoom := 0.0  # the zoom the piece outlines were last sized for
-
-
-## Piece outlines stay at least about one screen pixel wide at every zoom. Polygon2D's own antialiasing does nothing in
-## GL Compatibility (tested 2026-10-04), so the antialiased outline is what smooths a piece's curved edge; thinner than a
-## pixel, it breaks up and the edge looks grainy (Eric, on the PC).
-func _process(_delta: float) -> void:
-	var z: float = camera.zoom.x
-	if is_equal_approx(z, _edge_zoom):
-		return
-	_edge_zoom = z
-	var w: float = max(cell.x * 0.012, 1.8 / z)
-	for cluster in clusters:
-		for piece in cluster.get_children():
-			for edge in piece.get_children():
-				if edge is Line2D:
-					edge.width = w
-
-
+var mask_scale := 0.0  # mask pixels per picture pixel (self-test report)
+var mask_ms := 0  # how long the masks took to bake (self-test report)
 func _fit_camera() -> void:
 	var table := _table_rect(tray_mode)
 	var view := get_viewport_rect().size
@@ -266,7 +250,7 @@ func _cluster_at(world: Vector2) -> Node2D:
 			continue  # placed pieces are locked down
 		var local := world - cluster.position
 		for piece in cluster.get_children():
-			if piece is Polygon2D and Geometry2D.is_point_in_polygon(local, piece.polygon):
+			if piece is Polygon2D and Geometry2D.is_point_in_polygon(local, piece.get_meta("shape")):
 				return cluster
 	return null
 
@@ -462,9 +446,9 @@ func _settle(cluster: Node2D) -> void:
 		# the seams melt away: the finished picture shows whole
 		var fade := create_tween().set_parallel(true)
 		for piece in cluster.get_children():
-			for edge in piece.get_children():
-				if edge is Line2D:
-					fade.tween_property(edge, "modulate:a", 0.0, 1.2)
+			if piece.material:
+				fade.tween_property(piece.material, "shader_parameter/rim", 0.0, 1.2)
+				fade.tween_property(piece.material, "shader_parameter/solid", 1.0, 1.2)
 		solved.emit((Time.get_ticks_msec() - started_ms) / 1000.0)
 
 

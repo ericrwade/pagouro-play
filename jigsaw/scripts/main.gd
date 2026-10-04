@@ -471,6 +471,12 @@ func _build_about(root: Control) -> void:
 	about_head.add_child(heading)
 	about_head.add_child(BelleStyle.close_x(func(): about_layer.visible = false))
 	box.add_child(about_head)
+	var version := Label.new()  # keep application/config/version and the Android preset's version/name in step
+	version.text = "Version %s" % ProjectSettings.get_setting("application/config/version", "?")
+	version.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	version.add_theme_font_size_override("font_size", 15)
+	version.add_theme_color_override("font_color", BelleStyle.INK_SOFT)
+	box.add_child(version)
 	var scroll := ScrollContainer.new()
 	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -730,7 +736,7 @@ func _selftest() -> void:
 		current = pictures[today_index()]
 		current_count = n
 		_start(42)
-		report.append("built %d asked -> %d pieces (%dx%d)" % [n, puzzle.piece_total(), puzzle.cols, puzzle.rows])
+		report.append("built %d asked -> %d pieces (%dx%d), edge masks %.2f px per picture px baked in %d ms" % [n, puzzle.piece_total(), puzzle.cols, puzzle.rows, puzzle.mask_scale, puzzle.mask_ms])
 	await get_tree().process_frame
 	await get_tree().process_frame
 	await RenderingServer.frame_post_draw
