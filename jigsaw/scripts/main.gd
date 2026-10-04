@@ -394,6 +394,13 @@ func _selftest() -> void:
 	await get_tree().process_frame
 	await RenderingServer.frame_post_draw
 	get_viewport().get_texture().get_image().save_png("user://selftest_half.png")
+	var locked: Array = puzzle.clusters.filter(func(c): return c.has_meta("locked"))
+	var loose: Array = puzzle.clusters.filter(func(c): return not c.has_meta("locked"))
+	var probe: Node2D = locked[0]
+	var grab_locked = puzzle._cluster_at(probe.position + probe.get_child(0).get_meta("centre"))
+	var free: Node2D = loose[0]
+	var grab_loose = puzzle._cluster_at(free.position + free.get_child(0).get_meta("centre"))
+	report.append("locked clusters %d, placed piece grabbable=%s, loose piece grabbable=%s" % [locked.size(), str(grab_locked != null), str(grab_loose == free)])
 	help_card.show_panel(panels[0])
 	await get_tree().create_timer(0.4).timeout
 	await RenderingServer.frame_post_draw

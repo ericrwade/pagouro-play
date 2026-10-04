@@ -230,8 +230,8 @@ func screen_to_world(screen: Vector2) -> Vector2:
 func _cluster_at(world: Vector2) -> Node2D:
 	for i in range(pieces_root.get_child_count() - 1, -1, -1):
 		var cluster: Node2D = pieces_root.get_child(i)
-		if not cluster.visible:
-			continue
+		if not cluster.visible or cluster.has_meta("locked"):
+			continue  # placed pieces are locked down
 		var local := world - cluster.position
 		for piece in cluster.get_children():
 			if piece is Polygon2D and Geometry2D.is_point_in_polygon(local, piece.polygon):
@@ -306,6 +306,8 @@ func _settle(cluster: Node2D) -> void:
 				break
 	if cluster.position.length() <= snap:
 		cluster.position = Vector2.ZERO
+	if cluster.position == Vector2.ZERO:
+		_lock(cluster)
 	progress.emit(piece_total() - clusters.size() + 1, piece_total())
 	if clusters.size() == 1 and cluster.position == Vector2.ZERO:
 		is_solved = true
@@ -316,6 +318,17 @@ func _settle(cluster: Node2D) -> void:
 				if edge is Line2D:
 					fade.tween_property(edge, "modulate:a", 0.0, 1.2)
 		solved.emit((Time.get_ticks_msec() - started_ms) / 1000.0)
+
+
+## In its true place on the board a cluster locks (Eric, 2026-10-04: in his commercial jigsaw a placed piece "locks
+## down", and he likes it). Building stays free on the table; only finished work is fixed, so a careless drag can't
+## knock it loose. Locked work sits beneath loose pieces, and gives a small glint as it settles.
+func _lock(cluster: Node2D) -> void:
+	var first := not cluster.has_meta("locked")
+	cluster.set_meta("locked", true)
+	pieces_root.move_child(cluster, 0)
+	cluster.modulate = Color(1.22, 1.18, 1.08)
+	create_tween().tween_property(cluster, "modulate", Color.WHITE, 0.45 if first else 0.3)
 
 
 func _are_neighbours(a: Node2D, b: Node2D) -> bool:
@@ -336,7 +349,10 @@ func _merge(into: Node2D, from: Node2D) -> void:
 		into.add_child(p)
 	clusters.erase(from)
 	from.queue_free()
-	pieces_root.move_child(into, pieces_root.get_child_count() - 1)
+	if into.has_meta("locked"):
+		pieces_root.move_child(into, 0)
+	else:
+		pieces_root.move_child(into, pieces_root.get_child_count() - 1)
 
 
 ## The Help hint: one loose piece glides to its place. Prefers a piece that joins what is already on the board, then a

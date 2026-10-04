@@ -70,3 +70,15 @@ wide; the "Tray" button switches it and the choice is kept. Sized so a phone sho
 Verified by the self-test (both cuts, tray 49 -> 48 after a lift, tray off leaves nothing hidden, solve still ends in
 one cluster) at 1280 x 800 and 450 x 900, screenshots looked at. Still to do for phones: the top bar is built for a
 computer and is too small to tap on a phone; it needs its own compact layout.
+
+**Help button (Eric, same day).** Paid jigsaws make you watch an ad for a hint, some "obnoxiously long and sticky". Here
+Help shows one short panel about the project for 6 seconds on a paper card with the crab logo, a gold rule running
+down; then one piece glides to its place (first choice: a piece that joins placed work; then a border piece). "Not now"
+closes it without a hint. Panels come from `jigsaw/content/panels.json`, each with the source file for its facts, in a
+fixed shuffle whose place is kept, so a player sees every panel before any repeats.
+
+**Placed pieces lock (Eric: in his commercial jigsaw a placed piece locks down; "I'll let you decide what best game play
+is").** Decision: anything that reaches its true place on the board locks and can no longer be dragged; the table stays
+free-floating, so chunks can still be built on the side and carried in. Unlike the commercial game, an inside piece
+dropped exactly on its spot locks too, without the border being done first: a right placement is right. Locked work
+sits beneath loose pieces and glints once as it settles. Self-test: a placed piece cannot be picked up, a loose one can.
