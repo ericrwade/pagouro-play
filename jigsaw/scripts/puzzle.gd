@@ -339,6 +339,52 @@ func _merge(into: Node2D, from: Node2D) -> void:
 	pieces_root.move_child(into, pieces_root.get_child_count() - 1)
 
 
+## The Help hint: one loose piece glides to its place. Prefers a piece that joins what is already on the board, then a
+## border piece (the usual way to start), then any; if nothing loose is left, the smallest cluster still off the board.
+## Returns false when there is nothing to help with.
+func hint() -> bool:
+	if is_solved or dragging:
+		return false
+	var placed := {}
+	for c in clusters:
+		if c.position == Vector2.ZERO and c.visible:
+			for p in c.get_children():
+				placed[p.get_meta("rc")] = true
+	var best: Node2D = null
+	var best_score := -1
+	for c in clusters:
+		if c.position == Vector2.ZERO and c.visible:
+			continue
+		var score := 0
+		if c.get_child_count() == 1:
+			var rc: Vector2i = c.get_child(0).get_meta("rc")
+			score = 1
+			if rc.x == 0 or rc.y == 0 or rc.x == cols - 1 or rc.y == rows - 1:
+				score = 2
+			for d in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
+				if placed.has(rc + d):
+					score = 3
+		elif best_score == 0 and c.get_child_count() >= best.get_child_count():
+			continue  # among joined clusters, the smallest
+		if score > best_score or (score == 0 and best_score == 0):
+			best = c
+			best_score = score
+	if best == null:
+		return false
+	if tray.has(best):
+		tray.erase(best)
+		tray_changed.emit()
+		# it rises from the bottom of the view, where the tray is
+		var view := get_viewport_rect().size
+		best.position += screen_to_world(Vector2(view.x * 0.5, view.y - tray_height * 0.5)) - _cluster_centre(best)
+		best.visible = true
+	pieces_root.move_child(best, pieces_root.get_child_count() - 1)
+	var t := create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	t.tween_property(best, "position", Vector2.ZERO, 0.9)
+	t.tween_callback(func(): if is_instance_valid(best) and clusters.has(best): _settle(best))
+	return true
+
+
 ## Test helper: move every cluster home and settle, one by one (used by the self-test, never by the player).
 func solve_all_for_test() -> void:
 	tray.clear()

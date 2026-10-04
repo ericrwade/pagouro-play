@@ -14,6 +14,7 @@ const TABLES := [
 	["Prussian blue", Color("2d6fa0")], ["Deep sage", Color("3a4a34")], ["Plum", Color("7a3c4a")], ["Prussian night", Color("0e2a44")], ["Warm black", Color("1a1410")],
 ]
 const SETTINGS := "user://settings.cfg"
+const PANELS := "res://content/panels.json"
 const EPOCH_DAY := 20454  # 2026-01-01 as days since 1970-01-01 (UTC); day 0 of the daily list
 
 var pictures: Array = []
@@ -34,12 +35,20 @@ var sponsor_label: Label
 var cut_button: OptionButton
 var tray_button: Button
 var tray_panel: Tray
+var help_card: HelpCard
+var panels: Array = []
 var finish_panel: PanelContainer
 var finish_label: Label
 
 
 func _ready() -> void:
 	pictures = JSON.parse_string(FileAccess.get_file_as_string(PICTURES))
+	if FileAccess.file_exists(PANELS):
+		var parsed = JSON.parse_string(FileAccess.get_file_as_string(PANELS))
+		if parsed is Array:
+			panels = parsed
+	if panels.is_empty():
+		panels = [{"title": "Free, thanks to Pagouro", "text": "Follow us on X @pagouro."}]
 	_build_ui()
 	var cfg := ConfigFile.new()
 	cfg.load(SETTINGS)
@@ -140,6 +149,11 @@ func _build_ui() -> void:
 	bar.add_child(title_label)
 	status_label = Label.new()
 	bar.add_child(status_label)
+	var help := Button.new()
+	help.text = "Help"
+	help.tooltip_text = "A few seconds about Pagouro, then a piece finds its place"
+	help.pressed.connect(_on_help)
+	bar.add_child(help)
 	var daily := Button.new()
 	daily.text = "Daily"
 	daily.pressed.connect(start_daily)
@@ -209,6 +223,9 @@ func _build_ui() -> void:
 	tray_panel.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
 	tray_panel.visible = false
 	root.add_child(tray_panel)
+	help_card = HelpCard.new()
+	root.add_child(help_card)
+	help_card.finished.connect(func(give): if give: puzzle.hint())
 	finish_panel = PanelContainer.new()
 	finish_panel.set_anchors_preset(Control.PRESET_CENTER)
 	finish_panel.visible = false
@@ -279,6 +296,27 @@ func _layout_tray() -> void:
 	# the sponsor line sits just above the tray when there is one
 	sponsor_label.offset_top = -30 - (height if on else 0.0)
 	sponsor_label.offset_bottom = -(height if on else 0.0)
+
+
+## The next panel in a fixed shuffle of all of them; the place is kept, so a player sees every panel before any repeats.
+func next_panel() -> Dictionary:
+	var cfg := ConfigFile.new()
+	cfg.load(SETTINGS)
+	var n := int(cfg.get_value("play", "help_next", 0))
+	var order := range(panels.size())
+	var rng := RandomNumberGenerator.new()
+	rng.seed = 1900  # the Paris Exposition Universelle
+	for i in range(order.size() - 1, 0, -1):
+		var j := rng.randi_range(0, i)
+		var t = order[i]; order[i] = order[j]; order[j] = t
+	_save("help_next", (n + 1) % panels.size())
+	return panels[order[n % panels.size()]]
+
+
+func _on_help() -> void:
+	if puzzle.is_solved or help_card.visible or puzzle.texture == null:
+		return
+	help_card.show_panel(next_panel())
 
 
 func _save(key: String, value) -> void:
@@ -356,6 +394,16 @@ func _selftest() -> void:
 	await get_tree().process_frame
 	await RenderingServer.frame_post_draw
 	get_viewport().get_texture().get_image().save_png("user://selftest_half.png")
+	help_card.show_panel(panels[0])
+	await get_tree().create_timer(0.4).timeout
+	await RenderingServer.frame_post_draw
+	get_viewport().get_texture().get_image().save_png("user://selftest_help.png")
+	help_card._end(false)
+	var before_hint := puzzle.clusters.size()
+	var hinted := puzzle.hint()
+	await get_tree().create_timer(1.2).timeout
+	report.append("hint given=%s clusters %d -> %d" % [str(hinted), before_hint, puzzle.clusters.size()])
+	report.append("%d help panels" % panels.size())
 	puzzle.solve_all_for_test()
 	report.append("after solve: %d cluster(s), solved=%s" % [puzzle.clusters.size(), str(puzzle.is_solved)])
 	await get_tree().create_timer(1.5).timeout  # let the seams fade
