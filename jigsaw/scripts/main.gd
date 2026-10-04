@@ -7,6 +7,13 @@ const PICTURES := "res://art/be/pictures.json"
 const MUSIC := "res://music/salon-loop-v1.ogg"
 const COUNTS := [12, 24, 48, 96, 150]
 const DAILY_COUNT := 48
+## Table colours to play on, so a picture never disappears into its background (Eric, 2026-10-03). Period-flavoured,
+## light to dark; the choice is kept between sessions.
+const TABLES := [
+	["Paper", Color("efe6d2")], ["Sage", Color("b9c4a7")], ["Rose", Color("d9b8ae")], ["Slate blue", Color("7d8fa3")],
+	["Bottle green", Color("2f4a3a")], ["Burgundy", Color("5c2a2e")], ["Night", Color("1f2433")], ["Charcoal", Color("2b2724")],
+]
+const SETTINGS := "user://settings.cfg"
 const EPOCH_DAY := 20454  # 2026-01-01 as days since 1970-01-01 (UTC); day 0 of the daily list
 
 var pictures: Array = []
@@ -21,6 +28,8 @@ var status_label: Label
 var count_button: OptionButton
 var music_button: Button
 var ghost_button: Button
+var table_button: OptionButton
+var sponsor_label: Label
 var finish_panel: PanelContainer
 var finish_label: Label
 
@@ -28,6 +37,11 @@ var finish_label: Label
 func _ready() -> void:
 	pictures = JSON.parse_string(FileAccess.get_file_as_string(PICTURES))
 	_build_ui()
+	var cfg := ConfigFile.new()
+	cfg.load(SETTINGS)
+	var table_index := int(cfg.get_value("play", "table", 0))
+	table_button.select(clampi(table_index, 0, TABLES.size() - 1))
+	_set_table(clampi(table_index, 0, TABLES.size() - 1), false)
 	puzzle.solved.connect(_on_solved)
 	puzzle.progress.connect(_on_progress)
 	var stream: AudioStream = load(MUSIC)
@@ -105,6 +119,7 @@ func _build_ui() -> void:
 	title_label = Label.new()
 	title_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	title_label.clip_text = true
+	title_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	title_label.add_theme_font_override("font", BelleStyle.title_font())
 	title_label.add_theme_font_size_override("font_size", 24)
 	bar.add_child(title_label)
@@ -126,6 +141,16 @@ func _build_ui() -> void:
 		is_daily = false
 		_start(randi()))
 	bar.add_child(count_button)
+	table_button = OptionButton.new()
+	for t in TABLES:
+		var swatch := Image.create(14, 14, false, Image.FORMAT_RGBA8)
+		swatch.fill(t[1])
+		table_button.add_icon_item(ImageTexture.create_from_image(swatch), t[0])
+	table_button.tooltip_text = "Table colour"
+	table_button.fit_to_longest_item = false
+	table_button.custom_minimum_size.x = 130
+	table_button.item_selected.connect(_set_table)
+	bar.add_child(table_button)
 	ghost_button = Button.new()
 	ghost_button.text = "Hint on"
 	ghost_button.toggle_mode = true
@@ -144,6 +169,7 @@ func _build_ui() -> void:
 	bar.add_child(music_button)
 	# the only "ad": one quiet line at the bottom
 	var sponsor := Label.new()
+	sponsor_label = sponsor
 	sponsor.text = "Free, thanks to Pagouro · pictures by Pagouro BE, music by Pagouro Salon · pagouro.com"
 	sponsor.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	sponsor.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
@@ -181,6 +207,18 @@ func _build_ui() -> void:
 	box.add_child(again)
 
 
+func _set_table(i: int, save := true) -> void:
+	var c: Color = TABLES[i][1]
+	puzzle.set_table_color(c)
+	# the sponsor line sits on the table: ink on light tables, paper on dark ones
+	sponsor_label.add_theme_color_override("font_color", BelleStyle.INK_SOFT if c.get_luminance() > 0.45 else Color(BelleStyle.PAPER, 0.8))
+	if save:
+		var cfg := ConfigFile.new()
+		cfg.load(SETTINGS)
+		cfg.set_value("play", "table", i)
+		cfg.save(SETTINGS)
+
+
 func _select_count(n: int) -> void:
 	var i := COUNTS.find(n)
 	if i >= 0:
@@ -214,6 +252,11 @@ func _selftest() -> void:
 	await get_tree().process_frame
 	await RenderingServer.frame_post_draw
 	get_viewport().get_texture().get_image().save_png("user://selftest_scattered.png")
+	_set_table(6, false)
+	await get_tree().process_frame
+	await RenderingServer.frame_post_draw
+	get_viewport().get_texture().get_image().save_png("user://selftest_night.png")
+	_set_table(0, false)
 	# join about half of the pieces, then shoot again
 	var half := puzzle.clusters.slice(0, puzzle.clusters.size() / 2)
 	for c in half:

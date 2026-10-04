@@ -21,6 +21,7 @@ var drag_offset := Vector2.ZERO
 var started_ms := 0
 var is_solved := false
 var show_ghost := true
+var table_color := BelleStyle.PAPER
 
 @onready var camera: Camera2D = $Camera2D
 @onready var board: Node2D = $Board
@@ -107,7 +108,8 @@ func _draw_board() -> void:
 	var size := texture.get_size()
 	var frame := Polygon2D.new()
 	frame.polygon = PackedVector2Array([Vector2.ZERO, Vector2(size.x, 0), size, Vector2(0, size.y)])
-	frame.color = BelleStyle.PAPER_DEEP
+	# the board is a shade off the table, darker on a light table and lighter on a dark one
+	frame.color = table_color.darkened(0.07) if table_color.get_luminance() > 0.45 else table_color.lightened(0.10)
 	board.add_child(frame)
 	if show_ghost:
 		var ghost := Sprite2D.new()
@@ -117,6 +119,13 @@ func _draw_board() -> void:
 		board.add_child(ghost)
 	for node in BelleStyle.frame_nodes(size):
 		board.add_child(node)
+
+
+func set_table_color(c: Color) -> void:
+	table_color = c
+	RenderingServer.set_default_clear_color(c)
+	if texture:
+		_draw_board()
 
 
 func set_ghost(on: bool) -> void:

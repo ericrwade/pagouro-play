@@ -35,3 +35,9 @@ Garamond for text (both SIL OFL), buttons with thin ink borders on paper, a gold
 a gold-and-ink double frame around the board with a pair of small Art Nouveau scrolls at each corner (outside the
 picture, never over it), and a double-edged finish card. Also: on completion the piece seams fade out and the view glides
 to frame the finished picture above the card, so the card never covers it.
+
+**Table colours (Eric: "The jigsaw game I have allows for the background color to be changed in case it matches the
+artwork too closely, too. Makes it easier to play.").** A menu of eight period-flavoured table colours, light to dark:
+Paper, Sage, Rose, Slate blue, Bottle green, Burgundy, Night, Charcoal. The board takes a shade just off the table
+(darker on light tables, lighter on dark ones), the sponsor line switches between ink and paper so it stays readable,
+and the choice is kept between sessions in `user://settings.cfg`. Checked on Night: cream and lavender pieces stand out.
