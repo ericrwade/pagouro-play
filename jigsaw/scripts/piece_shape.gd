@@ -19,6 +19,12 @@ const ARC_STEPS := 16
 const JITTER := 0.035
 ## The area every tab is scaled to, in square cells (about a classic round tab's).
 const TAB_AREA := 0.045
+## The classic cut's tabs, a little bigger (Eric, 2026-10-04: "a little bit proportionally larger"): 25 % more area,
+## so about 12 % larger across. The edge bow scales with it, so piece sizes stay balanced.
+const CLASSIC_TAB_AREA := 0.05625
+## Measured by the self-test: [smallest along, largest along, furthest out] any tab reaches, in cells, since the last
+## reset. Tabs must stay clear of the corners and of the blanks cut into the same piece.
+static var reach_stats := [9.0, -9.0, 0.0]
 ## The classic cut's corner wander (Eric: "Even real cardboard stodgy puzzles have some variation"): enough that edges
 ## meet at slightly-off angles, too little to read as whimsical.
 const CLASSIC_JITTER := 0.015
@@ -180,7 +186,7 @@ static func _edge(a: Vector2, b: Vector2, horizontal: bool, inner: bool, dir: fl
 	var wave_amp := (rng.randf_range(0.02, 0.055) if whimsical else rng.randf_range(0.006, 0.016)) * (1.0 if rng.randi() % 2 == 0 else -1.0)
 	var wave_k := 2.0  # an S-wave: out as much as in, so it changes the look but not the piece's area
 	# the bow: a hump of area BOW_SHARE * TAB_AREA into the tab holder (against the tab's direction); zero at both corners
-	var bow := BOW_SHARE * TAB_AREA * PI / 2.0
+	var bow := BOW_SHARE * (TAB_AREA if whimsical else CLASSIC_TAB_AREA) * PI / 2.0
 	var base := func(x: float) -> float: return wave_amp * sin(PI * x * wave_k) - bow * sin(PI * x)
 	var profile := _tab_profile(rng, whimsical)  # list of Vector2(along, out) for the tab, out measured from the base line
 	var start_x: float = profile[0].x
@@ -196,8 +202,8 @@ static func _edge(a: Vector2, b: Vector2, horizontal: bool, inner: bool, dir: fl
 	return out
 
 
-## The tab, as (along, out) points from where it leaves the base line to where it returns. Kept inside along
-## 0.27 .. 0.73 and at most 0.27 cells out, so two blanks in one piece never meet.
+## The tab, as (along, out) points from where it leaves the base line to where it returns. Measured reach (self-test,
+## reach_stats): whimsical 0.21 .. 0.79 along and 0.35 out, classic 0.24 .. 0.75 and 0.33, with every outline valid.
 static func _tab_profile(rng: RandomNumberGenerator, whimsical: bool) -> Array:
 	var cx := rng.randf_range(0.42, 0.58) if not whimsical else rng.randf_range(0.40, 0.60)
 	var kind := "round"
@@ -259,12 +265,16 @@ static func _tab_profile(rng: RandomNumberGenerator, whimsical: bool) -> Array:
 		var q: Vector2 = pts[(i + 1) % pts.size()]
 		area += p.x * q.y - q.x * p.y
 	area = abs(area) * 0.5
-	var k := sqrt(TAB_AREA * rng.randf_range(0.92, 1.08) / max(area, 1e-4))
+	var k := sqrt((TAB_AREA if whimsical else CLASSIC_TAB_AREA) * rng.randf_range(0.92, 1.08) / max(area, 1e-4))
 	neck_stats[0] = min(neck_stats[0], 2.0 * neck_half * k)
 	neck_stats[1] = min(neck_stats[1], neck_half / max(head_half, 1e-4))
 	var scaled := []
 	for p in pts:
-		scaled.append(Vector2(cx + (p.x - cx) * k, p.y * k))
+		var s := Vector2(cx + (p.x - cx) * k, p.y * k)
+		scaled.append(s)
+		reach_stats[0] = min(reach_stats[0], s.x)
+		reach_stats[1] = max(reach_stats[1], s.x)
+		reach_stats[2] = max(reach_stats[2], s.y)
 	return scaled
 
 
@@ -291,4 +301,9 @@ static func area_report(rows: int, cols: int, seed_value: int, style: int) -> Ar
 		for c in range(1, cols - 1):
 			var outs := int(cut.dirs.h[Vector2i(r, c)] < 0) + int(cut.dirs.h[Vector2i(r + 1, c)] > 0) + int(cut.dirs.v[Vector2i(r, c)] < 0) + int(cut.dirs.v[Vector2i(r, c + 1)] > 0)
 			mix[outs] += 1
-	return [inner.max() / inner.min(), all.max() / all.min(), mix]
+	var broken := 0
+	for r in range(rows):
+		for c in range(cols):
+			if Geometry2D.triangulate_polygon(PackedVector2Array(piece_outline(cut, r, c))).is_empty():
+				broken += 1
+	return [inner.max() / inner.min(), all.max() / all.min(), mix, broken]
