@@ -19,7 +19,8 @@ entries of `docs/BUILD_LOG.md`. `docs/HANDOFF.md` has the toolchain and guardrai
   September 2026 only builds signed with registered keys install on certified devices, so sign every test build with
   the release key from now on (the debug key is not registered).
 - **Play Console:** personal account, developer name **Pagouro**, device check done (Play Console app installed).
-  **Waiting on Google's identity verification.** Fees: $25 Developer Console + $25 Play Console, both paid by Eric.
+  **Waiting on Google's identity verification** (2026-10-05: Eric re-uploaded his driver's license because the
+  first one he sent had expired, so verification restarted). Fees: $25 Developer Console + $25 Play Console, both paid by Eric.
 - **Privacy policy:** LIVE at https://pagouro.com/jigsaw-privacy.html (pushed to `ericrwade/pagouro-site` with Eric's OK).
   Contact `info@pagouro.com`, confirmed delivering.
 - **Store kit ready** in `store/`: listing text and every form answer (`PLAY_STORE.md`), `feature_graphic.png`
@@ -67,3 +68,13 @@ Eric had wanted to use Summer Engine. The jigsaw was built in standalone Godot o
 AMPLYFi and its tools act on whatever project is open (no interference was the rule). Not an efficiency choice. Next
 time Summer is free: offer to move the jigsaw into Summer, or build Solitaire in Summer from the start, and say so up
 front if a project can't use it.
+
+## x402 (Claude's wallet, agentic payments)
+
+- **Wallet:** Claude's own Base wallet `0x038fB781Ebf705b7f372243bAe63D4CbD0278983`. Eric funds it but deliberately
+  doesn't hold the key, which lives in `%USERPROFILE%\.ssh\pagouro-x402-wallet.key` and is never printed or copied.
+- **Cap:** 1.00 USDC total. Every spend is posted on issue #2.
+- **How-to:** the `x402` Claude Code skill in `~/.claude/skills/x402/` (SKILL.md, scripts, and the one shared
+  ledger). Mirrored here as `tools_src/x402_SKILL.md`, `x402_get.py`, `x402_find.py` and `x402_balance.py`.
+- **2026-10-05:** first purchase, 0.039 USDC for 1,185 Google Play reviews. Results in
+  `store/MARKET_RESEARCH_2026-10-05.md`; the listing recommendations there are not yet applied to `PLAY_STORE.md`.
