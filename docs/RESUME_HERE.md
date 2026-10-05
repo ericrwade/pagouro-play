@@ -35,7 +35,7 @@ entries of `docs/BUILD_LOG.md`. `docs/HANDOFF.md` has the toolchain and guardrai
   lettering-free picks, faces checked by eye; 001, 097, 107, 143 pipe, 164, 171 bayonet left out) and 89 from
   **jigsaw batch 1** (`PAGOURO_BE/showcase/jigsaw_b1/README.md`: 1,272 drawn on a RunPod A100 for ~$1.40, judged with
   a strict faces check, every face checked by eye). Files `jigsaw/art/be/b1-NNN-slug.jpg`.
-- The Play bundle on `play-0.2.4` has only 30: **rebuild before uploading** (bump to 0.2.5 / code 16 in BOTH presets
+- **Rebuilt 2026-10-05 as 0.2.5 / code 16** with all 160 (pictures lossy 0.9 like the first 30; lossless had made the bundle 178 MB, now 82 MB), backed up on private release `play-0.2.5`, installed on Eric's Pixel. (Was: bump to 0.2.5 / code 16 in BOTH presets
   and project.godot). Bundle grows by about 23 MB of pictures.
 - Eric's next ideas: themed **bundles** and, in a later version, a page to choose bundles (download packs would
   need the internet permission: update the store line, privacy page and Data safety first, or check Play Asset

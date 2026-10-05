@@ -1,18 +1,18 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene format=3 uid="uid://d01gbn0d1nhli"]
 
-[ext_resource type="Script" path="res://scripts/main.gd" id="1"]
-[ext_resource type="Script" path="res://scripts/puzzle.gd" id="2"]
+[ext_resource type="Script" uid="uid://cmdm6mvunnpx" path="res://scripts/main.gd" id="1"]
+[ext_resource type="Script" uid="uid://bjbtnrvg81riy" path="res://scripts/puzzle.gd" id="2"]
 
-[node name="Main" type="Node"]
+[node name="Main" type="Node" unique_id=2003033778]
 script = ExtResource("1")
 
-[node name="Puzzle" type="Node2D" parent="."]
+[node name="Puzzle" type="Node2D" parent="." unique_id=1200901613]
 script = ExtResource("2")
 
-[node name="Camera2D" type="Camera2D" parent="Puzzle"]
+[node name="Camera2D" type="Camera2D" parent="Puzzle" unique_id=331191179]
 
-[node name="Board" type="Node2D" parent="Puzzle"]
+[node name="Board" type="Node2D" parent="Puzzle" unique_id=1960966664]
 
-[node name="Pieces" type="Node2D" parent="Puzzle"]
+[node name="Pieces" type="Node2D" parent="Puzzle" unique_id=1030039782]
 
-[node name="Music" type="AudioStreamPlayer" parent="."]
+[node name="Music" type="AudioStreamPlayer" parent="." unique_id=251561419]
