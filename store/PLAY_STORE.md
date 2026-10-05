@@ -132,3 +132,9 @@ Pixel 11 Pro XL after removing the USB test build (Eric's go-ahead), and runs: m
 - 2026-10-05: Eric's identity and phone VERIFIED by Play Console. Next: Create app.
 - 2026-10-05: renamed to Jigsaw by Pagouro (Eric), 0.2.6 / code 17. 'AI' kept out of the name on purpose (Eric agreed):
   the description states it plainly instead.
+- 2026-10-05: Play Console set up by Eric (app created, listing, App content incl. advertising ID = No, internal
+  test). CLOSED TEST created with 0.2.6 (17), Eric's 5 testers, SENT FOR REVIEW. Opt-in link given to Testers
+  Community (testerscommunity.com, Starter plan, 15 testers, refund if production access is refused). The 14-day
+  clock starts per tester once the review passes and they opt in. During the test: read their feedback and ship one
+  small update (Google's production form asks what changed). Earliest production application: 14 days after the
+  12th tester opts in.

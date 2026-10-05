@@ -38,6 +38,7 @@ entries of `docs/BUILD_LOG.md`. `docs/HANDOFF.md` has the toolchain and guardrai
   a strict faces check, every face checked by eye). Files `jigsaw/art/be/b1-NNN-slug.jpg`.
 - **0.2.6 / code 17 (2026-10-05): renamed Jigsaw by Pagouro** (launcher showed 'Pagouro J…'); release `play-0.2.6`,
   AAB sha256 fdb27387…, installed on Eric's Pixel over 0.2.5 (same key, saves kept). Package name unchanged.
+- **Closed test sent for review 2026-10-05**, Testers Community engaged (details in `store/PLAY_STORE.md`, Progress).
 - **Rebuilt 2026-10-05 as 0.2.5 / code 16** with all 160 (pictures lossy 0.9 like the first 30; lossless had made the bundle 178 MB, now 82 MB), backed up on private release `play-0.2.5`, installed on Eric's Pixel. (Was: bump to 0.2.5 / code 16 in BOTH presets
   and project.godot). Bundle grows by about 23 MB of pictures.
 - Eric's next ideas: themed **bundles** and, in a later version, a page to choose bundles (download packs would
