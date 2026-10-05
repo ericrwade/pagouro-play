@@ -27,13 +27,13 @@ self-test, not remembered. Fill the two blanks marked ✱.
 
 ```
 A quiet, free jigsaw puzzle game of Belle Époque posters: poplars at sunset, the Eiffel Tower in spring, irises in a
-tall vase, balloons over Paris rooftops, a black cat on a red cushion. Thirty pictures, every one drawn for this game.
+tall vase, balloons over Paris rooftops, a black cat on a red cushion. Seventy-one pictures, every one drawn by our own AI picture model.
 
 No ads. No tracking. No account. Nothing to buy.
 
 THE PUZZLES
 • A daily puzzle: the same picture for everyone each day.
-• Any of the 30 pictures at 12, 25, 49, 100 or 156 pieces.
+• Any of the 71 pictures at 12, 25, 49, 100 or 156 pieces.
 • Two cuts: Whimsical (waving edges, bulbs, caps and arrowheads) or Classic (a traditional die-cut look, every piece a
   little different, like real cardboard).
 • Optional rotation for experts: pieces start turned; tap to turn.
@@ -88,7 +88,7 @@ Pixel 11 Pro XL after removing the USB test build (Eric's go-ahead), and runs: m
 - **App access:** all functionality is available without special access (no login).
 - **Content rating (IARC questionnaire):** category "Game"; violence, fear, sexuality, nudity, crude humor, profanity,
   gambling, controlled substances: none. Users interact or share content: no. Shares location: no. Digital purchases:
-  no. Checked against the 30 pictures: vineyards and a grape harvest (no drinking shown); a nightclub scene with dancers
+  no. Checked against the 71 pictures: vineyards, a grape harvest and a bunch of grapes, café and cabaret tables (no one drinking, no bottles labeled); the pipe-smoking fisherman (x180 #143) left out for tobacco; the soldier with a bayonet (#171) left out; a nightclub scene with dancers
   and stylized colored smoke (no cigarettes or drinks). Expect "Everyone" / PEGI 3.
 - **Target audience:** 13 and over (13-15, 16-17, 18+). Choosing under-13 brings the Families policy and
   teacher-approved review; nothing in the game needs it. Answer "no" to "could the app unintentionally appeal to

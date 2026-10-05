@@ -10,7 +10,7 @@ Pagouro Salon piano loop playing softly underneath. Runs on Windows and Android 
 
 - **Daily puzzle**: the same picture for every player each day, 49 pieces, chosen from the date by a fixed shuffle
   (works offline, no server).
-- **Any picture**: 30 pictures bundled; 12, 25, 49, 100 or 156 pieces (true counts: near-square pieces cannot make every number).
+- **Any picture**: 71 pictures bundled; 12, 25, 49, 100 or 156 pieces (true counts: near-square pieces cannot make every number).
 - **Two cuts**: *Whimsical* (the default: corners off the grid, waving edges, round, bulbous, cap and arrowhead tabs) and
   *Classic* (a traditional die-cut look with mild hand-cut variation). Piece sizes are held close and measured by the
   self-test; every tab's neck is at least half its head's width (the cardboard rule).

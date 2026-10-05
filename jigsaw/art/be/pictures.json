@@ -102,6 +102,12 @@
   "seed": 1000
  },
  {
+  "file": "res://art/be/038-mountain-lake-reflection.jpg",
+  "caption": "a still mountain lake reflecting snowy peaks",
+  "category": "landscapes",
+  "seed": 1002
+ },
+ {
   "file": "res://art/be/039-laundry-courtyard.jpg",
   "caption": "women hanging white laundry in a sunny courtyard",
   "category": "everyday",
@@ -132,6 +138,12 @@
   "seed": 1000
  },
  {
+  "file": "res://art/be/048-dirigible-over-eiffel.jpg",
+  "caption": "a long silver airship flying past the Eiffel Tower",
+  "category": "balloons",
+  "seed": 1002
+ },
+ {
   "file": "res://art/be/054-fruit-market-apples-pears.jpg",
   "caption": "a market stall piled with apples, pears and grapes",
   "category": "markets",
@@ -156,9 +168,45 @@
   "seed": 1000
  },
  {
+  "file": "res://art/be/068-rooster-farmyard.jpg",
+  "caption": "a proud rooster in a farmyard",
+  "category": "animals",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/069-water-lilies-pond.jpg",
+  "caption": "water lilies on a still pond",
+  "category": "flowers",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/073-girl-red-ribbon.jpg",
+  "caption": "a little girl with a red ribbon in her hair holding a kitten",
+  "category": "people",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/074-chalk-cliffs-sea.jpg",
+  "caption": "white chalk cliffs above a calm green sea",
+  "category": "landscapes",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/076-monaco-harbour-cliffs.jpg",
+  "caption": "a harbour with yachts below cliffs and pastel villas",
+  "category": "travel",
+  "seed": 1000
+ },
+ {
   "file": "res://art/be/079-ferry-crossing-passengers.jpg",
   "caption": "a small ferry crossing a river with passengers under parasols",
   "category": "boats",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/080-lighthouse-sunset-gulls.jpg",
+  "caption": "a lighthouse on a cliff at sunset with gulls",
+  "category": "lighthouses",
   "seed": 1000
  },
  {
@@ -174,9 +222,207 @@
   "seed": 1002
  },
  {
+  "file": "res://art/be/086-poodle-bow-chair.jpg",
+  "caption": "a white poodle with a bow sitting on a velvet chair",
+  "category": "animals",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/087-chrysanthemums-window.jpg",
+  "caption": "yellow chrysanthemums in a pot on a windowsill",
+  "category": "flowers",
+  "seed": 1000
+ },
+ {
   "file": "res://art/be/088-motor-car-seaside-road.jpg",
   "caption": "a red motor car on a coastal road above the sea",
   "category": "motorcars",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/092-pine-forest-mist.jpg",
+  "caption": "a pine forest in morning mist with sunbeams between the trunks",
+  "category": "landscapes",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/094-alps-chalet-meadow.jpg",
+  "caption": "a wooden chalet in an alpine meadow with wildflowers and snowy peaks",
+  "category": "travel",
+  "seed": 1001
+ },
+ {
+  "file": "res://art/be/095-cafe-terrace-evening.jpg",
+  "caption": "a crowded café terrace with round tables and lanterns at dusk",
+  "category": "fun",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/098-lighthouse-island-boat.jpg",
+  "caption": "a lighthouse on a small rocky island with a boat approaching",
+  "category": "lighthouses",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/099-tall-ship-sunset.jpg",
+  "caption": "a tall ship silhouetted against an orange sunset",
+  "category": "sailing",
+  "seed": 1001
+ },
+ {
+  "file": "res://art/be/101-seaplane-harbour.jpg",
+  "caption": "a seaplane on floats taxiing in a harbour",
+  "category": "aeroplanes",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/104-swans-pond-willow.jpg",
+  "caption": "two swans on a pond beneath a willow",
+  "category": "animals",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/105-wisteria-arbour.jpg",
+  "caption": "a wisteria arbour in full bloom",
+  "category": "flowers",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/108-covered-market-hall.jpg",
+  "caption": "a covered market hall with iron columns and busy shoppers",
+  "category": "markets",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/110-river-valley-castle.jpg",
+  "caption": "a river valley with a castle on a hill and a bridge below",
+  "category": "landscapes",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/119-biplane-sunset-clouds.jpg",
+  "caption": "a biplane among pink clouds at sunset",
+  "category": "aeroplanes",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/122-fox-snowy-woods.jpg",
+  "caption": "a red fox in snowy woods",
+  "category": "animals",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/124-woman-reading-window.jpg",
+  "caption": "a woman in a blue gown reading a book by a tall window",
+  "category": "people",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/130-motor-launch-lake.jpg",
+  "caption": "a varnished motor launch speeding across a lake",
+  "category": "boats",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/136-waterfall-gorge.jpg",
+  "caption": "a waterfall tumbling into a rocky gorge",
+  "category": "landscapes",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/137-woman-piano-parlour.jpg",
+  "caption": "a woman playing an upright piano in a parlour",
+  "category": "everyday",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/138-venice-gondola-canal.jpg",
+  "caption": "a gondola on a narrow canal in Venice with a small bridge",
+  "category": "travel",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/139-picnic-riverbank.jpg",
+  "caption": "a picnic on a riverbank with a basket, a parasol and a rowing boat",
+  "category": "fun",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/140-bunch-grapes-leaves.jpg",
+  "caption": "a bunch of purple grapes with vine leaves",
+  "category": "wine",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/141-railway-night-signals.jpg",
+  "caption": "a locomotive at night with glowing red and green signal lamps",
+  "category": "trains",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/142-cabaret-audience-tables.jpg",
+  "caption": "an audience at candlelit tables watching a stage show",
+  "category": "cabaret",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/144-sunflower-field-village.jpg",
+  "caption": "a field of sunflowers in front of a village with a church steeple",
+  "category": "landscapes",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/146-venice-san-marco-pigeons.jpg",
+  "caption": "pigeons in a square before a domed cathedral",
+  "category": "travel",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/152-autumn-forest-path.jpg",
+  "caption": "a path through an autumn forest in orange and gold",
+  "category": "landscapes",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/157-moonlit-lake-boat.jpg",
+  "caption": "a moonlit lake with a lone rowing boat",
+  "category": "landscapes",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/161-man-bicycle-cap.jpg",
+  "caption": "a young man in a flat cap and knickerbockers standing beside his bicycle",
+  "category": "people",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/162-windmill-tulip-field.jpg",
+  "caption": "a windmill beside a field of red tulips",
+  "category": "landscapes",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/167-stormy-sea-rocks.jpg",
+  "caption": "waves crashing on dark rocks under a stormy sky",
+  "category": "landscapes",
+  "seed": 1001
+ },
+ {
+  "file": "res://art/be/170-fireworks-over-crowd.jpg",
+  "caption": "fireworks bursting over a crowd in a park at night",
+  "category": "fun",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/175-mont-saint-michel-tide.jpg",
+  "caption": "a castle on a rocky island at high tide",
+  "category": "travel",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/178-loire-chateau-gardens.jpg",
+  "caption": "a château with turrets and formal gardens",
+  "category": "travel",
   "seed": 1000
  }
 ]
