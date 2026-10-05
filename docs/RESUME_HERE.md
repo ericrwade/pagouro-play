@@ -19,8 +19,8 @@ entries of `docs/BUILD_LOG.md`. `docs/HANDOFF.md` has the toolchain and guardrai
   September 2026 only builds signed with registered keys install on certified devices, so sign every test build with
   the release key from now on (the debug key is not registered).
 - **Play Console:** personal account, developer name **Pagouro**, device check done (Play Console app installed).
-  **Waiting on Google's identity verification** (2026-10-05: Eric re-uploaded his driver's license because the
-  first one he sent had expired, so verification restarted). Fees: $25 Developer Console + $25 Play Console, both paid by Eric.
+  **Identity and phone VERIFIED 2026-10-05** (after re-uploading an unexpired driver's license). Paste kit with every
+  field in Console order: https://claude.ai/artifact/Qe77BYTzw5uvnTsHVVACnt (generated from PLAY_STORE.md). Fees: $25 Developer Console + $25 Play Console, both paid by Eric.
 - **Privacy policy:** LIVE at https://pagouro.com/jigsaw-privacy.html (pushed to `ericrwade/pagouro-site` with Eric's OK).
   Contact `info@pagouro.com`, confirmed delivering.
 - **Store kit ready** in `store/`: listing text and every form answer (`PLAY_STORE.md`), `feature_graphic.png`
