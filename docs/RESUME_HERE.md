@@ -29,6 +29,20 @@ entries of `docs/BUILD_LOG.md`. `docs/HANDOFF.md` has the toolchain and guardrai
   (name uncertain; he said "Mathias???") once the closed test needs testers, by email, not Discord (his Discord name
   is not his real name and he doesn't want them linked).
 
+## Pictures (2026-10-04, later)
+
+- **160 pictures** in the game now (was 30): 41 more from the x180 set (`PAGOURO_BE/showcase/x180`, clean
+  lettering-free picks, faces checked by eye; 001, 097, 107, 143 pipe, 164, 171 bayonet left out) and 89 from
+  **jigsaw batch 1** (`PAGOURO_BE/showcase/jigsaw_b1/README.md`: 1,272 drawn on a RunPod A100 for ~$1.40, judged with
+  a strict faces check, every face checked by eye). Files `jigsaw/art/be/b1-NNN-slug.jpg`.
+- The Play bundle on `play-0.2.4` has only 30: **rebuild before uploading** (bump to 0.2.5 / code 16 in BOTH presets
+  and project.godot). Bundle grows by about 23 MB of pictures.
+- Eric's next ideas: themed **bundles** and, in a later version, a page to choose bundles (download packs would
+  need the internet permission: update the store line, privacy page and Data safety first, or check Play Asset
+  Delivery's on-demand packs).
+- The jigsaw now opens in **Summer Engine** (0.5.68; Eric: "force it into the loop"); Summer normalized project.godot
+  (same settings). It runs there with 0 runtime errors.
+
 ## Next, when Eric is verified
 
 1. Play Console → Create app: name `Pagouro Jigsaw`, English (United States), Game, Free, tick both declarations.
