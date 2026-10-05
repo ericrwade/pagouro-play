@@ -45,7 +45,7 @@ Bump BOTH `application/config/version` in `jigsaw/project.godot` (shown in About
   (add `--resolution 405x880` for the phone layout). ALWAYS silent and off-screen: a visible run pops onto Eric's
   desktop, plays music and once made him think the game had a 0:01 bug. It prints one SELFTEST line (piece-area spread
   and tab mix for both cuts, neck widths, tray, locking, save/restore identity, Help, hints, solve) and writes
-  screenshots to `%APPDATA%\Godot\app_userdata\Pagouro Jigsaw\`. LOOK at the screenshots: the off-screen finish card and
+  screenshots to `%APPDATA%\Godot\app_userdata\Jigsaw by Pagouro\`. LOOK at the screenshots: the off-screen finish card and
   the invisible Done label were both found only that way. It uses its own progress file, never the player's.
 - **After adding a script with a new `class_name`**: run `--headless --path jigsaw --import` once first.
 - **Android build**: `tools\godot-export\Godot_v4.7.2-stable_win64_console.exe --headless --path jigsaw --export-debug "Android" ../build/pagouro-jigsaw.apk`.

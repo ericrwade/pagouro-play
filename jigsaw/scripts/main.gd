@@ -1,5 +1,5 @@
 extends Node
-## Pagouro Jigsaw: the screen around the puzzle. Picks the picture (today's daily, or a random one), sets the piece
+## Jigsaw by Pagouro: the screen around the puzzle. Picks the picture (today's daily, or a random one), sets the piece
 ## count, plays the Pagouro Salon loop, shows the "free, thanks to Pagouro" line and the finished card.
 ## Run with `-- --selftest` to build a puzzle, solve it programmatically, save a screenshot and quit (no player input).
 
@@ -500,7 +500,7 @@ func _build_about(root: Control) -> void:
 	box.add_theme_constant_override("separation", 10)
 	card.add_child(box)
 	var heading := Label.new()
-	heading.text = "Pagouro Jigsaw"
+	heading.text = "Jigsaw by Pagouro"
 	heading.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	heading.add_theme_font_override("font", BelleStyle.title_font())
 	heading.add_theme_font_size_override("font_size", 30)

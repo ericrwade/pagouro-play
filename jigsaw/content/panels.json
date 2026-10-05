@@ -536,7 +536,7 @@
   "id": "jigsaw-06",
   "topic": "jigsaw",
   "title": "Free, Simply",
-  "text": "Pagouro Jigsaw is free. No ads, no tracking, no account, no paid unlock. Just a quiet note that Pagouro made it.",
+  "text": "Jigsaw by Pagouro is free. No ads, no tracking, no account, no paid unlock. Just a quiet note that Pagouro made it.",
   "source": "PAGOURO_PLAY/README.md; PAGOURO_SALON/docs/DECISIONS.md S-4"
  },
  {
@@ -564,7 +564,7 @@
   "id": "jigsaw-10",
   "topic": "jigsaw",
   "title": "Built in the Open",
-  "text": "Pagouro Jigsaw is built with Godot, a free and open-source game engine. The game's own code is Apache 2.0.",
+  "text": "Jigsaw by Pagouro is built with Godot, a free and open-source game engine. The game's own code is Apache 2.0.",
   "source": "PAGOURO_PLAY/README.md (Godot 4.7.2; Licenses: Code Apache 2.0); general (Godot is open source)"
  },
  {

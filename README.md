@@ -3,7 +3,7 @@
 Free games sponsored by Pagouro (decision S-4 in `PAGOURO_SALON/docs/DECISIONS.md`). No ads, no tracking, no account, no
 paid unlock: one quiet line says the game is free thanks to Pagouro.
 
-## Pagouro Jigsaw (`jigsaw/`)
+## Jigsaw by Pagouro (`jigsaw/`)
 
 A jigsaw puzzle of Belle Époque posters drawn by [Pagouro BE](https://github.com/ericrwade/pagouro-be), with the
 Pagouro Salon piano loop playing softly underneath. Runs on Windows and Android (a test build; not in any store yet).
@@ -35,7 +35,7 @@ separate program and never touches the Summer Engine editor or its settings.
 PLAY-JIGSAW.bat                                         play it on this PC
 tools\godot\Godot_v4.7.2-stable_win64_console.exe --path jigsaw --audio-driver Dummy --position -4000,-4000 -- --selftest
                                                         build, solve, measure, screenshot, quit, silently and off-screen
-                                                        (screenshots in %APPDATA%\Godot\app_userdata\Pagouro Jigsaw)
+                                                        (screenshots in %APPDATA%\Godot\app_userdata\Jigsaw by Pagouro)
 tools\godot-export\Godot_v4.7.2-stable_win64_console.exe --headless --path jigsaw --export-debug "Android" ../build/pagouro-jigsaw.apk
                                                         the Android test build (see docs/HANDOFF.md for the toolchain)
 ```

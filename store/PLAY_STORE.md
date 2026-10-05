@@ -1,6 +1,6 @@
-# Pagouro Jigsaw on Google Play: everything to paste
+# Jigsaw by Pagouro on Google Play: everything to paste
 
-Prepared 2026-10-04 for Eric's Play Console application. Facts below are measured from the build (0.2.5) or the
+Prepared 2026-10-04 for Eric's Play Console application. Facts below are measured from the build (0.2.6) or the
 self-test, not remembered. Fill the two blanks marked ✱.
 
 ## The build
@@ -18,7 +18,8 @@ self-test, not remembered. Fill the two blanks marked ✱.
 
 ## Store listing
 
-**App name** (30 max): `Pagouro Jigsaw`
+**App name** (30 max): `Jigsaw by Pagouro` (renamed 2026-10-05 from Pagouro Jigsaw: phone launchers show about 10
+characters, and 'Pagouro J…' hid what the app is; 'Jigsaw by…' does not)
 
 **Short description** (80 max, this is 70):
 `Relaxing Belle Époque jigsaws. No ads, nothing to buy, nothing locked.`
@@ -65,12 +66,12 @@ train ourselves, are documented at pagouro.com. The 160 pictures in the game wer
 1,400 drawings.
 
 WHY IT'S FREE
-Pagouro Jigsaw is made by Pagouro, a small project building free, open AI that runs on your own computer.
+It is made by Pagouro, a small project building free, open AI that runs on your own computer.
 Every picture and the music are CC0: yours to keep.
 
 The game works fully offline and asks for no permissions.
 
-With thanks to Summer Engine (summerengine.com), the AI game engine that got us making games. Pagouro Jigsaw
+With thanks to Summer Engine (summerengine.com), the AI game engine that got us making games. The game
 itself is built with Godot, the open-source engine Summer is built on.
 ```
 
@@ -86,7 +87,8 @@ published to `ericrwade/pagouro-site` with Eric's OK).
 longest Play allows; staged by `-- --shots` at 525×1050 and scaled up: fresh puzzle with tray, halfway, Help card,
 finished, menu). Real captures from the Pixel can replace them later; its screen is 2.22:1, so crop to 2:1.
 
-**Checked:** the release bundle (0.2.5, code 16, sha256 42b2904c…, release `play-0.2.5`) was turned into device APKs with bundletool 1.18.3, installed on Eric's
+**Checked:** the release bundle (0.2.6, code 17, sha256 fdb27387…, release `play-0.2.6`; launcher label read back from
+the installed APK as 'Jigsaw by Pagouro') was turned into device APKs with bundletool 1.18.3, installed on Eric's
 Pixel 11 Pro XL after removing the USB test build (Eric's go-ahead), and runs: masks bake, daily puzzle draws, no errors.
 
 ## App content forms
@@ -128,3 +130,5 @@ Pixel 11 Pro XL after removing the USB test build (Eric's go-ahead), and runs: m
 - 2026-10-05: listing text revised from the review research (`MARKET_RESEARCH_2026-10-05.md`): exact no-ads line,
   all pictures free, no data, no timer, AI stated with how it was made.
 - 2026-10-05: Eric's identity and phone VERIFIED by Play Console. Next: Create app.
+- 2026-10-05: renamed to Jigsaw by Pagouro (Eric), 0.2.6 / code 17. 'AI' kept out of the name on purpose (Eric agreed):
+  the description states it plainly instead.

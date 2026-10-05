@@ -1,4 +1,4 @@
-# Resume here — Pagouro Jigsaw on Google Play
+# Resume here — Jigsaw by Pagouro on Google Play
 
 Saved 2026-10-04, evening, at Eric's request before an aside ("a fork of this conversation"). Everything below is
 committed and pushed (`ericrwade/pagouro-play`, private, main). Read this, then `store/PLAY_STORE.md`, then the last two
@@ -36,6 +36,8 @@ entries of `docs/BUILD_LOG.md`. `docs/HANDOFF.md` has the toolchain and guardrai
   lettering-free picks, faces checked by eye; 001, 097, 107, 143 pipe, 164, 171 bayonet left out) and 89 from
   **jigsaw batch 1** (`PAGOURO_BE/showcase/jigsaw_b1/README.md`: 1,272 drawn on a RunPod A100 for ~$1.40, judged with
   a strict faces check, every face checked by eye). Files `jigsaw/art/be/b1-NNN-slug.jpg`.
+- **0.2.6 / code 17 (2026-10-05): renamed Jigsaw by Pagouro** (launcher showed 'Pagouro J…'); release `play-0.2.6`,
+  AAB sha256 fdb27387…, installed on Eric's Pixel over 0.2.5 (same key, saves kept). Package name unchanged.
 - **Rebuilt 2026-10-05 as 0.2.5 / code 16** with all 160 (pictures lossy 0.9 like the first 30; lossless had made the bundle 178 MB, now 82 MB), backed up on private release `play-0.2.5`, installed on Eric's Pixel. (Was: bump to 0.2.5 / code 16 in BOTH presets
   and project.godot). Bundle grows by about 23 MB of pictures.
 - Eric's next ideas: themed **bundles** and, in a later version, a page to choose bundles (download packs would
@@ -46,7 +48,7 @@ entries of `docs/BUILD_LOG.md`. `docs/HANDOFF.md` has the toolchain and guardrai
 
 ## Next, when Eric is verified
 
-1. Play Console → Create app: name `Pagouro Jigsaw`, English (United States), Game, Free, tick both declarations.
+1. Play Console → Create app: name `Jigsaw by Pagouro`, English (United States), Game, Free, tick both declarations.
 2. Store listing: paste from `PLAY_STORE.md`; upload icon, feature graphic, screenshots; category Game › Puzzle;
    contact info@pagouro.com; privacy URL above.
 3. App content forms: answers in `PLAY_STORE.md` (no ads, collects nothing, IARC all "none", audience 13+).

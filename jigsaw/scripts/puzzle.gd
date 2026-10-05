@@ -115,7 +115,7 @@ func build(tex: Texture2D, piece_count: int, seed_value: int) -> void:
 	var t0 := Time.get_ticks_msec()
 	mask_scale = PieceMasks.apply(self, pieces, shapes, size)
 	mask_ms = Time.get_ticks_msec() - t0
-	print("Pagouro Jigsaw: %d edge masks baked in %d ms" % [pieces.size(), mask_ms])
+	print("Jigsaw by Pagouro: %d edge masks baked in %d ms" % [pieces.size(), mask_ms])
 	# the tray takes the pieces in a shuffled order, the way they would fall out of a box
 	var order := clusters.duplicate()
 	for i in range(order.size() - 1, 0, -1):
