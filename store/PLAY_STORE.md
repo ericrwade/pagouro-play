@@ -1,6 +1,6 @@
 # Pagouro Jigsaw on Google Play: everything to paste
 
-Prepared 2026-10-04 for Eric's Play Console application. Facts below are measured from the build (0.2.3) or the
+Prepared 2026-10-04 for Eric's Play Console application. Facts below are measured from the build (0.2.5) or the
 self-test, not remembered. Fill the two blanks marked ✱.
 
 ## The build
@@ -20,8 +20,8 @@ self-test, not remembered. Fill the two blanks marked ✱.
 
 **App name** (30 max): `Pagouro Jigsaw`
 
-**Short description** (80 max, this is 66):
-`Free Belle Époque jigsaw puzzles. No ads, no tracking, no account.`
+**Short description** (80 max, this is 70):
+`Relaxing Belle Époque jigsaws. No ads, nothing to buy, nothing locked.`
 
 **Full description** (4,000 max):
 
@@ -29,7 +29,10 @@ self-test, not remembered. Fill the two blanks marked ✱.
 A quiet, free jigsaw puzzle game of Belle Époque posters: poplars at sunset, the Eiffel Tower in spring, irises in a
 tall vase, balloons over Paris rooftops, a black cat on a red cushion. A hundred and sixty pictures, every one drawn by our own AI picture model: Paris, gardens, dancers, castles, libraries, airships and more.
 
-No ads. No tracking. No account. Nothing to buy.
+No ads at all, ever. Nothing to buy, no coins, no subscription, nothing locked: all 160 pictures are free from
+the first day. No account, and the app collects no data.
+
+No timer and no score. Take as long as you like; when you finish, it simply tells you how long the puzzle took.
 
 THE PUZZLES
 • A daily puzzle: the same picture for everyone each day.
@@ -54,9 +57,15 @@ HELP, WITHOUT ADS
 Stuck? Help shows you one short note about the art, the music or the Belle Époque for a few seconds, then places a few
 pieces for you. No video, no ad.
 
+ABOUT THE AI PICTURES
+We want to be plain about this. The pictures were drawn by Pagouro BE, our own AI picture generator. It learned its
+Belle Époque style from public-domain posters made before 1929, each listed with its source in a public ledger, on
+top of an open base model trained on Creative Commons-licensed images. Its sources, including the parts we did not
+train ourselves, are documented at pagouro.com. The 160 pictures in the game were picked by hand from more than
+1,400 drawings.
+
 WHY IT'S FREE
-Pagouro Jigsaw is made by Pagouro, a small project building free, open AI that runs on your own computer. The pictures
-were drawn by Pagouro BE, our AI picture generator, which learned its style from public-domain posters made before 1929.
+Pagouro Jigsaw is made by Pagouro, a small project building free, open AI that runs on your own computer.
 Every picture and the music are CC0: yours to keep.
 
 The game works fully offline and asks for no permissions.
@@ -77,7 +86,7 @@ published to `ericrwade/pagouro-site` with Eric's OK).
 longest Play allows; staged by `-- --shots` at 525×1050 and scaled up: fresh puzzle with tray, halfway, Help card,
 finished, menu). Real captures from the Pixel can replace them later; its screen is 2.22:1, so crop to 2:1.
 
-**Checked:** the release bundle (0.2.4, code 15) was turned into device APKs with bundletool 1.18.3, installed on Eric's
+**Checked:** the release bundle (0.2.5, code 16, sha256 42b2904c…, release `play-0.2.5`) was turned into device APKs with bundletool 1.18.3, installed on Eric's
 Pixel 11 Pro XL after removing the USB test build (Eric's go-ahead), and runs: masks bake, daily puzzle draws, no errors.
 
 ## App content forms
@@ -116,3 +125,6 @@ Pixel 11 Pro XL after removing the USB test build (Eric's go-ahead), and runs: m
   you've added"). Builds signed with any other key, such as the Godot debug key, may not install once that applies.
 - 2026-10-04: fees paid by Eric: $25 Android Developer Console registration and $25 Google Play Console registration
   (two separate one-time fees, $50 in all). Play identity verification pending.
+- 2026-10-05: listing text revised from the review research (`MARKET_RESEARCH_2026-10-05.md`): exact no-ads line,
+  all pictures free, no data, no timer, AI stated with how it was made.
+- 2026-10-05: Eric's identity and phone VERIFIED by Play Console. Next: Create app.
