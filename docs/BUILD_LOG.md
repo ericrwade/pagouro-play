@@ -245,3 +245,28 @@ send adb input without checking the foreground app first.
   not published), feature_graphic.png, screenshots/phone_1..5.png (from the new `-- --shots` mode).
 - Pagouro Salon backed up: private repo ericrwade/pagouro-salon (code and docs) plus a private release holding the B2L
   model and loop v2 (checksums verified by download).
+
+
+## 2026-10-05 — 0.2.5, 160 pictures, and the first purchase by an agent
+
+- 0.2.5 (code 16) adds 130 Belle Époque pictures, for 160 in all. The first bundle was 178 MB because the new pictures
+  imported lossless (Godot's project default), while the first 30 had been set to lossy 0.9. Matching them brought the
+  bundle to 82 MB. Release `play-0.2.5`, checksum verified by download, installed on Eric's Pixel. Eric, the next
+  morning, over coffee: "a beautiful, very satisfying experience".
+- Eric set a task: find an honest reason for an agentic x402 payment (HTTP 402, paid in USDC on Base) that touches
+  Pagouro. The answer was market research for the store listing.
+  - Claude made its own wallet. The key stays on this box and Eric deliberately doesn't hold it.
+  - Eric sent ETH and a token (VCTRAI), which was sold for 8.468 USDC.
+  - Thirteen calls to a Google Play data service at 0.003 USDC each bought 1,185 reviews of eight leading jigsaw
+    apps, for 0.039 USDC in total.
+- Findings are in `store/MARKET_RESEARCH_2026-10-05.md`:
+  - Ads come up in 63.5 % of one- and two-star reviews, in every app.
+  - 25 of the top 30 apps show ads and collect data.
+  - A small, loud minority objects to AI art.
+- Mistake, kept in: Claude first told Eric that every free app in the top 30 had ads, having read only 20 of the 30
+  rows. Five are ad-free (one paid, three for children, one small). The memo and the report carry the correction.
+- The first choice of service, x402Atlas, turned out to be blocked by Eric's internet provider's security filter.
+  It looked like a broken TLS server until a plain-HTTP request redirected to the filter's warning page.
+- The payment tools became an `x402` Claude Code skill: free catalog search, a free price probe, and one shared
+  ledger enforcing Eric's 1.00 USDC cap. Mirrored in `tools_src/`.
+- Google Play: the identity check restarted after Eric found that the driver's license he first uploaded had expired.
