@@ -424,5 +424,539 @@
   "caption": "a château with turrets and formal gardens",
   "category": "travel",
   "seed": 1000
+ },
+ {
+  "file": "res://art/be/b1-001-eiffel-tower-dusk-seine.jpg",
+  "caption": "the Eiffel Tower at dusk seen across the Seine, gas lamps glowing along the quay",
+  "category": "paris",
+  "seed": 1004
+ },
+ {
+  "file": "res://art/be/b1-002-domes-sacrecoeur-montmartre-hill.jpg",
+  "caption": "the domes of Sacré-Cœur on Montmartre hill above Paris rooftops in morning light",
+  "category": "paris",
+  "seed": 1006
+ },
+ {
+  "file": "res://art/be/b1-007-arc-de-triomphe-sunset.jpg",
+  "caption": "the Arc de Triomphe at sunset with carriages circling around it",
+  "category": "paris",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/b1-008-young-woman-feathered-hat.jpg",
+  "caption": "a young woman in a feathered hat at the window of a Paris balcony overlooking rooftops",
+  "category": "paris",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/b1-009-pont-alexandre-iii-bridge.jpg",
+  "caption": "the Pont Alexandre III bridge with golden statues over the Seine",
+  "category": "paris",
+  "seed": 1003
+ },
+ {
+  "file": "res://art/be/b1-012-carousel-lit-lanterns-night.jpg",
+  "caption": "a carousel lit with lanterns at a night fair, painted horses mid-turn",
+  "category": "nightlife",
+  "seed": 1003
+ },
+ {
+  "file": "res://art/be/b1-014-violinist-evening-dress-playing.jpg",
+  "caption": "a violinist in evening dress playing under a single stage spotlight",
+  "category": "nightlife",
+  "seed": 1008
+ },
+ {
+  "file": "res://art/be/b1-015-paper-lanterns-strung-outdoor.jpg",
+  "caption": "paper lanterns strung over an outdoor dance floor in a summer garden at night",
+  "category": "nightlife",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/b1-016-theatre-interior-red-velvet.jpg",
+  "caption": "a theatre interior with red velvet seats, gilded balconies and a glowing chandelier",
+  "category": "nightlife",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/b1-018-fireworks-bursting-river-boats.jpg",
+  "caption": "fireworks bursting over a river with boats lit by lanterns",
+  "category": "nightlife",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/b1-021-tall-bouquet-pink-peonies.jpg",
+  "caption": "a tall bouquet of pink peonies in a blue porcelain vase",
+  "category": "flowers",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/b1-022-red-poppies-blue-cornflowers.jpg",
+  "caption": "red poppies and blue cornflowers in a wheat field under a summer sky",
+  "category": "flowers",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/b1-024-yellow-daffodils-tulips-terracotta.jpg",
+  "caption": "yellow daffodils and tulips in a terracotta pot on a windowsill",
+  "category": "flowers",
+  "seed": 1003
+ },
+ {
+  "file": "res://art/be/b1-025-branch-pink-cherry-blossom.jpg",
+  "caption": "a branch of pink cherry blossom against a pale blue sky",
+  "category": "flowers",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/b1-026-purple-lilacs-glass-vase.jpg",
+  "caption": "purple lilacs in a glass vase beside an open window",
+  "category": "flowers",
+  "seed": 1003
+ },
+ {
+  "file": "res://art/be/b1-027-field-lavender-rows-leading.jpg",
+  "caption": "a field of lavender rows leading to a stone farmhouse",
+  "category": "flowers",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/b1-028-orange-marigolds-blue-delphiniums.jpg",
+  "caption": "orange marigolds and blue delphiniums in a cottage border",
+  "category": "flowers",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/b1-029-single-white-lily-art.jpg",
+  "caption": "a single white lily in an art nouveau frame of curling stems",
+  "category": "flowers",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/b1-030-basket-wildflowers-wooden-table.jpg",
+  "caption": "a basket of wildflowers on a wooden table in sunlight",
+  "category": "flowers",
+  "seed": 1003
+ },
+ {
+  "file": "res://art/be/b1-031-fishing-boats-red-sails.jpg",
+  "caption": "fishing boats with red sails drawn up on a pebble beach",
+  "category": "boats",
+  "seed": 1007
+ },
+ {
+  "file": "res://art/be/b1-032-man-straw-boater-hat.jpg",
+  "caption": "a man in a straw boater hat rowing a small boat on a calm river",
+  "category": "boats",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/b1-033-harbor-colorful-fishing-boats.jpg",
+  "caption": "a harbor of colorful fishing boats below a hillside village",
+  "category": "boats",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/b1-034-paddle-steamer-wide-river.jpg",
+  "caption": "a paddle steamer on a wide river with green hills behind",
+  "category": "boats",
+  "seed": 1007
+ },
+ {
+  "file": "res://art/be/b1-036-canal-barge-flower-boxes.jpg",
+  "caption": "a canal barge with flower boxes passing under a stone bridge",
+  "category": "boats",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/b1-037-two-women-white-dresses.jpg",
+  "caption": "two women in white dresses in a punt on a river under willow trees",
+  "category": "boats",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/b1-039-formal-french-garden-clipped.jpg",
+  "caption": "a formal French garden with clipped hedges, gravel paths and a round fountain",
+  "category": "gardens",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/b1-040-rose-garden-archway-leading.jpg",
+  "caption": "a rose garden archway leading to a white gazebo",
+  "category": "gardens",
+  "seed": 1003
+ },
+ {
+  "file": "res://art/be/b1-041-gardener-apron-pushing-wheelbarrow.jpg",
+  "caption": "a gardener in an apron pushing a wheelbarrow of flowers along a garden path",
+  "category": "gardens",
+  "seed": 1009
+ },
+ {
+  "file": "res://art/be/b1-042-glass-greenhouse-full-palms.jpg",
+  "caption": "a glass greenhouse full of palms and ferns in a botanical garden",
+  "category": "gardens",
+  "seed": 1001
+ },
+ {
+  "file": "res://art/be/b1-043-japanesestyle-garden-red-bridge.jpg",
+  "caption": "a Japanese-style garden with a red bridge over a pond of water lilies",
+  "category": "gardens",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/b1-044-kitchen-garden-rows-vegetables.jpg",
+  "caption": "a kitchen garden with rows of vegetables and a brick wall with pear trees",
+  "category": "gardens",
+  "seed": 1007
+ },
+ {
+  "file": "res://art/be/b1-045-park-bench-flowering-chestnut.jpg",
+  "caption": "a park bench under a flowering chestnut tree beside a pond with ducks",
+  "category": "gardens",
+  "seed": 1003
+ },
+ {
+  "file": "res://art/be/b1-047-girl-watering-can-among.jpg",
+  "caption": "a girl with a watering can among sunflowers in a summer garden",
+  "category": "gardens",
+  "seed": 1006
+ },
+ {
+  "file": "res://art/be/b1-048-stone-terrace-urns-geraniums.jpg",
+  "caption": "a stone terrace with urns of geraniums overlooking a lake",
+  "category": "gardens",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/b1-050-woman-long-coat-fur.jpg",
+  "caption": "a woman in a long coat and fur hat walking a poodle in a snowy park",
+  "category": "strolling",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/b1-051-families-strolling-sunny-park.jpg",
+  "caption": "families strolling in a sunny park among trees and flower beds",
+  "category": "strolling",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/b1-053-mother-daughter-matching-hats.jpg",
+  "caption": "a mother and daughter in matching hats walking through a meadow of daisies",
+  "category": "strolling",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/b1-054-people-strolling-umbrellas-rainy.jpg",
+  "caption": "people strolling under umbrellas on a rainy boulevard, seen from behind",
+  "category": "strolling",
+  "seed": 1001
+ },
+ {
+  "file": "res://art/be/b1-055-woman-striped-dress-walking.jpg",
+  "caption": "a woman in a striped dress walking on a beach boardwalk with a hat in her hand",
+  "category": "strolling",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/b1-056-two-friends-walking-country.jpg",
+  "caption": "two friends walking along a country lane with a dog",
+  "category": "strolling",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/b1-057-lady-walking-grand-staircase.jpg",
+  "caption": "a lady walking down a grand staircase in a flowing evening gown",
+  "category": "strolling",
+  "seed": 1003
+ },
+ {
+  "file": "res://art/be/b1-058-children-rolling-hoops-park.jpg",
+  "caption": "children rolling hoops along a park path",
+  "category": "strolling",
+  "seed": 1004
+ },
+ {
+  "file": "res://art/be/b1-059-woman-bloomers-riding-bicycle.jpg",
+  "caption": "a woman in bloomers riding a bicycle along a country road",
+  "category": "cycling",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/b1-062-group-cyclists-riding-poplar.jpg",
+  "caption": "a group of cyclists riding past poplar trees on a sunny road",
+  "category": "cycling",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/b1-065-postman-cycling-field-sunflowers.jpg",
+  "caption": "a postman cycling past a field of sunflowers",
+  "category": "cycling",
+  "seed": 1004
+ },
+ {
+  "file": "res://art/be/b1-070-woman-dancing-long-flowing.jpg",
+  "caption": "a woman dancing with long flowing veils of colored silk",
+  "category": "dancing",
+  "seed": 1001
+ },
+ {
+  "file": "res://art/be/b1-071-tango-couple-elegant-pose.jpg",
+  "caption": "a tango couple in an elegant pose on a dark stage",
+  "category": "dancing",
+  "seed": 1006
+ },
+ {
+  "file": "res://art/be/b1-073-flamenco-dancer-red-ruffled.jpg",
+  "caption": "a flamenco dancer in a red ruffled dress with a fan",
+  "category": "dancing",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/b1-075-matterhorn-alpine-meadow-wildflowers.jpg",
+  "caption": "the Matterhorn above an alpine meadow of wildflowers",
+  "category": "landscapes",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/b1-076-tuscan-hill-town-cypress.jpg",
+  "caption": "a Tuscan hill town with cypress trees and golden fields",
+  "category": "landscapes",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/b1-078-norwegian-fjord-steep-green.jpg",
+  "caption": "a Norwegian fjord with steep green mountains and a small red boathouse",
+  "category": "landscapes",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/b1-079-scottish-highlands-purple-heather.jpg",
+  "caption": "Scottish highlands with purple heather and a loch under clouds",
+  "category": "landscapes",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/b1-080-dutch-polder-canal-windmills.jpg",
+  "caption": "a Dutch polder with a canal, windmills and grazing cows",
+  "category": "landscapes",
+  "seed": 1003
+ },
+ {
+  "file": "res://art/be/b1-081-greek-island-village-white.jpg",
+  "caption": "a Greek island village of white houses and blue domes above the sea",
+  "category": "landscapes",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/b1-083-provence-village-hilltop-olive.jpg",
+  "caption": "a Provence village on a hilltop above olive groves",
+  "category": "landscapes",
+  "seed": 1004
+ },
+ {
+  "file": "res://art/be/b1-084-snowy-peaks-dolomites-reflected.jpg",
+  "caption": "snowy peaks of the Dolomites reflected in a green lake",
+  "category": "landscapes",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/b1-085-irish-coastline-green-fields.jpg",
+  "caption": "an Irish coastline of green fields and stone walls above the Atlantic",
+  "category": "landscapes",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/b1-086-black-forest-valley-timbered.jpg",
+  "caption": "a Black Forest valley with a timbered farmhouse and pine trees",
+  "category": "landscapes",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/b1-088-ladies-long-gowns-conversing.jpg",
+  "caption": "ladies in long gowns conversing in a gilded salon with tall mirrors",
+  "category": "salons",
+  "seed": 1003
+ },
+ {
+  "file": "res://art/be/b1-089-elegant-drawing-room-silk.jpg",
+  "caption": "an elegant drawing room with silk sofas, a marble fireplace and a vase of roses",
+  "category": "salons",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/b1-090-painter-easel-sunlit-studio.jpg",
+  "caption": "a painter at an easel in a sunlit studio with canvases on the walls",
+  "category": "salons",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/b1-092-woman-reading-letter-chaise.jpg",
+  "caption": "a woman reading a letter on a chaise longue by a tall window",
+  "category": "salons",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/b1-093-tea-table-set-porcelain.jpg",
+  "caption": "a tea table set with porcelain cups, cakes and flowers in a parlor",
+  "category": "salons",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/b1-095-fairytale-castle-white-towers.jpg",
+  "caption": "a fairy-tale castle with white towers on a forested mountain ridge",
+  "category": "castles",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/b1-096-loire-chateau-reflected-river.jpg",
+  "caption": "a Loire chateau reflected in a river with arches",
+  "category": "castles",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/b1-097-ruined-castle-crag-river.jpg",
+  "caption": "a ruined castle on a crag above a river valley at sunset",
+  "category": "castles",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/b1-098-castle-rocky-island-reached.jpg",
+  "caption": "a castle on a rocky island reached by a causeway",
+  "category": "castles",
+  "seed": 1003
+ },
+ {
+  "file": "res://art/be/b1-099-moated-castle-round-towers.jpg",
+  "caption": "a moated castle with round towers and a drawbridge in spring",
+  "category": "castles",
+  "seed": 1004
+ },
+ {
+  "file": "res://art/be/b1-100-rhine-castle-vineyards-river.jpg",
+  "caption": "a Rhine castle above vineyards and a river with a paddle steamer",
+  "category": "castles",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/b1-101-scottish-castle-loch-shore.jpg",
+  "caption": "a Scottish castle on a loch shore with mountains behind",
+  "category": "castles",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/b1-103-racing-yacht-heeling-full.jpg",
+  "caption": "a racing yacht heeling under full white sails on a blue sea",
+  "category": "sailing",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/b1-106-regatta-small-sailboats-colored.jpg",
+  "caption": "a regatta of small sailboats with colored sails on a lake",
+  "category": "sailing",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/b1-107-paddle-steamer-lake-mountains.jpg",
+  "caption": "a paddle steamer on a lake with mountains behind",
+  "category": "sailing",
+  "seed": 1007
+ },
+ {
+  "file": "res://art/be/b1-108-steamship-deck-deck-chairs.jpg",
+  "caption": "a steamship deck with deck chairs and lifebuoys facing the open sea",
+  "category": "sailing",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/b1-109-tall-ship-sailing-stormy.jpg",
+  "caption": "a tall ship sailing through stormy waves",
+  "category": "sailing",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/b1-111-scientist-white-coat-examining.jpg",
+  "caption": "a scientist in a white coat examining a glowing glass flask in a laboratory",
+  "category": "labs",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/b1-113-astronomer-looking-large-brass.jpg",
+  "caption": "an astronomer looking through a large brass telescope in an observatory dome",
+  "category": "labs",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/b1-115-woman-chemist-pouring-colored.jpg",
+  "caption": "a woman chemist pouring a colored liquid between glass tubes",
+  "category": "labs",
+  "seed": 1009
+ },
+ {
+  "file": "res://art/be/b1-116-cabinet-curiosities-butterflies-shells.jpg",
+  "caption": "a cabinet of curiosities with butterflies, shells and fossils",
+  "category": "labs",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/b1-119-grand-library-tall-wooden.jpg",
+  "caption": "a grand library with tall wooden bookshelves, ladders and a glass dome",
+  "category": "libraries",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/b1-120-young-woman-reading-long.jpg",
+  "caption": "a young woman reading at a long library table under green lamps",
+  "category": "libraries",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/b1-121-spiral-staircase-library-lined.jpg",
+  "caption": "a spiral staircase in a library lined with books",
+  "category": "libraries",
+  "seed": 1001
+ },
+ {
+  "file": "res://art/be/b1-123-old-librarian-spectacles-shelving.jpg",
+  "caption": "an old librarian with spectacles shelving books on a ladder",
+  "category": "libraries",
+  "seed": 1004
+ },
+ {
+  "file": "res://art/be/b1-124-reading-room-arched-windows.jpg",
+  "caption": "a reading room with arched windows and rows of desks in afternoon light",
+  "category": "libraries",
+  "seed": 1000
+ },
+ {
+  "file": "res://art/be/b1-125-child-reading-picture-book.jpg",
+  "caption": "a child reading a picture book in a window seat",
+  "category": "libraries",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/b1-127-silver-airship-floating-rooftops.jpg",
+  "caption": "a silver airship floating over the rooftops of Paris",
+  "category": "airships",
+  "seed": 1006
+ },
+ {
+  "file": "res://art/be/b1-130-airship-harbor-full-steamships.jpg",
+  "caption": "an airship over a harbor full of steamships",
+  "category": "airships",
+  "seed": 1003
+ },
+ {
+  "file": "res://art/be/b1-133-two-airships-crossing-sunset.jpg",
+  "caption": "two airships crossing a sunset sky above a river city",
+  "category": "airships",
+  "seed": 1002
+ },
+ {
+  "file": "res://art/be/b1-134-airship-flying-castle-hill.jpg",
+  "caption": "an airship flying over a castle on a hill",
+  "category": "airships",
+  "seed": 1002
  }
 ]
