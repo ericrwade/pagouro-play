@@ -307,3 +307,12 @@ send adb input without checking the foreground app first.
   thumbs persist per piece: when one is lifted the slot stays empty for 0.18 s, then the pieces behind glide over in
   0.5 s (cubic ease-out); a piece put back fades in. A resize or a new puzzle places everything at once.
   Self-test: `tray glide: still during the beat=true, moving at 0.43 s=true, settled in slot 0=true, same thumb kept=true`.
+
+## 2026-10-06: in progress at the PC freeze (commit add3dc3, NOT yet self-tested)
+
+- Share drops the `pagouro.com` line (Eric: chat apps show a big site preview; his mom took the hermit crab for her
+  puzzle). New picture skips today's daily and the next 89 (`UPCOMING_DAILIES`, pool 70 of 160, shifts daily).
+- The first self-test of this froze Eric's PC (Kernel-Power 41 at 09:01): a 40-deal loop with no frame between deals
+  piled up puzzles. The loop now does 12 deals with a frame each. NEXT: run the self-test (watch memory), then build
+  0.2.9 with these + the tray glide. Eric still to: Publish the closed-test change after Google approves (Testers
+  Community group), reply to their email.
