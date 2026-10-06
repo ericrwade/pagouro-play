@@ -298,3 +298,12 @@ send adb input without checking the foreground app first.
   stretch of more than 2 minutes without a touch is dropped. Restored puzzles keep their banked time and wait for a
   touch. Self-test: `clock: before first touch 0 ms, after 0.6 s of play 601 ms, unchanged in background=true,
   200 s with a 130 s idle gap counts 70 s`. (The self-test's own solve now reads 0:00: its solver uses no touches.)
+
+## 2026-10-05 (late): queued for update 3
+
+- Cut choice IS remembered (settings.cfg `cut`, saved by `_set_cut`, loaded at start). Eric finds Whimsical too easy
+  and plays Classic; the default for new players is still Whimsical (open question, not changed).
+- Tray glide (Eric: "a tiny delay and slower slide so it's rewarding"). The tray used to rebuild instantly. Now its
+  thumbs persist per piece: when one is lifted the slot stays empty for 0.18 s, then the pieces behind glide over in
+  0.5 s (cubic ease-out); a piece put back fades in. A resize or a new puzzle places everything at once.
+  Self-test: `tray glide: still during the beat=true, moving at 0.43 s=true, settled in slot 0=true, same thumb kept=true`.

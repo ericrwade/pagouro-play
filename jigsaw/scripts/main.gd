@@ -1096,6 +1096,25 @@ func _selftest() -> void:
 	puzzle._clock_from = now - 200000  # began 200 s ago, last touch 130 s ago: 70 s of play, the idle gap dropped
 	puzzle._last_touch_ms = now - 130000
 	var idle_counted := puzzle.elapsed_ms()
+	# the tray closes the gap: a beat with the slot empty, then the next piece glides in and settles exactly
+	_set_tray(true, false)
+	_start(43)
+	await get_tree().process_frame
+	var mover: Node2D = puzzle.tray[1]
+	var thumb: Polygon2D = tray_panel._thumbs[mover]
+	var start_pos := thumb.position
+	puzzle.begin_drag_from_tray(puzzle.tray[0], Vector2(640, 300))
+	puzzle.end_drag(Vector2(640, 300))
+	await get_tree().create_timer(0.08).timeout
+	var held := thumb.position.is_equal_approx(start_pos)
+	await get_tree().create_timer(0.35).timeout
+	var midway := not thumb.position.is_equal_approx(start_pos)
+	await get_tree().create_timer(0.6).timeout
+	var piece0: Polygon2D = mover.get_child(0)
+	var s: float = tray_panel.slot * 0.78 / (1.6 * max(puzzle.cell.x, puzzle.cell.y))
+	var settled: Vector2 = tray_panel._slot_centre(0) - (piece0.get_meta("centre") * s).rotated(mover.rotation)
+	report.append("tray glide: still during the beat=%s, moving at 0.43 s=%s, settled in slot 0=%s, same thumb kept=%s" % [str(held), str(midway), str(thumb.position.distance_to(settled) < 0.5), str(tray_panel._thumbs.get(mover) == thumb)])
+	_set_tray(false, false)
 	report.append("clock: before first touch %d ms, after 0.6 s of play %d ms, unchanged in background=%s, 200 s with a 130 s idle gap counts %d s" % [before_touch, banked, str(after_pause == banked), idle_counted / 1000])
 	report.append("screenshots in " + ProjectSettings.globalize_path("user://"))
 	print("SELFTEST " + " | ".join(report))

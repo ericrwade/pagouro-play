@@ -7,6 +7,10 @@ extends Control
 const ROWS := 2
 const LIFT := 14.0     # pixels upward before a touch counts as lifting a piece
 const SLIDE := 8.0     # pixels sideways before a touch counts as scrolling
+# When a piece comes out, its slot stays empty for a beat, then the pieces behind it glide up to close the gap, so
+# taking one out reads clearly and feels rewarding (Eric, 2026-10-05: "a tiny delay and slower slide").
+const CLOSE_DELAY := 0.18
+const CLOSE_TIME := 0.5
 
 var puzzle: Puzzle
 var slot := 120.0
@@ -16,6 +20,8 @@ var _pressed := false
 var _mode := ""        # "", "scroll" or "lift"
 var _hit := -1
 var _strip: Node2D
+var _thumbs := {}         # tray cluster -> its picture in the tray, kept between rebuilds so they can move
+var _slot_drawn := 0.0    # the slot size the thumbs were made at; a new size (or a new puzzle) places without moving
 
 
 func _ready() -> void:
@@ -50,24 +56,53 @@ func _max_scroll() -> float:
 func rebuild() -> void:
 	if _strip == null or puzzle == null:
 		return
-	for child in _strip.get_children():
-		child.queue_free()
 	slot = (size.y - 8.0) / ROWS
 	scroll = clamp(scroll, 0.0, _max_scroll())
+	# glide only when the same tray just lost or gained a piece; a resize or a new puzzle places everything at once
+	var any_kept := puzzle.tray.any(func(c): return _thumbs.has(c))
+	var glide := any_kept and is_equal_approx(slot, _slot_drawn)
+	_slot_drawn = slot
 	# one scale for every piece, so their sizes compare the way they will on the board
 	var s: float = slot * 0.78 / (1.6 * max(puzzle.cell.x, puzzle.cell.y))
+	var kept := {}
 	for i in range(puzzle.tray.size()):
 		var cluster: Node2D = puzzle.tray[i]
 		var piece: Polygon2D = cluster.get_child(0)
-		var thumb := Polygon2D.new()
-		thumb.texture = piece.texture
-		thumb.polygon = piece.polygon
-		thumb.uv = piece.uv
-		thumb.material = piece.material  # the same smooth cut
+		var target: Vector2 = _slot_centre(i) - (piece.get_meta("centre") * s).rotated(cluster.rotation)
+		var thumb: Polygon2D = _thumbs.get(cluster)
+		var is_new := thumb == null or not glide
+		if thumb == null:
+			thumb = Polygon2D.new()
+			thumb.texture = piece.texture
+			thumb.polygon = piece.polygon
+			thumb.uv = piece.uv
+			thumb.material = piece.material  # the same smooth cut
+			_strip.add_child(thumb)
 		thumb.scale = Vector2(s, s)
 		thumb.rotation = cluster.rotation  # shown the way it will come out of the tray
-		thumb.position = _slot_centre(i) - (piece.get_meta("centre") * s).rotated(cluster.rotation)
-		_strip.add_child(thumb)
+		if thumb.has_meta("tween"):
+			(thumb.get_meta("tween") as Tween).kill()
+			thumb.remove_meta("tween")
+		if is_new or not glide or thumb.position.is_equal_approx(target):
+			thumb.position = target
+			if glide and is_new and not _thumbs.has(cluster):
+				# a piece put back: it fades in at its place while the others make room
+				thumb.modulate.a = 0.0
+				var fade := create_tween()
+				fade.tween_property(thumb, "modulate:a", 1.0, CLOSE_TIME).set_delay(CLOSE_DELAY)
+				thumb.set_meta("tween", fade)
+			else:
+				thumb.modulate.a = 1.0
+		else:
+			var move := create_tween()
+			move.tween_property(thumb, "position", target, CLOSE_TIME).set_delay(CLOSE_DELAY).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+			thumb.set_meta("tween", move)
+		kept[cluster] = thumb
+	# a piece that left the tray (in the player's fingers now, or a new puzzle's old pieces) goes at once
+	for c in _thumbs:
+		if not kept.has(c) and is_instance_valid(_thumbs[c]):
+			_thumbs[c].queue_free()
+	_thumbs = kept
 	_strip.position.x = -scroll
 	queue_redraw()
 
