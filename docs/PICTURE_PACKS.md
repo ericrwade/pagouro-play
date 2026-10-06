@@ -32,6 +32,22 @@ by one picture a day.
 - Updates download only what changed (Play patches installed apps), so a 30-picture pack is a download of roughly
   6 to 8 MB, not the whole app.
 
+## Paid packs (direction only, not built)
+
+Decided with Eric, 2026-10-06; revisit at 60 to 90 days, and only if there are players asking for more.
+
+- The base game stays free forever: 382 pictures (0.3.0), a year of dailies.
+- Beyond that, optional picture packs for about $4.99, sold **through Google Play Billing** (Google keeps 15%).
+  Not a website sale that unlocks content in the app: Play's payments policy covers that case.
+- Paid packs would arrive as Play Asset Delivery on-demand packs, not in the base download (0.3.0 is already
+  127.5 MB of the 200 MB base limit).
+- Packs are drawn and eye-checked ahead of time, never generated per purchase: about 1 in 5 judge-passed pictures
+  fail the eye check (batch 2).
+- The store listing currently says "nothing to buy, nothing locked". It must be reworded on purpose when packs
+  ship, e.g. "the game and its 382 pictures are free forever; extra packs are optional."
+- Anyone can still draw their own with Pagouro BE (free, CC0 output). Getting those into the game would need a
+  "puzzle from your own picture" import, which is a separate, free feature.
+
 ## Adding a pack (checklist)
 
 1. Draw with Pagouro BE (about 95 s per picture on the desktop; Eric keeps roughly 1 in 9), Eric picks.
