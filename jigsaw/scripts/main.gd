@@ -51,6 +51,8 @@ var panels: Array = []
 var finish_panel: PanelContainer
 var finish_label: Label
 var finish_credit: Label
+var share_button: Button
+var solved_seconds := 0.0
 var bar: HBoxContainer
 var daily_button: Button
 var random_button: Button
@@ -133,8 +135,15 @@ func _ready() -> void:
 		start_daily()
 
 
+## Days since 1970 on the player's own calendar, so the daily turns over at local midnight (as Wordle does), not at
+## midnight UTC, which is 5 pm in California.
+func today() -> int:
+	var bias := int(Time.get_time_zone_from_system().get("bias", 0))  # minutes east of UTC
+	return int((Time.get_unix_time_from_system() + bias * 60.0) / 86400.0)
+
+
 func today_index() -> int:
-	var day := int(Time.get_unix_time_from_system() / 86400.0) - EPOCH_DAY
+	var day := today() - EPOCH_DAY
 	# a fixed shuffle of the list, so consecutive days are not consecutive pictures; same for every player
 	var order := range(pictures.size())
 	var rng := RandomNumberGenerator.new()
@@ -150,7 +159,7 @@ func start_daily() -> void:
 	current = pictures[today_index()]
 	current_count = DAILY_COUNT
 	_select_count(DAILY_COUNT)
-	_start(int(Time.get_unix_time_from_system() / 86400.0))
+	_start(today())
 
 
 func start_random() -> void:
@@ -357,10 +366,18 @@ func _build_ui() -> void:
 	credit.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	credit.add_theme_font_size_override("font_size", 17)
 	box.add_child(credit)
+	var buttons := HBoxContainer.new()
+	buttons.alignment = BoxContainer.ALIGNMENT_CENTER
+	buttons.add_theme_constant_override("separation", 12)
+	box.add_child(buttons)
+	share_button = Button.new()
+	share_button.text = "Share"
+	share_button.pressed.connect(_share)
+	buttons.add_child(share_button)
 	var again := Button.new()
 	again.text = "Another picture"
 	again.pressed.connect(start_random)
-	box.add_child(again)
+	buttons.add_child(again)
 
 
 ## Phones: when the window is taller than wide, lay the screen out for a 480-unit width, which makes everything about
@@ -577,7 +594,7 @@ func _save_progress() -> void:
 	if _restoring or puzzle.texture == null or puzzle.is_solved or current.is_empty():
 		return
 	var data := {"version": 1, "file": current.file, "caption": current.caption, "count": current_count, "seed": current_seed,
-		"cut": puzzle.cut_style, "daily": is_daily, "day": int(Time.get_unix_time_from_system() / 86400.0), "state": puzzle.snapshot()}
+		"cut": puzzle.cut_style, "daily": is_daily, "day": today(), "state": puzzle.snapshot()}
 	var f := FileAccess.open(progress_path, FileAccess.WRITE)
 	if f:
 		f.store_string(JSON.stringify(data))
@@ -593,7 +610,7 @@ func _restore_progress() -> bool:
 		return false
 	current = {"file": data.file, "caption": data.get("caption", "")}
 	current_count = int(data.get("count", DAILY_COUNT))
-	is_daily = bool(data.get("daily", false)) and int(data.get("day", -1)) == int(Time.get_unix_time_from_system() / 86400.0)
+	is_daily = bool(data.get("daily", false)) and int(data.get("day", -1)) == today()
 	puzzle.cut_style = int(data.get("cut", PieceShape.Style.WHIMSICAL))
 	cut_button.select(0 if puzzle.cut_style == PieceShape.Style.WHIMSICAL else 1)
 	_restoring = true
@@ -734,7 +751,26 @@ func _on_progress(joined: int, total: int) -> void:
 	_save_progress()
 
 
+## The text Share copies, like the Wordle and Connections results families post: the daily gets a number and no
+## picture name (so it spoils nothing for anyone who hasn't done it yet).
+func share_text() -> String:
+	var t := "%d:%02d" % [int(solved_seconds) / 60, int(solved_seconds) % 60]
+	if is_daily:
+		var number := today() - EPOCH_DAY + 1
+		return "Jigsaw by Pagouro #%d 🧩\n%d pieces in %s\npagouro.com" % [number, puzzle.rows * puzzle.cols, t]
+	return "Jigsaw by Pagouro 🧩\n%s\n%d pieces in %s\npagouro.com" % [String(current.caption).capitalize(), puzzle.rows * puzzle.cols, t]
+
+
+## Godot has no share sheet, so Share copies the result; the button says so, then turns back.
+func _share() -> void:
+	DisplayServer.clipboard_set(share_text())
+	share_button.text = "Copied! Paste it in a chat"
+	get_tree().create_timer(2.5).timeout.connect(func(): share_button.text = "Share")
+
+
 func _on_solved(seconds: float) -> void:
+	solved_seconds = seconds
+	share_button.text = "Share"
 	var m := int(seconds) / 60
 	var s := int(seconds) % 60
 	finish_label.text = "Finished in %d:%02d" % [m, s]
@@ -969,6 +1005,8 @@ func _selftest() -> void:
 	_set_tray(true, false)
 	puzzle.solve_all_for_test()
 	report.append("after solve: %d cluster(s), solved=%s" % [puzzle.clusters.size(), str(puzzle.is_solved)])
+	_share()
+	report.append("share (daily=%s, copied=%s): %s" % [str(is_daily), str(DisplayServer.clipboard_get().replace(char(13), "") == share_text()), share_text().replace("\n", " | ")])
 	report.append("border glow played=%s; Help pieces at 156 with 156/78/40/10 left: %s" % [str(puzzle.border_done), str([156, 78, 40, 10].map(func(l): return max(1, int(round(min(156, 2 * l) / 24.0)))))])
 	await get_tree().create_timer(0.8).timeout  # the border light mid-run
 	await RenderingServer.frame_post_draw

@@ -270,3 +270,15 @@ send adb input without checking the foreground app first.
 - The payment tools became an `x402` Claude Code skill: free catalog search, a free price probe, and one shared
   ledger enforcing Eric's 1.00 USDC cap. Mirrored in `tools_src/`.
 - Google Play: the identity check restarted after Eric found that the driver's license he first uploaded had expired.
+
+## 2026-10-05 (evening): 0.2.7 / code 18, Share button
+
+- Eric got the closed-test build from Play (Early Access listing, 70.71 MB download).
+- Asked for a share like the Wordle/Connections results his mom posts in the family chat. The finish card now has
+  **Share**: it copies `Jigsaw by Pagouro #278 🧩 / 49 pieces in 4:12 / pagouro.com` (the daily gets a number and no
+  picture name, so nothing is spoiled; other puzzles name the picture). Godot has no Android share sheet, so it is the
+  clipboard ("Copied! Paste it in a chat"); a real share sheet would need an Android plugin.
+- The daily now turns over at the player's LOCAL midnight (it was UTC, i.e. 5 pm in California). Number #1 = 2026-01-01.
+- Piece count comes from the built puzzle (asked 48 can build 49).
+- Self-test: `share (daily=true, copied=true): Jigsaw by Pagouro #278 🧩 | 49 pieces in 0:09 | pagouro.com`.
+- AAB sha256 a908968a…, signed with the release key. NOT uploaded to Play yet (Eric's call when).
