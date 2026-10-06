@@ -316,3 +316,13 @@ send adb input without checking the foreground app first.
   piled up puzzles. The loop now does 12 deals with a frame each. NEXT: run the self-test (watch memory), then build
   0.2.9 with these + the tray glide. Eric still to: Publish the closed-test change after Google approves (Testers
   Community group), reply to their email.
+
+## 2026-10-06: 0.2.9 / code 20 (update 3)
+
+- Self-tested under the new memory guard (`tools_src/guarded_selftest.ps1`: kills Godot past 2.5 GB or 6 min).
+  Peak 553 MB, 23 s. All checks pass, including the tray glide, clock and daily-size checks from before.
+- Share: no web address (`Jigsaw by Pagouro #279 🧩 / 49 pieces in m:ss`).
+- New picture skips today's daily and the next 89: `pool 70 of 160, 12 deals: upcoming dailies 0, same twice 0`.
+- Frozen daily calendar `art/be/daily_schedule.json` (730 days): `differing from the old shuffle 0, unknown names 0`.
+  Today (#279) = 068-rooster-farmyard, the picture Eric's mom did. Plan: `docs/PICTURE_PACKS.md`.
+- AAB sha256 7c3e284e…, release key. Release `play-0.2.9`.

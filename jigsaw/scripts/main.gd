@@ -4,6 +4,7 @@ extends Node
 ## Run with `-- --selftest` to build a puzzle, solve it programmatically, save a screenshot and quit (no player input).
 
 const PICTURES := "res://art/be/pictures.json"
+const SCHEDULE := "res://art/be/daily_schedule.json"
 const MUSIC := "res://music/salon-loop-v1.ogg"
 ## Pieces on offer, as the true counts the grid gives a square picture (Eric, 2026-10-04: "is that a true 150? because
 ## it seems like 156"). Near-square pieces can't make every number: 150 would be 12 x 12.5.
@@ -24,6 +25,8 @@ const PANELS := "res://content/panels.json"
 const EPOCH_DAY := 20454  # 2026-01-01 as days since 1970-01-01 (UTC); day 0 of the daily list
 
 var pictures: Array = []
+var schedule: Array = []       # the daily calendar: picture names, days[0] = 2026-01-01
+var picture_by_name := {}      # "068-rooster-farmyard" -> index in pictures
 var current := {}
 var current_count := DAILY_COUNT
 var daily_count := DAILY_COUNT  # the player's own size for the daily, remembered (Eric, 2026-10-05: "start it at 100")
@@ -74,6 +77,12 @@ func _ready() -> void:
 	if "--selftest" in OS.get_cmdline_user_args() or "--shots" in OS.get_cmdline_user_args():
 		progress_path = "user://selftest_progress.json"  # never touch the player's own saved puzzle
 	pictures = JSON.parse_string(FileAccess.get_file_as_string(PICTURES))
+	for i in range(pictures.size()):
+		picture_by_name[String(pictures[i].file).get_file().get_basename()] = i
+	if FileAccess.file_exists(SCHEDULE):
+		var cal = JSON.parse_string(FileAccess.get_file_as_string(SCHEDULE))
+		if cal is Dictionary:
+			schedule = cal.get("days", [])
 	if FileAccess.file_exists(PANELS):
 		var parsed = JSON.parse_string(FileAccess.get_file_as_string(PANELS))
 		if parsed is Array:
@@ -151,16 +160,16 @@ func today_index() -> int:
 	return daily_index(today())
 
 
-## The picture for any day: a fixed shuffle of the list, so consecutive days are not consecutive pictures; the same for
-## every player.
+## The picture for any day, read from the frozen calendar (art/be/daily_schedule.json), the same for every player.
+## Through 0.2.8 this shuffled the whole list each time, so one added picture would have reshuffled every day; the
+## calendar holds that same shuffle written out, and picture packs edit only dates well in the future (2026-10-06).
+## A name missing from this build's pictures (a calendar ahead of its pictures) falls back to a fixed pick.
 func daily_index(day: int) -> int:
-	var order := range(pictures.size())
-	var rng := RandomNumberGenerator.new()
-	rng.seed = 1888  # the year of the first Gymnopédie
-	for i in range(order.size() - 1, 0, -1):
-		var j := rng.randi_range(0, i)
-		var t = order[i]; order[i] = order[j]; order[j] = t
-	return order[posmod(day - EPOCH_DAY, order.size())]
+	if schedule.is_empty():
+		return posmod(day - EPOCH_DAY, pictures.size())
+	var name: String = schedule[posmod(day - EPOCH_DAY, schedule.size())]
+	var i: int = picture_by_name.get(name, -1)
+	return i if i >= 0 else posmod(day - EPOCH_DAY, pictures.size())
 
 
 ## New picture never deals today's daily or one of the next UPCOMING_DAILIES days', so playing extra puzzles never
@@ -1087,6 +1096,17 @@ func _selftest() -> void:
 	report.append("rotation: %d of 12 start turned, four quarter turns round-trip=%s, turned piece grabbable=%s, turned piece at home locks=%s, upright locks=%s, restore identical=%s" % [turned_start, str(round_trip), str(grab_turned), str(locks_turned), str(locks_upright), str(_layout_signature() == rsig)])
 	puzzle.rotation_on = false
 	report.append("daily index today: %d (%s)" % [today_index(), pictures[today_index()].caption])
+	# the frozen calendar gives exactly the dailies the old whole-list shuffle gave, every day it covers
+	var legacy := range(pictures.size())
+	var lrng := RandomNumberGenerator.new()
+	lrng.seed = 1888
+	for i in range(legacy.size() - 1, 0, -1):
+		var j := lrng.randi_range(0, i)
+		var t = legacy[i]; legacy[i] = legacy[j]; legacy[j] = t
+	var differ := 0
+	for d in range(schedule.size()):
+		differ += int(daily_index(EPOCH_DAY + d) != legacy[d % legacy.size()])
+	report.append("calendar: %d days, differing from the old shuffle %d, unknown names %d" % [schedule.size(), differ, schedule.filter(func(n): return not picture_by_name.has(n)).size()])
 	# New picture keeps clear of today's daily and the next 89: 300 deals, none upcoming; the pool is 70
 	var upcoming := {}
 	for d in range(UPCOMING_DAILIES):
