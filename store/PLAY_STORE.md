@@ -148,3 +148,8 @@ Pixel 11 Pro XL after removing the USB test build (Eric's go-ahead), and runs: m
   enough (my advice missed it). Eric making the fix.
 - 2026-10-06: pagouro.com/jigsaw/ page published (site commit dbcf961) with a front-page link; it carries the Play link
   once production is live. Repo ericrwade/pagouro-play made public the same day.
+- 2026-10-06 (afternoon): ROOT CAUSE of "testers can't access": the Alpha track's Testers tab had NOTHING selected
+  (neither the email list nor the Google Group), so nobody but Eric could join. Eric fixed it with 0.2.9 (code 20) in
+  review on Alpha. The 14-day clock starts per tester only after that publishes; earliest production application
+  about 14 days after the 12th tester joins (around Oct 21 if they join promptly). Check: Closed testing > Alpha >
+  Manage track > Testers must show the group AND the ticked email list.
