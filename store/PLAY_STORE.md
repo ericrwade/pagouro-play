@@ -153,3 +153,6 @@ Pixel 11 Pro XL after removing the USB test build (Eric's go-ahead), and runs: m
   review on Alpha. The 14-day clock starts per tester only after that publishes; earliest production application
   about 14 days after the 12th tester joins (around Oct 21 if they join promptly). Check: Closed testing > Alpha >
   Manage track > Testers must show the group AND the ticked email list.
+- 2026-10-06 10:42 AM PT: Testers Community confirmed the app is accessible; their 15 testers start by 4:42 PM.
+  Their plan: 16 days (14 + margin), 2 feedback reports. Earliest production application about 2026-10-22.
+  The year-of-pictures update (batch 2) should ship mid-October, inside the test and before 2026-11-03.
