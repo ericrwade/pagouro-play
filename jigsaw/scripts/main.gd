@@ -799,8 +799,10 @@ func _on_progress(joined: int, total: int) -> void:
 func share_text() -> String:
 	var t := "%d:%02d" % [int(solved_seconds) / 60, int(solved_seconds) % 60]
 	if is_daily:
-		var number := today() - EPOCH_DAY + 1
-		return "Jigsaw by Pagouro #%d 🧩\n%d pieces in %s" % [number, puzzle.rows * puzzle.cols, t]
+		# the date, not a puzzle number: "#279" read like a picture number and puzzled the family (Eric, 2026-10-06)
+		var d := Time.get_date_dict_from_unix_time(today() * 86400)
+		var months := ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+		return "Jigsaw by Pagouro, %s %d 🧩\n%d pieces in %s" % [months[d.month - 1], d.day, puzzle.rows * puzzle.cols, t]
 	return "Jigsaw by Pagouro 🧩\n%s\n%d pieces in %s" % [String(current.caption).capitalize(), puzzle.rows * puzzle.cols, t]
 
 
