@@ -326,3 +326,22 @@ send adb input without checking the foreground app first.
 - Frozen daily calendar `art/be/daily_schedule.json` (730 days): `differing from the old shuffle 0, unknown names 0`.
   Today (#279) = 068-rooster-farmyard, the picture Eric's mom did. Plan: `docs/PICTURE_PACKS.md`.
 - AAB sha256 7c3e284e…, release key. Release `play-0.2.9`.
+
+## 2026-10-06: 0.3.0 / code 21, a year of pictures
+
+- Eric: "I'd be happy knowing we have a years worth of pictures." Batch 2 of Pagouro BE (unchanged 1.0 model): 365
+  season-tagged captions, 3,084 drawings on a RunPod A100 (about $2.65), judged by gemini-2.5-flash (about $2.07),
+  274 clean, 52 rejected by eye, **222 added**: the game has **382 pictures**. Record: PAGOURO_BE/showcase/jigsaw_b2/.
+- New pictures imported lossless again (Godot default) and were set to lossy 0.9 like the rest before building
+  (lesson 2026-10-05 held). AAB 127.5 MB (was 82), sha256 d545b0f4…, release key.
+- Seasonal calendar from 2026-11-17 (`tools_src/plan_year_calendar.py`, list in `docs/DAILY_CALENDAR.md`): winter
+  in Dec-Feb with holiday pictures in Advent, spring Mar-May, summer Jun-Aug, autumn Sep-Nov; fixed: sleigh of
+  presents Dec 24, Christmas tree Dec 25, New Year's Eve ballroom Dec 31, carnival masks Feb 9, Valentine roses
+  Feb 14, Easter eggs Mar 28, maypole May 1. Every day before Nov 17 unchanged. Pictures shown Oct 6 - Nov 16 wait
+  until autumn 2027 (17 of them sit the year out, still in New picture). Shortest repeat gap 313 days.
+  Two planner bugs caught by checks before shipping: winter days filled with beach/tiger pictures (fixed: one winter
+  window, seasonal pictures spaced evenly), and recently shown pictures shuffled into late Nov 2026 (fixed: its own
+  window). A failed patch write also emptied the uncommitted planner once; it was rewritten whole.
+- Self-test (guarded, peak 539 MB): calendar before Nov 17 differing 0, seasonal year distinct 365 of 365, unknown
+  names 0, pictures 382; New picture pool 292, upcoming dailies 0, next 90 all distinct; Share `Jigsaw by Pagouro,
+  Oct 6 🧩`.

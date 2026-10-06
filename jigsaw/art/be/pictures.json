@@ -958,5 +958,1559 @@
   "caption": "an airship flying over a castle on a hill",
   "category": "airships",
   "seed": 1002
+ },
+ {
+  "file": "res://art/be/b2-001-christmas-market-wooden-stalls.jpg",
+  "caption": "a Christmas market of wooden stalls under snow, lit by lanterns at dusk",
+  "category": "winter",
+  "seed": 1005,
+  "season": "winter"
+ },
+ {
+  "file": "res://art/be/b2-003-horsedrawn-sleigh-crossing-snowy.jpg",
+  "caption": "a horse-drawn sleigh crossing a snowy meadow toward a village church",
+  "category": "winter",
+  "seed": 1002,
+  "season": "winter"
+ },
+ {
+  "file": "res://art/be/b2-004-decorated-christmas-tree-candles.jpg",
+  "caption": "a decorated Christmas tree with candles in a grand hall",
+  "category": "winter",
+  "seed": 1007,
+  "season": "winter"
+ },
+ {
+  "file": "res://art/be/b2-005-alpine-village-deep-snow.jpg",
+  "caption": "an alpine village under deep snow with smoke rising from chimneys",
+  "category": "winter",
+  "seed": 1002,
+  "season": "winter"
+ },
+ {
+  "file": "res://art/be/b2-008-snowcovered-castle-hill-starry.jpg",
+  "caption": "a snow-covered castle on a hill under a starry winter sky",
+  "category": "winter",
+  "seed": 1004,
+  "season": "winter"
+ },
+ {
+  "file": "res://art/be/b2-009-robin-perched-snowy-branch.jpg",
+  "caption": "a robin perched on a snowy branch with red berries",
+  "category": "winter",
+  "seed": 1000,
+  "season": "winter"
+ },
+ {
+  "file": "res://art/be/b2-012-skier-red-jacket-snowy.jpg",
+  "caption": "a skier in a red jacket on a snowy slope above an alpine valley",
+  "category": "winter",
+  "seed": 1002,
+  "season": "winter"
+ },
+ {
+  "file": "res://art/be/b2-018-couples-waltzing-chandeliered-ballroom.jpg",
+  "caption": "couples waltzing in a chandeliered ballroom on New Year's Eve",
+  "category": "winter",
+  "seed": 1002,
+  "season": "winter"
+ },
+ {
+  "file": "res://art/be/b2-019-snowy-forest-moonlight-deer.jpg",
+  "caption": "a snowy forest at moonlight with a deer among the trees",
+  "category": "winter",
+  "seed": 1000,
+  "season": "winter"
+ },
+ {
+  "file": "res://art/be/b2-023-pair-white-swans-dark.jpg",
+  "caption": "a pair of white swans on a dark winter river with snowy banks",
+  "category": "winter",
+  "seed": 1006,
+  "season": "winter"
+ },
+ {
+  "file": "res://art/be/b2-024-red-cardinal-bird-snowy.jpg",
+  "caption": "a red cardinal bird on a snowy fence post",
+  "category": "winter",
+  "seed": 1000,
+  "season": "winter"
+ },
+ {
+  "file": "res://art/be/b2-025-lighthouse-snowstorm-beam-shining.jpg",
+  "caption": "a lighthouse in a snowstorm with its beam shining",
+  "category": "winter",
+  "seed": 1006,
+  "season": "winter"
+ },
+ {
+  "file": "res://art/be/b2-026-snowcovered-garden-stone-fountain.jpg",
+  "caption": "a snow-covered garden with a stone fountain and clipped hedges",
+  "category": "winter",
+  "seed": 1000,
+  "season": "winter"
+ },
+ {
+  "file": "res://art/be/b2-029-train-station-snow-steaming.jpg",
+  "caption": "a train station in snow with a steaming locomotive and lamplight",
+  "category": "winter",
+  "seed": 1007,
+  "season": "winter"
+ },
+ {
+  "file": "res://art/be/b2-030-sleigh-full-wrapped-presents.jpg",
+  "caption": "a sleigh full of wrapped presents in a moonlit forest",
+  "category": "winter",
+  "seed": 1000,
+  "season": "winter"
+ },
+ {
+  "file": "res://art/be/b2-031-snowy-rooftops-old-town.jpg",
+  "caption": "snowy rooftops of an old town with church spires at dawn",
+  "category": "winter",
+  "seed": 1001,
+  "season": "winter"
+ },
+ {
+  "file": "res://art/be/b2-032-winter-bouquet-white-hellebores.jpg",
+  "caption": "a winter bouquet of white hellebores and holly in a silver vase",
+  "category": "winter",
+  "seed": 1002,
+  "season": "winter"
+ },
+ {
+  "file": "res://art/be/b2-033-frosted-window-ice-patterns.jpg",
+  "caption": "a frosted window with ice patterns and a candle glowing behind it",
+  "category": "winter",
+  "seed": 1006,
+  "season": "winter"
+ },
+ {
+  "file": "res://art/be/b2-034-owl-snowy-branch-full.jpg",
+  "caption": "an owl on a snowy branch under a full moon",
+  "category": "winter",
+  "seed": 1001,
+  "season": "winter"
+ },
+ {
+  "file": "res://art/be/b2-036-snowy-bridge-frozen-river.jpg",
+  "caption": "a snowy bridge over a frozen river in a park with lamp posts",
+  "category": "winter",
+  "seed": 1002,
+  "season": "winter"
+ },
+ {
+  "file": "res://art/be/b2-040-red-sleigh-outside-timber.jpg",
+  "caption": "a red sleigh outside a timber chalet with snowy peaks behind",
+  "category": "winter",
+  "seed": 1000,
+  "season": "winter"
+ },
+ {
+  "file": "res://art/be/b2-042-squirrel-snowy-tree-branch.jpg",
+  "caption": "a squirrel on a snowy tree branch with acorns",
+  "category": "winter",
+  "seed": 1000,
+  "season": "winter"
+ },
+ {
+  "file": "res://art/be/b2-044-lamplighter-ladder-lighting-gas.jpg",
+  "caption": "a lamplighter on a ladder lighting a gas lamp on a snowy evening",
+  "category": "winter",
+  "seed": 1003,
+  "season": "winter"
+ },
+ {
+  "file": "res://art/be/b2-045-snowy-vineyard-rows-bare.jpg",
+  "caption": "a snowy vineyard with rows of bare vines and a stone farmhouse",
+  "category": "winter",
+  "seed": 1006,
+  "season": "winter"
+ },
+ {
+  "file": "res://art/be/b2-046-carousel-snow-quiet-park.jpg",
+  "caption": "a carousel under snow in a quiet park",
+  "category": "winter",
+  "seed": 1000,
+  "season": "winter"
+ },
+ {
+  "file": "res://art/be/b2-048-northern-lights-snowy-fjord.jpg",
+  "caption": "the northern lights over a snowy fjord",
+  "category": "winter",
+  "seed": 1002,
+  "season": "winter"
+ },
+ {
+  "file": "res://art/be/b2-049-polar-bears-ice-floe.jpg",
+  "caption": "polar bears on an ice floe under a pale sky",
+  "category": "winter",
+  "seed": 1003,
+  "season": "winter"
+ },
+ {
+  "file": "res://art/be/b2-050-husky-dog-team-pulling.jpg",
+  "caption": "a husky dog team pulling a sled across snow",
+  "category": "winter",
+  "seed": 1002,
+  "season": "winter"
+ },
+ {
+  "file": "res://art/be/b2-051-snowy-paris-street-eiffel.jpg",
+  "caption": "a snowy Paris street with the Eiffel Tower in the distance",
+  "category": "winter",
+  "seed": 1006,
+  "season": "winter"
+ },
+ {
+  "file": "res://art/be/b2-052-winter-garden-conservatory-full.jpg",
+  "caption": "a winter garden conservatory full of orange trees with snow outside",
+  "category": "winter",
+  "seed": 1000,
+  "season": "winter"
+ },
+ {
+  "file": "res://art/be/b2-055-viennese-palace-snow-frozen.jpg",
+  "caption": "a Viennese palace in snow with a frozen pond in front",
+  "category": "winter",
+  "seed": 1002,
+  "season": "winter"
+ },
+ {
+  "file": "res://art/be/b2-056-snowy-mountain-railway-red.jpg",
+  "caption": "a snowy mountain railway with a red train climbing a viaduct",
+  "category": "winter",
+  "seed": 1000,
+  "season": "winter"
+ },
+ {
+  "file": "res://art/be/b2-057-christmas-wreath-oranges-cinnamon.jpg",
+  "caption": "a Christmas wreath of oranges, cinnamon and ribbon on a white background",
+  "category": "winter",
+  "seed": 1002,
+  "season": "winter"
+ },
+ {
+  "file": "res://art/be/b2-058-hot-chocolate-pot-cups.jpg",
+  "caption": "a hot chocolate pot and cups beside a frosty window",
+  "category": "winter",
+  "seed": 1000,
+  "season": "winter"
+ },
+ {
+  "file": "res://art/be/b2-059-angelshaped-weathervane-snowy-church.jpg",
+  "caption": "an angel-shaped weathervane on a snowy church spire",
+  "category": "winter",
+  "seed": 1002,
+  "season": "winter"
+ },
+ {
+  "file": "res://art/be/b2-061-snowy-country-lane-horse.jpg",
+  "caption": "a snowy country lane with a horse and cart at dusk",
+  "category": "winter",
+  "seed": 1007,
+  "season": "winter"
+ },
+ {
+  "file": "res://art/be/b2-062-snowy-owl-flying-white.jpg",
+  "caption": "a snowy owl flying over a white field",
+  "category": "winter",
+  "seed": 1002,
+  "season": "winter"
+ },
+ {
+  "file": "res://art/be/b2-065-mountain-lake-frozen-white.jpg",
+  "caption": "a mountain lake frozen white below snowy peaks under a blue sky",
+  "category": "winter",
+  "seed": 1000,
+  "season": "winter"
+ },
+ {
+  "file": "res://art/be/b2-067-valentine-bouquet-red-roses.jpg",
+  "caption": "a Valentine bouquet of red roses and lace in a heart-shaped basket",
+  "category": "winter",
+  "seed": 1005,
+  "season": "winter"
+ },
+ {
+  "file": "res://art/be/b2-070-venetian-carnival-masks-feathers.jpg",
+  "caption": "Venetian carnival masks with feathers on a velvet cloth",
+  "category": "winter",
+  "seed": 1000,
+  "season": "winter"
+ },
+ {
+  "file": "res://art/be/b2-071-orchard-white-apple-blossom.jpg",
+  "caption": "an orchard of white apple blossom with a thatched cottage",
+  "category": "spring",
+  "seed": 1000,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-072-field-tulips-red-yellow.jpg",
+  "caption": "a field of tulips in red, yellow and pink stripes toward a windmill",
+  "category": "spring",
+  "seed": 1001,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-073-blue-carpet-bluebells-beech.jpg",
+  "caption": "a blue carpet of bluebells under beech trees in a wood",
+  "category": "spring",
+  "seed": 1000,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-074-lambs-green-meadow-stone.jpg",
+  "caption": "lambs in a green meadow with a stone wall and blossom trees",
+  "category": "spring",
+  "seed": 1003,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-076-spring-shower-town-square.jpg",
+  "caption": "a spring shower over a town square with umbrellas and puddles",
+  "category": "spring",
+  "seed": 1002,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-077-basket-painted-eggs-among.jpg",
+  "caption": "a basket of painted eggs among daffodils",
+  "category": "spring",
+  "seed": 1003,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-079-magnolia-tree-full-pink.jpg",
+  "caption": "a magnolia tree in full pink bloom in a city park",
+  "category": "spring",
+  "seed": 1000,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-080-stream-spring-meadow-buttercups.jpg",
+  "caption": "a stream through a spring meadow of buttercups",
+  "category": "spring",
+  "seed": 1000,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-081-pair-swallows-farmhouse-roof.jpg",
+  "caption": "a pair of swallows over a farmhouse roof",
+  "category": "spring",
+  "seed": 1002,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-083-rainbow-green-hills-after.jpg",
+  "caption": "a rainbow over green hills after a spring storm",
+  "category": "spring",
+  "seed": 1000,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-085-almond-trees-blossom-terraced.jpg",
+  "caption": "almond trees in blossom on a terraced hillside by the sea",
+  "category": "spring",
+  "seed": 1000,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-087-garden-gate-covered-climbing.jpg",
+  "caption": "a garden gate covered in climbing pink roses",
+  "category": "spring",
+  "seed": 1000,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-088-country-church-surrounded-blooming.jpg",
+  "caption": "a country church surrounded by blooming cherry trees",
+  "category": "spring",
+  "seed": 1000,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-090-hyacinth-bowl-blue-white.jpg",
+  "caption": "a hyacinth bowl of blue and white flowers on a windowsill",
+  "category": "spring",
+  "seed": 1001,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-091-garden-path-lined-tulips.jpg",
+  "caption": "a garden path lined with tulips leading to a glasshouse",
+  "category": "spring",
+  "seed": 1000,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-092-woman-parasol-walking-orchard.jpg",
+  "caption": "a woman with a parasol walking through an orchard in blossom",
+  "category": "spring",
+  "seed": 1000,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-094-crocus-lawn-purple-gold.jpg",
+  "caption": "a crocus lawn in purple and gold beneath bare trees",
+  "category": "spring",
+  "seed": 1003,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-095-canal-amsterdam-spring-blossom.jpg",
+  "caption": "a canal in Amsterdam in spring with blossom trees and houseboats",
+  "category": "spring",
+  "seed": 1004,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-096-dovecote-white-doves-spring.jpg",
+  "caption": "a dovecote with white doves in a spring garden",
+  "category": "spring",
+  "seed": 1000,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-097-butterfly-lilac-branch.jpg",
+  "caption": "a butterfly on a lilac branch",
+  "category": "spring",
+  "seed": 1001,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-098-maypole-colored-ribbons-village.jpg",
+  "caption": "a maypole with colored ribbons on a village green",
+  "category": "spring",
+  "seed": 1000,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-099-girl-gathering-daffodils-meadow.jpg",
+  "caption": "a girl gathering daffodils in a meadow",
+  "category": "spring",
+  "seed": 1006,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-100-kingfisher-reed-clear-stream.jpg",
+  "caption": "a kingfisher on a reed by a clear stream",
+  "category": "spring",
+  "seed": 1003,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-101-japanese-cherry-tree-stone.jpg",
+  "caption": "a Japanese cherry tree over a stone lantern and a pond",
+  "category": "spring",
+  "seed": 1000,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-103-hillside-yellow-gorse-sea.jpg",
+  "caption": "a hillside of yellow gorse above the sea",
+  "category": "spring",
+  "seed": 1006,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-104-garden-irises-purple-white.jpg",
+  "caption": "a garden of irises in purple and white beside a pond",
+  "category": "spring",
+  "seed": 1002,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-106-beehive-orchard-bees-among.jpg",
+  "caption": "a beehive in an orchard with bees among blossom",
+  "category": "spring",
+  "seed": 1003,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-107-old-stone-bridge-river.jpg",
+  "caption": "an old stone bridge over a river in spring with willow trees",
+  "category": "spring",
+  "seed": 1000,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-108-wicker-basket-spring-vegetables.jpg",
+  "caption": "a wicker basket of spring vegetables and radishes on a table",
+  "category": "spring",
+  "seed": 1002,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-110-peony-garden-pink-white.jpg",
+  "caption": "a peony garden in pink and white beside a summerhouse",
+  "category": "spring",
+  "seed": 1000,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-112-greenhouse-orchids-many-colors.jpg",
+  "caption": "a greenhouse of orchids in many colors",
+  "category": "spring",
+  "seed": 1002,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-113-stork-nest-chimney-village.jpg",
+  "caption": "a stork nest on a chimney above a village",
+  "category": "spring",
+  "seed": 1000,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-114-rows-tulips-botanical-garden.jpg",
+  "caption": "rows of tulips in a botanical garden with a glass palace behind",
+  "category": "spring",
+  "seed": 1000,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-116-spring-morning-seine-blossoming.jpg",
+  "caption": "a spring morning over the Seine with blossoming trees on the quay",
+  "category": "spring",
+  "seed": 1000,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-117-field-yellow-rapeseed-big.jpg",
+  "caption": "a field of yellow rapeseed under a big blue sky",
+  "category": "spring",
+  "seed": 1003,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-119-puppy-asleep-basket-spring.jpg",
+  "caption": "a puppy asleep in a basket of spring flowers",
+  "category": "spring",
+  "seed": 1000,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-121-couple-walking-blossomcovered-avenue.jpg",
+  "caption": "a couple walking under a blossom-covered avenue",
+  "category": "spring",
+  "seed": 1006,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-124-tower-bridge-london-spring.jpg",
+  "caption": "the Tower Bridge in London on a spring morning with boats on the Thames",
+  "category": "spring",
+  "seed": 1000,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-125-wisteriacovered-house-canal.jpg",
+  "caption": "a wisteria-covered house by a canal",
+  "category": "spring",
+  "seed": 1006,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-126-vase-ranunculus-coral-pink.jpg",
+  "caption": "a vase of ranunculus in coral and pink",
+  "category": "spring",
+  "seed": 1001,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-127-garden-swing-hanging-apple.jpg",
+  "caption": "a garden swing hanging from an apple tree in blossom",
+  "category": "spring",
+  "seed": 1000,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-128-mountain-meadow-full-spring.jpg",
+  "caption": "a mountain meadow full of spring gentians below snowy peaks",
+  "category": "spring",
+  "seed": 1006,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-129-pair-goldfinches-thistle.jpg",
+  "caption": "a pair of goldfinches on a thistle",
+  "category": "spring",
+  "seed": 1006,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-130-painter-easel-blooming-orchard.jpg",
+  "caption": "a painter with an easel in a blooming orchard",
+  "category": "spring",
+  "seed": 1002,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-131-dutch-flower-stall-tulips.jpg",
+  "caption": "a Dutch flower stall of tulips beside a canal bridge",
+  "category": "spring",
+  "seed": 1004,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-132-terrace-lemon-trees-pots.jpg",
+  "caption": "a terrace of lemon trees in pots in a Mediterranean garden",
+  "category": "spring",
+  "seed": 1000,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-133-cascade-white-roses-stone.jpg",
+  "caption": "a cascade of white roses over a stone wall",
+  "category": "spring",
+  "seed": 1002,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-134-horsedrawn-carriage-park-full.jpg",
+  "caption": "a horse-drawn carriage through a park full of blossom",
+  "category": "spring",
+  "seed": 1000,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-135-frog-lily-pad-among.jpg",
+  "caption": "a frog on a lily pad among spring reeds",
+  "category": "spring",
+  "seed": 1003,
+  "season": "spring"
+ },
+ {
+  "file": "res://art/be/b2-138-children-building-sandcastles-beach.jpg",
+  "caption": "children building sandcastles on a beach with buckets and spades",
+  "category": "seaside",
+  "seed": 1010,
+  "season": "summer"
+ },
+ {
+  "file": "res://art/be/b2-139-seaside-pier-domed-pavilion.jpg",
+  "caption": "a seaside pier with a domed pavilion over blue water",
+  "category": "seaside",
+  "seed": 1003,
+  "season": "summer"
+ },
+ {
+  "file": "res://art/be/b2-140-grand-seaside-hotel-balconies.jpg",
+  "caption": "a grand seaside hotel with balconies above a promenade",
+  "category": "seaside",
+  "seed": 1002,
+  "season": "summer"
+ },
+ {
+  "file": "res://art/be/b2-144-rock-pools-low-tide.jpg",
+  "caption": "rock pools at low tide with starfish and shells",
+  "category": "seaside",
+  "seed": 1003,
+  "season": "summer"
+ },
+ {
+  "file": "res://art/be/b2-145-sailing-dinghy-pulled-beach.jpg",
+  "caption": "a sailing dinghy pulled up on a beach beside dunes",
+  "category": "seaside",
+  "seed": 1003,
+  "season": "summer"
+ },
+ {
+  "file": "res://art/be/b2-148-horse-race-green-track.jpg",
+  "caption": "a horse race on a green track with jockeys in bright silks",
+  "category": "sport",
+  "seed": 1001,
+  "season": "summer"
+ },
+ {
+  "file": "res://art/be/b2-151-hay-meadow-haystacks-summer.jpg",
+  "caption": "a hay meadow with haystacks under a summer sky",
+  "category": "summer",
+  "seed": 1000,
+  "season": "summer"
+ },
+ {
+  "file": "res://art/be/b2-153-lily-pond-stone-bridge.jpg",
+  "caption": "a lily pond with a stone bridge on a summer afternoon",
+  "category": "summer",
+  "seed": 1000,
+  "season": "summer"
+ },
+ {
+  "file": "res://art/be/b2-154-strawberries-basket-cream-lace.jpg",
+  "caption": "strawberries in a basket with cream and a lace cloth",
+  "category": "summer",
+  "seed": 1001,
+  "season": "summer"
+ },
+ {
+  "file": "res://art/be/b2-155-riverside-inn-flower-boxes.jpg",
+  "caption": "a riverside inn with flower boxes and a boat landing",
+  "category": "summer",
+  "seed": 1007,
+  "season": "summer"
+ },
+ {
+  "file": "res://art/be/b2-156-midsummer-bonfire-beach-dusk.jpg",
+  "caption": "a midsummer bonfire on a beach at dusk",
+  "category": "summer",
+  "seed": 1002,
+  "season": "summer"
+ },
+ {
+  "file": "res://art/be/b2-157-girl-straw-hat-swing.jpg",
+  "caption": "a girl in a straw hat on a swing in a summer garden",
+  "category": "summer",
+  "seed": 1002,
+  "season": "summer"
+ },
+ {
+  "file": "res://art/be/b2-158-meadow-daisies-clover-butterflies.jpg",
+  "caption": "a meadow of daisies and clover with butterflies",
+  "category": "summer",
+  "seed": 1000,
+  "season": "summer"
+ },
+ {
+  "file": "res://art/be/b2-160-bandstand-park-audience-deck.jpg",
+  "caption": "a bandstand in a park with an audience on deck chairs",
+  "category": "summer",
+  "seed": 1004,
+  "season": "summer"
+ },
+ {
+  "file": "res://art/be/b2-161-ice-cream-cart-striped.jpg",
+  "caption": "an ice cream cart under a striped awning in a park",
+  "category": "summer",
+  "seed": 1000,
+  "season": "summer"
+ },
+ {
+  "file": "res://art/be/b2-162-hollyhocks-against-cottage-wall.jpg",
+  "caption": "hollyhocks against a cottage wall in summer",
+  "category": "summer",
+  "seed": 1000,
+  "season": "summer"
+ },
+ {
+  "file": "res://art/be/b2-163-rowing-boat-full-flowers.jpg",
+  "caption": "a rowing boat full of flowers on a lake",
+  "category": "summer",
+  "seed": 1003,
+  "season": "summer"
+ },
+ {
+  "file": "res://art/be/b2-164-summer-storm-wheat-field.jpg",
+  "caption": "a summer storm over a wheat field with lightning in the distance",
+  "category": "summer",
+  "seed": 1000,
+  "season": "summer"
+ },
+ {
+  "file": "res://art/be/b2-165-family-picnic-meadow-red.jpg",
+  "caption": "a family picnic in a meadow with a red checked cloth",
+  "category": "summer",
+  "seed": 1011,
+  "season": "summer"
+ },
+ {
+  "file": "res://art/be/b2-167-tabby-cat-asleep-sunny.jpg",
+  "caption": "a tabby cat asleep in a sunny window",
+  "category": "animals",
+  "seed": 1000,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-168-dachshund-red-collar-sitting.jpg",
+  "caption": "a dachshund in a red collar sitting on a doorstep",
+  "category": "animals",
+  "seed": 1003,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-170-owl-branch-large-golden.jpg",
+  "caption": "an owl on a branch with large golden eyes",
+  "category": "animals",
+  "seed": 1000,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-172-family-foxes-edge-wood.jpg",
+  "caption": "a family of foxes at the edge of a wood",
+  "category": "animals",
+  "seed": 1007,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-173-hedgehog-among-autumn-leaves.jpg",
+  "caption": "a hedgehog among autumn leaves",
+  "category": "animals",
+  "seed": 1000,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-174-two-kittens-playing-ball.jpg",
+  "caption": "two kittens playing with a ball of yarn",
+  "category": "animals",
+  "seed": 1007,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-175-parrot-bright-feathers-perch.jpg",
+  "caption": "a parrot with bright feathers on a perch",
+  "category": "animals",
+  "seed": 1002,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-176-pair-flamingos-shallow-lagoon.jpg",
+  "caption": "a pair of flamingos in a shallow lagoon",
+  "category": "animals",
+  "seed": 1003,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-177-lion-resting-rock-sunset.jpg",
+  "caption": "a lion resting on a rock at sunset",
+  "category": "animals",
+  "seed": 1007,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-179-zebra-golden-savanna-acacia.jpg",
+  "caption": "a zebra on a golden savanna under acacia trees",
+  "category": "animals",
+  "seed": 1000,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-180-giraffe-tall-acacia-tree.jpg",
+  "caption": "a giraffe beside a tall acacia tree",
+  "category": "animals",
+  "seed": 1000,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-181-tiger-walking-tall-jungle.jpg",
+  "caption": "a tiger walking through tall jungle grass",
+  "category": "animals",
+  "seed": 1001,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-183-goat-rocky-mountain-ledge.jpg",
+  "caption": "a goat on a rocky mountain ledge",
+  "category": "animals",
+  "seed": 1000,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-184-cows-meadow-bell-tower.jpg",
+  "caption": "cows in a meadow with a bell tower behind",
+  "category": "animals",
+  "seed": 1002,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-185-pair-horses-pulling-hay.jpg",
+  "caption": "a pair of horses pulling a hay cart along a lane",
+  "category": "animals",
+  "seed": 1000,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-190-tortoise-garden-clover.jpg",
+  "caption": "a tortoise in a garden of clover",
+  "category": "animals",
+  "seed": 1000,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-191-squirrel-eating-nut-park.jpg",
+  "caption": "a squirrel eating a nut on a park bench",
+  "category": "animals",
+  "seed": 1000,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-192-badger-mouth-burrow-dusk.jpg",
+  "caption": "a badger at the mouth of its burrow at dusk",
+  "category": "animals",
+  "seed": 1006,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-193-seal-rock-lighthouse.jpg",
+  "caption": "a seal on a rock by a lighthouse",
+  "category": "animals",
+  "seed": 1000,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-196-sea-turtle-swimming-clear.jpg",
+  "caption": "a sea turtle swimming in clear blue water",
+  "category": "animals",
+  "seed": 1000,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-197-camel-caravan-crossing-golden.jpg",
+  "caption": "a camel caravan crossing golden dunes",
+  "category": "animals",
+  "seed": 1006,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-198-panda-eating-bamboo.jpg",
+  "caption": "a panda eating bamboo",
+  "category": "animals",
+  "seed": 1003,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-200-kangaroo-red-grassland-sunrise.jpg",
+  "caption": "a kangaroo in red grassland at sunrise",
+  "category": "animals",
+  "seed": 1002,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-201-penguin-colony-icy-shore.jpg",
+  "caption": "a penguin colony on an icy shore",
+  "category": "animals",
+  "seed": 1002,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-204-black-white-cat-garden.jpg",
+  "caption": "a black and white cat on a garden wall",
+  "category": "animals",
+  "seed": 1002,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-206-donkey-flower-baskets-village.jpg",
+  "caption": "a donkey with flower baskets in a village street",
+  "category": "animals",
+  "seed": 1000,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-207-toucan-jungle-branch.jpg",
+  "caption": "a toucan on a jungle branch",
+  "category": "birds",
+  "seed": 1000,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-208-barn-owl-flight-dusk.jpg",
+  "caption": "a barn owl in flight at dusk",
+  "category": "birds",
+  "seed": 1000,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-209-hummingbirds-red-trumpet-flowers.jpg",
+  "caption": "hummingbirds at red trumpet flowers",
+  "category": "birds",
+  "seed": 1002,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-210-pair-mandarin-ducks-pond.jpg",
+  "caption": "a pair of mandarin ducks on a pond",
+  "category": "birds",
+  "seed": 1002,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-211-golden-pheasant-woodland-clearing.jpg",
+  "caption": "a golden pheasant in a woodland clearing",
+  "category": "birds",
+  "seed": 1002,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-212-heron-catching-fish-reeds.jpg",
+  "caption": "a heron catching a fish in reeds",
+  "category": "birds",
+  "seed": 1007,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-213-white-cockatoos-branch.jpg",
+  "caption": "white cockatoos on a branch",
+  "category": "birds",
+  "seed": 1000,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-214-blue-jay-oak-branch.jpg",
+  "caption": "a blue jay on an oak branch",
+  "category": "birds",
+  "seed": 1000,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-215-seagulls-fishing-harbor.jpg",
+  "caption": "seagulls over a fishing harbor",
+  "category": "birds",
+  "seed": 1002,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-216-pelican-wooden-post-sea.jpg",
+  "caption": "a pelican on a wooden post by the sea",
+  "category": "birds",
+  "seed": 1000,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-217-flock-geese-flying-marshland.jpg",
+  "caption": "a flock of geese flying over marshland at sunset",
+  "category": "birds",
+  "seed": 1000,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-218-eagle-soaring-mountain-peaks.jpg",
+  "caption": "an eagle soaring above mountain peaks",
+  "category": "birds",
+  "seed": 1000,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-220-collection-colorful-butterflies-arranged.jpg",
+  "caption": "a collection of colorful butterflies arranged in rows",
+  "category": "insects",
+  "seed": 1004,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-221-dragonfly-shimmering-wings-reed.jpg",
+  "caption": "a dragonfly with shimmering wings on a reed",
+  "category": "insects",
+  "seed": 1000,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-222-ladybird-green-leaf-dewdrops.jpg",
+  "caption": "a ladybird on a green leaf with dewdrops",
+  "category": "insects",
+  "seed": 1001,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-223-venices-grand-canal-gondolas.jpg",
+  "caption": "Venice's Grand Canal with gondolas and palaces at sunset",
+  "category": "cities",
+  "seed": 1002,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-224-doges-palace-lagoon-full.jpg",
+  "caption": "the Doge's Palace and a lagoon full of boats",
+  "category": "cities",
+  "seed": 1003,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-226-pragues-old-town-square.jpg",
+  "caption": "Prague's old town square with its clock tower",
+  "category": "cities",
+  "seed": 1004,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-227-big-ben-houses-parliament.jpg",
+  "caption": "Big Ben and the Houses of Parliament by the Thames at dusk",
+  "category": "cities",
+  "seed": 1003,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-229-lisbon-tram-climbing-steep.jpg",
+  "caption": "a Lisbon tram climbing a steep street of tiled houses",
+  "category": "cities",
+  "seed": 1001,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-230-florence-cathedral-dome-red.jpg",
+  "caption": "Florence cathedral dome above red rooftops",
+  "category": "cities",
+  "seed": 1006,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-235-bruges-canals-medieval-houses.jpg",
+  "caption": "Bruges canals with medieval houses and a bell tower",
+  "category": "cities",
+  "seed": 1006,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-236-st-petersburg-palace-river.jpg",
+  "caption": "St Petersburg palace on a river with golden spires",
+  "category": "cities",
+  "seed": 1003,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-237-edinburgh-castle-rock-city.jpg",
+  "caption": "Edinburgh castle on its rock above the city",
+  "category": "cities",
+  "seed": 1003,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-238-sevilles-tower-orange-trees.jpg",
+  "caption": "Seville's tower and orange trees in a sunny square",
+  "category": "cities",
+  "seed": 1007,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-239-brooklyn-bridge-sunset-sailboats.jpg",
+  "caption": "the Brooklyn Bridge at sunset with sailboats below",
+  "category": "cities",
+  "seed": 1000,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-240-new-york-avenue-early.jpg",
+  "caption": "a New York avenue of early skyscrapers with horse carriages",
+  "category": "cities",
+  "seed": 1002,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-242-statue-liberty-steamship-arriving.jpg",
+  "caption": "the Statue of Liberty with a steamship arriving in the harbor",
+  "category": "cities",
+  "seed": 1002,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-243-mississippi-riverboat-busy-levee.jpg",
+  "caption": "a Mississippi riverboat at a busy levee",
+  "category": "cities",
+  "seed": 1007,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-244-rios-harbor-sugarloaf-mountain.jpg",
+  "caption": "Rio's harbor with Sugarloaf Mountain at dusk",
+  "category": "cities",
+  "seed": 1002,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-245-kyoto-pagoda-among-maple.jpg",
+  "caption": "Kyoto pagoda among maple trees",
+  "category": "cities",
+  "seed": 1000,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-246-mount-fuji-lake-fishing.jpg",
+  "caption": "Mount Fuji above a lake with a fishing boat",
+  "category": "cities",
+  "seed": 1006,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-249-taj-mahal-reflected-long.jpg",
+  "caption": "the Taj Mahal reflected in a long pool",
+  "category": "cities",
+  "seed": 1000,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-250-athens-acropolis-city-golden.jpg",
+  "caption": "Athens' Acropolis above the city at golden hour",
+  "category": "cities",
+  "seed": 1003,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-251-swiss-lake-town-covered.jpg",
+  "caption": "a Swiss lake town with a covered wooden bridge",
+  "category": "cities",
+  "seed": 1007,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-252-salzburgs-fortress-river-dawn.jpg",
+  "caption": "Salzburg's fortress above the river at dawn",
+  "category": "cities",
+  "seed": 1002,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-254-alhambra-palace-gardens-mountains.jpg",
+  "caption": "the Alhambra palace with its gardens and mountains",
+  "category": "cities",
+  "seed": 1002,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-255-paris-rooftop-view-night.jpg",
+  "caption": "a Paris rooftop view at night with chimneys and the moon",
+  "category": "cities",
+  "seed": 1003,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-257-notredame-cathedral-seine-dawn.jpg",
+  "caption": "Notre-Dame cathedral from the Seine at dawn",
+  "category": "cities",
+  "seed": 1004,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-258-paris-opera-house-grand.jpg",
+  "caption": "the Paris Opera house grand staircase",
+  "category": "cities",
+  "seed": 1001,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-261-ocean-liner-leaving-port.jpg",
+  "caption": "an ocean liner leaving port with streamers and tugs",
+  "category": "travel",
+  "seed": 1002,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-262-luxury-sleepingcar-train-crossing.jpg",
+  "caption": "a luxury sleeping-car train crossing mountains at night",
+  "category": "travel",
+  "seed": 1001,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-264-steamship-nile-passing-palm.jpg",
+  "caption": "a steamship on the Nile passing palm trees",
+  "category": "travel",
+  "seed": 1003,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-266-vintage-motor-car-touring.jpg",
+  "caption": "a vintage motor car touring a mountain road",
+  "category": "travel",
+  "seed": 1002,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-270-lighthouse-keepers-cottage-rocky.jpg",
+  "caption": "a lighthouse keeper's cottage on a rocky point",
+  "category": "travel",
+  "seed": 1002,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-271-hotair-balloon-pyramids.jpg",
+  "caption": "a hot-air balloon over the pyramids",
+  "category": "travel",
+  "seed": 1004,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-273-grand-piano-sunlit-music.jpg",
+  "caption": "a grand piano in a sunlit music room with open windows",
+  "category": "music",
+  "seed": 1002,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-276-brass-band-marching-town.jpg",
+  "caption": "a brass band marching in a town square",
+  "category": "music",
+  "seed": 1007,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-279-cellist-playing-empty-concert.jpg",
+  "caption": "a cellist playing in an empty concert hall",
+  "category": "music",
+  "seed": 1002,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-280-organ-tall-pipes-cathedral.jpg",
+  "caption": "an organ with tall pipes in a cathedral",
+  "category": "music",
+  "seed": 1002,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-283-patisserie-display-colorful-macarons.jpg",
+  "caption": "a patisserie display of colorful macarons and cakes",
+  "category": "food",
+  "seed": 1003,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-286-pumpkin-harvest-farmyard-cart.jpg",
+  "caption": "a pumpkin harvest in a farmyard with a cart",
+  "category": "food",
+  "seed": 1002,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-287-basket-mushrooms-forest-floor.jpg",
+  "caption": "a basket of mushrooms on a forest floor",
+  "category": "food",
+  "seed": 1000,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-289-tea-set-teapot-roses.jpg",
+  "caption": "a tea set with a teapot of roses on a garden table",
+  "category": "food",
+  "seed": 1002,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-291-still-life-seashells-velvet.jpg",
+  "caption": "a still life of seashells on a velvet cloth",
+  "category": "stilllife",
+  "seed": 1006,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-293-bouquet-tulips-pewter-jug.jpg",
+  "caption": "a bouquet of tulips in a pewter jug",
+  "category": "stilllife",
+  "seed": 1000,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-294-bowl-cherries-silver-teapot.jpg",
+  "caption": "a bowl of cherries beside a silver teapot",
+  "category": "stilllife",
+  "seed": 1001,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-298-observatory-dome-open-starry.jpg",
+  "caption": "an observatory dome open to a starry sky",
+  "category": "science",
+  "seed": 1004,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-307-submarine-exploring-coral-reef.jpg",
+  "caption": "a submarine exploring a coral reef",
+  "category": "science",
+  "seed": 1004,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-309-coral-reef-tropical-fish.jpg",
+  "caption": "a coral reef with tropical fish",
+  "category": "nature",
+  "seed": 1004,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-311-canyon-red-rocks-sunset.jpg",
+  "caption": "a canyon of red rocks at sunset",
+  "category": "nature",
+  "seed": 1000,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-312-volcano-plume-smoke-sea.jpg",
+  "caption": "a volcano with a plume of smoke over the sea",
+  "category": "nature",
+  "seed": 1002,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-314-tropical-beach-palm-trees.jpg",
+  "caption": "a tropical beach with palm trees and an outrigger canoe",
+  "category": "nature",
+  "seed": 1002,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-315-desert-oasis-palm-trees.jpg",
+  "caption": "a desert oasis with palm trees and a pool",
+  "category": "nature",
+  "seed": 1003,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-316-geyser-erupting-snowy-valley.jpg",
+  "caption": "a geyser erupting in a snowy valley",
+  "category": "nature",
+  "seed": 1007,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-317-bamboo-forest-narrow-path.jpg",
+  "caption": "a bamboo forest with a narrow path",
+  "category": "nature",
+  "seed": 1002,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-319-glacier-meeting-sea-icebergs.jpg",
+  "caption": "a glacier meeting the sea with icebergs",
+  "category": "nature",
+  "seed": 1002,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-322-mountain-stream-mossy-stones.jpg",
+  "caption": "a mountain stream over mossy stones in a forest",
+  "category": "nature",
+  "seed": 1000,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-323-lake-sunrise-mist-wooden.jpg",
+  "caption": "a lake at sunrise with mist and a wooden dock",
+  "category": "nature",
+  "seed": 1000,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-324-cliffs-seabirds-crashing-sea.jpg",
+  "caption": "cliffs with seabirds above a crashing sea",
+  "category": "nature",
+  "seed": 1000,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-326-autumn-maple-forest-red.jpg",
+  "caption": "an autumn maple forest in red and orange by a lake",
+  "category": "nature",
+  "seed": 1001,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-328-misty-valley-layered-blue.jpg",
+  "caption": "a misty valley with layered blue hills",
+  "category": "nature",
+  "seed": 1004,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-330-puppet-theater-velvet-curtains.jpg",
+  "caption": "a puppet theater with velvet curtains",
+  "category": "fun",
+  "seed": 1002,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-338-boating-lake-swanshaped-pedal.jpg",
+  "caption": "a boating lake with swan-shaped pedal boats",
+  "category": "fun",
+  "seed": 1000,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-343-woman-wide-hat-feeding.jpg",
+  "caption": "a woman in a wide hat feeding swans at a lake",
+  "category": "people",
+  "seed": 1000,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-347-woman-reading-garden-bench.jpg",
+  "caption": "a woman reading on a garden bench under roses",
+  "category": "people",
+  "seed": 1000,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-349-dancer-peacockfeather-costume.jpg",
+  "caption": "a dancer in a peacock-feather costume",
+  "category": "people",
+  "seed": 1001,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-350-woman-hat-flowers-arranging.jpg",
+  "caption": "a woman in a hat with flowers arranging a bouquet",
+  "category": "people",
+  "seed": 1000,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-352-aviator-goggles-biplane.jpg",
+  "caption": "an aviator in goggles beside a biplane",
+  "category": "people",
+  "seed": 1002,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-354-art-nouveau-doorway-stained.jpg",
+  "caption": "an art nouveau doorway with stained glass and ironwork",
+  "category": "architecture",
+  "seed": 1000,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-357-palm-house-curved-glass.jpg",
+  "caption": "a palm house of curved glass in a winter garden",
+  "category": "architecture",
+  "seed": 1000,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-358-lighthouse-made-red-brick.jpg",
+  "caption": "a lighthouse made of red brick on a sandbank",
+  "category": "architecture",
+  "seed": 1000,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-359-windmill-canal-sunset.jpg",
+  "caption": "a windmill by a canal at sunset",
+  "category": "architecture",
+  "seed": 1001,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-360-covered-bridge-forest-river.jpg",
+  "caption": "a covered bridge over a forest river",
+  "category": "architecture",
+  "seed": 1002,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-362-venetian-palazzo-balconies-canal.jpg",
+  "caption": "a Venetian palazzo with balconies over a canal",
+  "category": "architecture",
+  "seed": 1002,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-363-exhibition-palace-domes-flags.jpg",
+  "caption": "an exhibition palace with domes and flags",
+  "category": "architecture",
+  "seed": 1007,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-364-garden-folly-temple-lake.jpg",
+  "caption": "a garden folly temple on a lake island",
+  "category": "architecture",
+  "seed": 1002,
+  "season": "any"
+ },
+ {
+  "file": "res://art/be/b2-365-spiral-iron-staircase-lighthouse.jpg",
+  "caption": "a spiral iron staircase in a lighthouse",
+  "category": "architecture",
+  "seed": 1000,
+  "season": "any"
  }
 ]

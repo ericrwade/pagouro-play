@@ -1099,16 +1099,20 @@ func _selftest() -> void:
 	puzzle.rotation_on = false
 	report.append("daily index today: %d (%s)" % [today_index(), pictures[today_index()].caption])
 	# the frozen calendar gives exactly the dailies the old whole-list shuffle gave, every day it covers
-	var legacy := range(pictures.size())
+	var legacy := range(160)  # the old shuffle was over the first 160 pictures, which keep their places in the list
 	var lrng := RandomNumberGenerator.new()
 	lrng.seed = 1888
 	for i in range(legacy.size() - 1, 0, -1):
 		var j := lrng.randi_range(0, i)
 		var t = legacy[i]; legacy[i] = legacy[j]; legacy[j] = t
+	# up to 2026-11-16 (day 320) it must match the old shuffle exactly; the seasonal year after it has no repeats
 	var differ := 0
-	for d in range(schedule.size()):
+	for d in range(320):
 		differ += int(daily_index(EPOCH_DAY + d) != legacy[d % legacy.size()])
-	report.append("calendar: %d days, differing from the old shuffle %d, unknown names %d" % [schedule.size(), differ, schedule.filter(func(n): return not picture_by_name.has(n)).size()])
+	var year := {}
+	for d in range(320, 685):
+		year[schedule[d]] = true
+	report.append("calendar: %d days, before Nov 17 differing from the old shuffle %d, seasonal year distinct %d of 365, unknown names %d, pictures %d" % [schedule.size(), differ, year.size(), schedule.filter(func(n): return not picture_by_name.has(n)).size(), pictures.size()])
 	# New picture keeps clear of today's daily and the next 89: 300 deals, none upcoming; the pool is 70
 	var upcoming := {}
 	for d in range(UPCOMING_DAILIES):
