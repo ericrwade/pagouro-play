@@ -138,3 +138,7 @@ Pixel 11 Pro XL after removing the USB test build (Eric's go-ahead), and runs: m
   clock starts per tester once the review passes and they opt in. During the test: read their feedback and ship one
   small update (Google's production form asks what changed). Earliest production application: 14 days after the
   12th tester opts in.
+- 2026-10-05: Testers Community's advice (their blog, read today): publish AT LEAST 3 closed-test releases during the
+  14 days, each with a real change and good release notes; keep the Pre-launch report under 10 issues; answer each
+  of the ~10 production-form questions in 250-300+ characters, naming the builds and what tester feedback changed.
+  Release 1 of 3 ready: 0.2.7 (18), Share button + local-midnight daily (`play-0.2.7`, sha256 a908968a…).
