@@ -11,7 +11,7 @@ Godot 4.7.2 (GL Compatibility). Windows build plays from `PLAY-JIGSAW.bat`; Andr
 (`build/pagouro-jigsaw.apk`, debug-signed, not in any store; also attached to the private prerelease
 `android-test-0.1.0` on GitHub, SHA-256 `e2a0140b…dd398`, verified by download). Not yet played by Eric on a phone.
 
-Repository: local `C:\Users\Eric Wade\PAGOURO_PLAY`; GitHub `ericrwade/pagouro-play`, created PRIVATE on 2026-10-04 as a
+Repository: local `C:\Users\Eric Wade\PAGOURO_PLAY`; GitHub `ericrwade/pagouro-play`, created PRIVATE on 2026-10-04 (made PUBLIC 2026-10-06, Eric's word) as a
 backup (making it public, and any GitHub Pages site, is Eric's call).
 
 ## Where things are

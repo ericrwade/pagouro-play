@@ -1,7 +1,7 @@
 # Resume here — Jigsaw by Pagouro on Google Play
 
 Saved 2026-10-04, evening, at Eric's request before an aside ("a fork of this conversation"). Everything below is
-committed and pushed (`ericrwade/pagouro-play`, private, main). Read this, then `store/PLAY_STORE.md`, then the last two
+committed and pushed (`ericrwade/pagouro-play`, PUBLIC since 2026-10-06 by Eric's word, main). Read this, then `store/PLAY_STORE.md`, then the last two
 entries of `docs/BUILD_LOG.md`. `docs/HANDOFF.md` has the toolchain and guardrails.
 
 ## Where things stand
