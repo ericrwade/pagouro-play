@@ -9,6 +9,7 @@ const MUSIC := "res://music/salon-loop-v1.ogg"
 ## it seems like 156"). Near-square pieces can't make every number: 150 would be 12 x 12.5.
 const COUNTS := [12, 25, 49, 100, 156]
 const DAILY_COUNT := 49
+const UPCOMING_DAILIES := 90  # today's daily and the next 89 are kept out of New picture
 ## Table colours to play on, so a picture never disappears into its background (Eric, 2026-10-03). Every one is a
 ## colour of the locked D-74 house palette (Belle Epoque poster), light to dark; the choice is kept between sessions.
 const TABLES := [
@@ -147,15 +148,32 @@ func today() -> int:
 
 
 func today_index() -> int:
-	var day := today() - EPOCH_DAY
-	# a fixed shuffle of the list, so consecutive days are not consecutive pictures; same for every player
+	return daily_index(today())
+
+
+## The picture for any day: a fixed shuffle of the list, so consecutive days are not consecutive pictures; the same for
+## every player.
+func daily_index(day: int) -> int:
 	var order := range(pictures.size())
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 1888  # the year of the first Gymnopédie
 	for i in range(order.size() - 1, 0, -1):
 		var j := rng.randi_range(0, i)
 		var t = order[i]; order[i] = order[j]; order[j] = t
-	return order[posmod(day, order.size())]
+	return order[posmod(day - EPOCH_DAY, order.size())]
+
+
+## New picture never deals today's daily or one of the next UPCOMING_DAILIES days', so playing extra puzzles never
+## spoils a daily to come (Eric, 2026-10-06). That leaves 70 of the 160, a set that shifts by one picture each day.
+func random_pool() -> Array:
+	var upcoming := {}
+	for d in range(UPCOMING_DAILIES):
+		upcoming[daily_index(today() + d)] = true
+	var pool := []
+	for i in range(pictures.size()):
+		if not upcoming.has(i):
+			pool.append(i)
+	return pool
 
 
 func start_daily() -> void:
@@ -168,7 +186,10 @@ func start_daily() -> void:
 
 func start_random() -> void:
 	is_daily = false
-	current = pictures[randi() % pictures.size()]
+	var pool := random_pool()
+	if pool.size() > 1:
+		pool.erase(pictures.find(current))  # not the one just played
+	current = pictures[pool[randi() % pool.size()]] if not pool.is_empty() else pictures[randi() % pictures.size()]
 	_start(randi())
 
 
@@ -764,13 +785,14 @@ func _on_progress(joined: int, total: int) -> void:
 
 
 ## The text Share copies, like the Wordle and Connections results families post: the daily gets a number and no
-## picture name (so it spoils nothing for anyone who hasn't done it yet).
+## picture name (so it spoils nothing for anyone who hasn't done it yet). No web address: chat apps turn a link into a
+## big preview of the site's picture, which Eric's mom took for the puzzle she had done (2026-10-06).
 func share_text() -> String:
 	var t := "%d:%02d" % [int(solved_seconds) / 60, int(solved_seconds) % 60]
 	if is_daily:
 		var number := today() - EPOCH_DAY + 1
-		return "Jigsaw by Pagouro #%d 🧩\n%d pieces in %s\npagouro.com" % [number, puzzle.rows * puzzle.cols, t]
-	return "Jigsaw by Pagouro 🧩\n%s\n%d pieces in %s\npagouro.com" % [String(current.caption).capitalize(), puzzle.rows * puzzle.cols, t]
+		return "Jigsaw by Pagouro #%d 🧩\n%d pieces in %s" % [number, puzzle.rows * puzzle.cols, t]
+	return "Jigsaw by Pagouro 🧩\n%s\n%d pieces in %s" % [String(current.caption).capitalize(), puzzle.rows * puzzle.cols, t]
 
 
 ## Godot has no share sheet, so Share copies the result; the button says so, then turns back.
@@ -1065,6 +1087,27 @@ func _selftest() -> void:
 	report.append("rotation: %d of 12 start turned, four quarter turns round-trip=%s, turned piece grabbable=%s, turned piece at home locks=%s, upright locks=%s, restore identical=%s" % [turned_start, str(round_trip), str(grab_turned), str(locks_turned), str(locks_upright), str(_layout_signature() == rsig)])
 	puzzle.rotation_on = false
 	report.append("daily index today: %d (%s)" % [today_index(), pictures[today_index()].caption])
+	# New picture keeps clear of today's daily and the next 89: 300 deals, none upcoming; the pool is 70
+	var upcoming := {}
+	for d in range(UPCOMING_DAILIES):
+		upcoming[daily_index(today() + d)] = true
+	var hits := 0
+	var seen := {}
+	var repeats := 0
+	var last := -1
+	current_count = 12
+	# a frame between deals, so each old puzzle is actually freed: 40 deals in ONE frame piled up 40 puzzles' worth of
+	# textures, slowed every bake from 0.6 s to 2.5 s, and froze Eric's PC hard enough to need a reset (2026-10-06)
+	for k in range(12):
+		start_random()
+		await get_tree().process_frame
+		var pick := pictures.find(current)
+		repeats += int(pick == last)
+		last = pick
+		seen[pick] = true
+		if upcoming.has(pick):
+			hits += 1
+	report.append("new picture: pool %d of %d, 12 deals: upcoming dailies %d, same twice in a row %d, distinct %d, 90 upcoming all distinct=%s" % [random_pool().size(), pictures.size(), hits, repeats, seen.size(), str(upcoming.size() == UPCOMING_DAILIES)])
 	# daily size: picking 100 on the daily keeps today's picture, is remembered, and Daily uses it again (the player's
 	# saved size is put back afterwards)
 	var saved_size := daily_count
