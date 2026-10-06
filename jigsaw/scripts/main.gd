@@ -25,6 +25,7 @@ const EPOCH_DAY := 20454  # 2026-01-01 as days since 1970-01-01 (UTC); day 0 of 
 var pictures: Array = []
 var current := {}
 var current_count := DAILY_COUNT
+var daily_count := DAILY_COUNT  # the player's own size for the daily, remembered (Eric, 2026-10-05: "start it at 100")
 var is_daily := true
 var current_seed := 0
 
@@ -84,6 +85,9 @@ func _ready() -> void:
 	var table_index := int(cfg.get_value("play", "table", 0))
 	table_button.select(clampi(table_index, 0, TABLES.size() - 1))
 	_set_table(clampi(table_index, 0, TABLES.size() - 1), false)
+	daily_count = int(cfg.get_value("play", "daily_count", DAILY_COUNT))
+	if not daily_count in COUNTS:
+		daily_count = DAILY_COUNT
 	var cut_index := clampi(int(cfg.get_value("play", "cut", 0)), 0, 1)
 	cut_button.select(cut_index)
 	puzzle.cut_style = PieceShape.Style.WHIMSICAL if cut_index == 0 else PieceShape.Style.CLASSIC
@@ -157,8 +161,8 @@ func today_index() -> int:
 func start_daily() -> void:
 	is_daily = true
 	current = pictures[today_index()]
-	current_count = DAILY_COUNT
-	_select_count(DAILY_COUNT)
+	current_count = daily_count
+	_select_count(daily_count)
 	_start(today())
 
 
@@ -248,10 +252,16 @@ func _build_ui() -> void:
 	count_button = OptionButton.new()
 	for n in COUNTS:
 		count_button.add_item("%d pieces" % n)
+	# on the daily, a new size replays today's picture at that size and becomes the daily's size from then on;
+	# on any other picture it cuts the same picture again at the new size
 	count_button.item_selected.connect(func(i):
-		current_count = COUNTS[i]
-		is_daily = false
-		_start(randi()))
+		if is_daily:
+			daily_count = COUNTS[i]
+			_save("daily_count", daily_count)
+			start_daily()
+		else:
+			current_count = COUNTS[i]
+			_start(randi()))
 	bar.add_child(count_button)
 	cut_button = OptionButton.new()
 	cut_button.add_item("Whimsical cut")
@@ -1053,6 +1063,20 @@ func _selftest() -> void:
 	report.append("rotation: %d of 12 start turned, four quarter turns round-trip=%s, turned piece grabbable=%s, turned piece at home locks=%s, upright locks=%s, restore identical=%s" % [turned_start, str(round_trip), str(grab_turned), str(locks_turned), str(locks_upright), str(_layout_signature() == rsig)])
 	puzzle.rotation_on = false
 	report.append("daily index today: %d (%s)" % [today_index(), pictures[today_index()].caption])
+	# daily size: picking 100 on the daily keeps today's picture, is remembered, and Daily uses it again (the player's
+	# saved size is put back afterwards)
+	var saved_size := daily_count
+	start_daily()
+	count_button.select(COUNTS.find(100))
+	count_button.item_selected.emit(COUNTS.find(100))
+	var same_pic: bool = is_daily and current == pictures[today_index()] and puzzle.rows * puzzle.cols == 100
+	start_random()
+	start_daily()
+	var cfg_check := ConfigFile.new()
+	cfg_check.load(SETTINGS)
+	report.append("daily at 100: today's picture=%s, Daily again gives %d pieces, saved=%s" % [str(same_pic), puzzle.rows * puzzle.cols, str(cfg_check.get_value("play", "daily_count", -1))])
+	daily_count = saved_size
+	_save("daily_count", saved_size)
 	report.append("screenshots in " + ProjectSettings.globalize_path("user://"))
 	print("SELFTEST " + " | ".join(report))
 	get_tree().quit()

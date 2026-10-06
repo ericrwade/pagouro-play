@@ -282,3 +282,13 @@ send adb input without checking the foreground app first.
 - Piece count comes from the built puzzle (asked 48 can build 49).
 - Self-test: `share (daily=true, copied=true): Jigsaw by Pagouro #278 🧩 | 49 pieces in 0:09 | pagouro.com`.
 - AAB sha256 a908968a…, signed with the release key. NOT uploaded to Play yet (Eric's call when).
+- 0.2.7 uploaded to the closed test by Eric (update 1 of 3).
+
+## 2026-10-05 (later): queued for update 2 (not yet versioned or built)
+
+- Daily size is the player's own (Eric: "start the daily at a higher level like 100 ... something it remembers").
+  Picking a piece count while on the daily replays TODAY's picture at that size and saves it (`daily_count` in
+  settings.cfg); Daily uses it from then on. On any other picture, a new count re-cuts that picture as before.
+  Share already prints the real piece count, so a 100-piece daily shows as "100 pieces in ...".
+- Self-test: `daily at 100: today's picture=true, Daily again gives 100 pieces, saved=100` (the player's size is
+  restored after the check).
