@@ -292,3 +292,9 @@ send adb input without checking the foreground app first.
   Share already prints the real piece count, so a 100-piece daily shows as "100 pieces in ...".
 - Self-test: `daily at 100: today's picture=true, Daily again gives 100 pieces, saved=100` (the player's size is
   restored after the check).
+- CLOCK FIX (Eric: "it seemed like it went by in a few minutes but told me 36 minutes"). The old clock ran from the
+  DEAL (the daily is dealt when the app opens) and kept running while the app sat behind other apps. Now it counts
+  play only: starts at the first touch (board, tray or button), banks and stops on background/focus loss, and a
+  stretch of more than 2 minutes without a touch is dropped. Restored puzzles keep their banked time and wait for a
+  touch. Self-test: `clock: before first touch 0 ms, after 0.6 s of play 601 ms, unchanged in background=true,
+  200 s with a 130 s idle gap counts 70 s`. (The self-test's own solve now reads 0:00: its solver uses no touches.)

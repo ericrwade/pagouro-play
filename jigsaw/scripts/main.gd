@@ -651,6 +651,8 @@ func _notification(what: int) -> void:
 			_save_progress()
 			get_tree().quit()
 	elif what == NOTIFICATION_APPLICATION_PAUSED or what == NOTIFICATION_APPLICATION_FOCUS_OUT or what == NOTIFICATION_WM_CLOSE_REQUEST:
+		if puzzle:
+			puzzle.pause_clock()  # time behind other apps is not play time
 		_save_progress()
 
 
@@ -1077,6 +1079,24 @@ func _selftest() -> void:
 	report.append("daily at 100: today's picture=%s, Daily again gives %d pieces, saved=%s" % [str(same_pic), puzzle.rows * puzzle.cols, str(cfg_check.get_value("play", "daily_count", -1))])
 	daily_count = saved_size
 	_save("daily_count", saved_size)
+	# the clock: nothing before the first touch, stops in the background, drops an idle stretch
+	_start(91)
+	await get_tree().create_timer(0.6).timeout
+	var before_touch := puzzle.elapsed_ms()
+	_touch(0, Vector2(5, 790), true)
+	_touch(0, Vector2(5, 790), false)
+	await get_tree().create_timer(0.6).timeout
+	puzzle.pause_clock()
+	var banked := puzzle.elapsed_ms()
+	await get_tree().create_timer(0.6).timeout
+	var after_pause := puzzle.elapsed_ms()
+	var now := Time.get_ticks_msec()
+	puzzle.played_ms = 0
+	puzzle._running = true
+	puzzle._clock_from = now - 200000  # began 200 s ago, last touch 130 s ago: 70 s of play, the idle gap dropped
+	puzzle._last_touch_ms = now - 130000
+	var idle_counted := puzzle.elapsed_ms()
+	report.append("clock: before first touch %d ms, after 0.6 s of play %d ms, unchanged in background=%s, 200 s with a 130 s idle gap counts %d s" % [before_touch, banked, str(after_pause == banked), idle_counted / 1000])
 	report.append("screenshots in " + ProjectSettings.globalize_path("user://"))
 	print("SELFTEST " + " | ".join(report))
 	get_tree().quit()

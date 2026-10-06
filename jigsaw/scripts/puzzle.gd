@@ -27,7 +27,14 @@ var cell := Vector2.ZERO
 var clusters: Array[Node2D] = []
 var dragging: Node2D = null
 var drag_offset := Vector2.ZERO
-var started_ms := 0
+# The clock counts only time spent playing (Eric, 2026-10-05: a few minutes' play read "36 minutes", because the clock
+# ran from the deal and kept running behind other apps). It starts at the first touch, stops when the game goes to the
+# background, and a stretch of more than IDLE_MS without a touch is left out (the phone was put down).
+const IDLE_MS := 120000
+var played_ms := 0         # banked play time
+var _clock_from := 0       # ticks when the current stretch began
+var _running := false     # false = stopped until the next touch
+var _last_touch_ms := 0
 var is_solved := false
 var show_ghost := false  # the faint guide picture starts off (Eric, 2026-10-04); Menu, Hint turns it on
 var table_color := BelleStyle.PAPER
@@ -127,7 +134,8 @@ func build(tex: Texture2D, piece_count: int, seed_value: int) -> void:
 		_fill_tray()
 	_draw_board()
 	_fit_camera()
-	started_ms = Time.get_ticks_msec()
+	played_ms = 0
+	_running = false
 	progress.emit(0, rows * cols)
 
 
@@ -419,7 +427,39 @@ func snapshot() -> Dictionary:
 			var rc: Vector2i = p.get_meta("rc")
 			rcs.append([rc.x, rc.y])
 		out.append({"pieces": rcs, "x": c.position.x, "y": c.position.y, "locked": c.has_meta("locked"), "tray": tray.find(c), "turn": turn_of(c)})
-	return {"clusters": out, "elapsed": (Time.get_ticks_msec() - started_ms) / 1000.0}
+	return {"clusters": out, "elapsed": elapsed_ms() / 1000.0}
+
+
+## Play time so far, in milliseconds: the banked time plus the running stretch up to the last touch, or up to now
+## while the player is still active.
+func elapsed_ms() -> int:
+	if not _running:
+		return played_ms
+	var now := Time.get_ticks_msec()
+	var end := now if now - _last_touch_ms <= IDLE_MS else _last_touch_ms
+	return played_ms + end - _clock_from
+
+
+## Any press anywhere (the board, the tray, a button) keeps the clock going, or starts it again.
+func _input(event: InputEvent) -> void:
+	if not ((event is InputEventScreenTouch or event is InputEventMouseButton) and event.pressed):
+		return
+	if is_solved or texture == null:
+		return
+	var now := Time.get_ticks_msec()
+	if _running and now - _last_touch_ms > IDLE_MS:
+		played_ms = elapsed_ms()  # bank up to the last touch; the idle gap is dropped
+		_running = false
+	if not _running:
+		_clock_from = now
+		_running = true
+	_last_touch_ms = now
+
+
+## The game went to the background: bank the time and wait for the next touch.
+func pause_clock() -> void:
+	played_ms = elapsed_ms()
+	_running = false
 
 
 ## Put a freshly built puzzle (same picture, count, seed and cut) back into a saved state.
@@ -453,7 +493,8 @@ func restore(data: Dictionary) -> void:
 		tray.append(t[1])
 	tray_changed.emit()
 	border_done = _border_complete()  # a restored puzzle does not replay the glow
-	started_ms = Time.get_ticks_msec() - int(float(data.get("elapsed", 0.0)) * 1000.0)
+	played_ms = int(float(data.get("elapsed", 0.0)) * 1000.0)
+	_running = false
 	progress.emit(piece_total() - clusters.size() + 1, piece_total())
 
 
@@ -497,7 +538,7 @@ func _settle(cluster: Node2D) -> void:
 			if piece.material:
 				fade.tween_property(piece.material, "shader_parameter/rim", 0.0, 1.2)
 				fade.tween_property(piece.material, "shader_parameter/solid", 1.0, 1.2)
-		solved.emit((Time.get_ticks_msec() - started_ms) / 1000.0)
+		solved.emit(elapsed_ms() / 1000.0)
 
 
 ## In its true place on the board a cluster locks (Eric, 2026-10-04: in his commercial jigsaw a placed piece "locks
