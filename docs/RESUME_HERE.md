@@ -26,9 +26,7 @@ entries of `docs/BUILD_LOG.md`. `docs/HANDOFF.md` has the toolchain and guardrai
 - **Store kit ready** in `store/`: listing text and every form answer (`PLAY_STORE.md`), `feature_graphic.png`
   (1024×500), `screenshots/phone_1..5.png` (1080×2160), icon `jigsaw/art/icon/icon_512.png`.
 - **Pagouro Salon** backed up: private `ericrwade/pagouro-salon` + release `backup-r2-2026-10-04` (model, loop v2).
-- **Summer Engine** credited in About, README and the store description. Eric plans to email the Summer Engine builder
-  (name uncertain; he said "Mathias???") once the closed test needs testers, by email, not Discord (his Discord name
-  is not his real name and he doesn't want them linked).
+- **Summer Engine** credited in About, README and the store description.
 
 ## Pictures (2026-10-04, later)
 
