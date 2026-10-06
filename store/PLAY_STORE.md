@@ -142,3 +142,9 @@ Pixel 11 Pro XL after removing the USB test build (Eric's go-ahead), and runs: m
   14 days, each with a real change and good release notes; keep the Pre-launch report under 10 issues; answer each
   of the ~10 production-form questions in 250-300+ characters, naming the builds and what tester feedback changed.
   Release 1 of 3 ready: 0.2.7 (18), Share button + local-midnight daily (`play-0.2.7`, sha256 a908968a…).
+- 2026-10-06: Testers Community reported their testers could not get in. Cause: the closed test must list their
+  Google Group `testers-community@googlegroups.com` under Testers > GOOGLE GROUPS (not the email list), all
+  countries, then Send changes for review AND Publish after approval. Giving them only the opt-in link was not
+  enough (my advice missed it). Eric making the fix.
+- 2026-10-06: pagouro.com/jigsaw/ page published (site commit dbcf961) with a front-page link; it carries the Play link
+  once production is live. Repo ericrwade/pagouro-play made public the same day.
