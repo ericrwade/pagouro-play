@@ -156,3 +156,7 @@ Pixel 11 Pro XL after removing the USB test build (Eric's go-ahead), and runs: m
 - 2026-10-06 10:42 AM PT: Testers Community confirmed the app is accessible; their 15 testers start by 4:42 PM.
   Their plan: 16 days (14 + margin), 2 feedback reports. Earliest production application about 2026-10-22.
   The year-of-pictures update (batch 2) should ship mid-October, inside the test and before 2026-11-03.
+- TARGET PUBLIC LAUNCH: 2026-10-25 (Eric's birthday). Plan: apply for production about 10-22 (Claude drafts the form
+  answers first); turn Managed publishing ON a few days before so approvals wait; Eric clicks Publish on 10-25. Same
+  day: put the Play link on pagouro.com/jigsaw/. Google's review can take up to 7 days, so 10-25 is a target, not a
+  promise.
