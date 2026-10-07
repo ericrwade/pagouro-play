@@ -345,3 +345,18 @@ send adb input without checking the foreground app first.
 - Self-test (guarded, peak 539 MB): calendar before Nov 17 differing 0, seasonal year distinct 365 of 365, unknown
   names 0, pictures 382; New picture pool 292, upcoming dailies 0, next 90 all distinct; Share `Jigsaw by Pagouro,
   Oct 6 🧩`.
+
+## 2026-10-06: iPhone build, first step (Eric: "Ready to start building the iPhone version?")
+
+- iOS export preset (`jigsaw/export_presets.cfg`, preset "iOS": bundle `com.pagouro.jigsaw`, 0.3.0 / 21, iOS 14+,
+  iPhone and iPad, team ID a placeholder until the Apple account exists) and a 1024 icon (`make_icons.py`,
+  `art/icon/icon_ios_1024.png`, opaque as Apple requires).
+- Safe area: on iOS only, the bar, tray and menus stay clear of the notch / Dynamic Island and the home indicator
+  (`_apply_safe_area` in `main.gd`). Android and desktop unchanged; guarded self-test clean.
+- No Mac needed: `.github/workflows/ios-build.yml` (manual run) exports the Xcode project with Godot 4.7.2 on a
+  GitHub macOS runner (free on a public repo) and compiles it for iPhone arm64, unsigned. Run 37571962708:
+  BUILD SUCCEEDED. Two traps found on the way: Godot's Simulator library is x86_64 only (so check the device build),
+  and the 4.7 templates need Xcode 26 (the iOS 26 SDK), so the job runs on `macos-26`.
+- Next needs Eric: Apple Developer Program ($99/year, his Apple ID, individual like the Play account), then signing
+  certificates + an App Store Connect API key as repo secrets, so the same job builds a signed IPA and uploads it
+  to TestFlight. Testing needs an iPhone (his or family's) through TestFlight.
