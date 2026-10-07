@@ -8,12 +8,17 @@ on:
 
 jobs:
   ios:
-    runs-on: macos-15
+    runs-on: macos-26  # Godot 4.7 templates are built against the iOS 26 SDK (Xcode 26)
     timeout-minutes: 60
     env:
       GODOT_VERSION: 4.7.2
     steps:
       - uses: actions/checkout@v4
+
+      - name: Use the newest Xcode
+        run: |
+          sudo xcode-select -s "$(ls -d /Applications/Xcode_26*.app | sort -V | tail -1)"
+          xcodebuild -version
 
       - name: Get Godot and the export templates
         run: |
