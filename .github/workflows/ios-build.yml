@@ -1,5 +1,5 @@
 # iPhone build check (2026-10-06): exports the game as an Xcode project with Godot 4.7.2 on a macOS runner and
-# compiles it for the iOS Simulator, unsigned. Proves the game builds for iPhone without a Mac or an Apple account.
+# compiles it for a real iPhone (arm64), unsigned. Proves the game builds for iPhone without a Mac or an Apple account.
 # Signing and App Store upload come later (they need the Apple Developer Program).
 name: iOS build check
 
@@ -35,10 +35,11 @@ jobs:
           "$GODOT" --headless --path jigsaw --export-release "iOS" ../build/ios/PagouroJigsaw.xcodeproj 2>&1 | tee export.log
           ls build/ios
 
-      - name: Compile for the iOS Simulator (unsigned)
+      # A real iPhone (arm64), unsigned. Godot's Simulator library is x86_64 only, so the Simulator is not the check.
+      - name: Compile for iPhone (unsigned)
         run: |
           cd build/ios
           xcodebuild -project PagouroJigsaw.xcodeproj -scheme PagouroJigsaw -configuration Release \
-            -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' \
+            -sdk iphoneos -destination 'generic/platform=iOS' \
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO build 2>&1 | tail -40
           test "${PIPESTATUS[0]}" -eq 0
