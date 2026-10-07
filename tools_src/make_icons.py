@@ -119,6 +119,8 @@ if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)
     for size, name in ((192, "icon_192.png"), (256, "icon_256.png"), (512, "icon_512.png")):
         build(size, CREAM).save(os.path.join(OUT, name))
+    # iOS: one 1024 icon, square and opaque (no alpha); iOS rounds the corners itself
+    build(1024, CREAM).convert("RGB").save(os.path.join(OUT, "icon_ios_1024.png"))
     # adaptive icon: the art inside the 66 % safe zone on a transparent foreground, plain cream behind
     fg = build(432, (0, 0, 0, 0))
     small = fg.resize((300, 300), Image.LANCZOS)
