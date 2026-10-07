@@ -501,8 +501,8 @@
   "id": "jigsaw-01",
   "topic": "jigsaw",
   "title": "Today's Puzzle",
-  "text": "Everyone gets the same daily puzzle: 48 pieces, chosen from the date. It works offline; no server decides.",
-  "source": "PAGOURO_PLAY/README.md (Daily puzzle)"
+  "text": "Everyone gets the same daily picture, chosen from the date: 49 pieces to start, or the size you pick. It works offline; no server decides.",
+  "source": "PAGOURO_PLAY/README.md (Daily puzzle); main.gd DAILY_COUNT = 49, daily_count remembered (0.2.8)"
  },
  {
   "id": "jigsaw-02",
@@ -542,9 +542,9 @@
  {
   "id": "jigsaw-07",
   "topic": "jigsaw",
-  "title": "A Hundred and Sixty Pictures",
-  "text": "A hundred and sixty pictures come with the game, from lighthouses and airships to a black cat on a red cushion. Cut any of them into 12 to 156 pieces.",
-  "source": "PAGOURO_PLAY/README.md (Any picture); PAGOURO_PLAY/jigsaw/art/be/pictures.json (30 captions)"
+  "title": "A Year of Pictures",
+  "text": "Three hundred and eighty-two pictures come with the game, from lighthouses and airships to a black cat on a red cushion: a year of dailies, with snow in winter and blossoms in spring. Cut any of them into 12 to 156 pieces.",
+  "source": "PAGOURO_PLAY/jigsaw/art/be/pictures.json (382 entries); PAGOURO_PLAY/docs/DAILY_CALENDAR.md (seasonal year); main.gd COUNTS"
  },
  {
   "id": "jigsaw-08",
