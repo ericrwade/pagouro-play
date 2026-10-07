@@ -67,6 +67,8 @@ var menu_panel: PanelContainer
 var menu_box: VBoxContainer
 var about_layer: Control
 var compact := false
+var ui_root: Control
+var safe := Vector4.ZERO      # iPhone safe-area insets in view pixels: left, top, right, bottom (zero elsewhere)
 var progress_path := PROGRESS
 var _restoring := false
 
@@ -231,6 +233,8 @@ func _build_ui() -> void:
 	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	root.theme = BelleStyle.theme()
 	ui.add_child(root)
+	ui_root = root
+	_apply_safe_area()
 	var top := PanelContainer.new()
 	top.set_anchors_preset(Control.PRESET_TOP_WIDE)
 	top.custom_minimum_size.y = 56
@@ -431,8 +435,31 @@ func _apply_scale() -> void:
 
 func _on_resized() -> void:
 	_apply_scale()
+	_apply_safe_area()
 	_apply_layout()
 	_layout_tray()
+
+
+## iPhone: keep the bar, tray and menus clear of the notch / Dynamic Island and the home indicator. iOS only, so the
+## Android and desktop layouts are unchanged (on a desktop the "safe area" is the screen minus the taskbar).
+func _apply_safe_area() -> void:
+	if ui_root == null:
+		return
+	safe = Vector4.ZERO
+	var win := DisplayServer.window_get_size()
+	if OS.get_name() == "iOS" and win.x > 0:
+		var area := DisplayServer.get_display_safe_area()
+		var k := get_viewport().get_visible_rect().size.x / float(win.x)
+		safe = Vector4(maxf(area.position.x, 0) * k, maxf(area.position.y, 0) * k,
+				maxf(win.x - area.end.x, 0) * k, maxf(win.y - area.end.y, 0) * k)
+	ui_root.offset_left = safe.x
+	ui_root.offset_top = safe.y
+	ui_root.offset_right = -safe.z
+	ui_root.offset_bottom = -safe.w
+	if top_panel != null:
+		_on_top_resized()
+	if tray_panel != null:
+		_layout_tray()
 
 
 ## Wide screens keep Daily, New picture and the piece count in the bar; narrow ones move them into the Menu too.
@@ -529,7 +556,7 @@ func _close_finish() -> void:
 func _on_top_resized() -> void:
 	hairline.offset_top = top_panel.size.y + 3
 	hairline.offset_bottom = top_panel.size.y + 4
-	puzzle.top_bar = top_panel.size.y + 8
+	puzzle.top_bar = top_panel.size.y + 8 + safe.y
 	if menu_layer and menu_layer.visible:
 		_open_menu()
 
@@ -724,7 +751,7 @@ func _layout_tray() -> void:
 	var on := tray_button.button_pressed
 	tray_panel.offset_top = -height
 	tray_panel.offset_bottom = 0
-	puzzle.tray_height = height if on else 0.0
+	puzzle.tray_height = (height if on else 0.0) + safe.w
 	# the sponsor line sits just above the tray while there is one, and drops to the bottom once the puzzle is done
 	var shown := on and not puzzle.is_solved
 	sponsor_label.offset_top = -30 - (height if shown else 0.0)
