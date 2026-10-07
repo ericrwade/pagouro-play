@@ -160,3 +160,15 @@ Pixel 11 Pro XL after removing the USB test build (Eric's go-ahead), and runs: m
   answers first); turn Managed publishing ON a few days before so approvals wait; Eric clicks Publish on 10-25. Same
   day: put the Play link on pagouro.com/jigsaw/. Google's review can take up to 7 days, so 10-25 is a target, not a
   promise.
+
+## When 0.3.0 is live: listing changes (drafted 2026-10-07)
+
+The listing says 160 pictures, which stays correct until 0.3.0 reaches players. Then, in Main store listing > Full
+description (and the same lines on pagouro.com/jigsaw):
+- "A hundred and sixty pictures, every one drawn..." -> "Three hundred and eighty-two pictures, every one drawn..."
+- "all 160 pictures are free from the first day" -> "all 382 pictures are free from the first day"
+- "Any of the 160 pictures at 12, 25, 49, 100 or 156 pieces." -> "Any of the 382 pictures at 12, 25, 49, 100 or 156
+  pieces."
+- "The 160 pictures in the game were picked by hand from more than 1,400 drawings." -> "The 382 pictures in the game
+  were chosen from more than 4,400 drawings: an automated check first, then a look at every one." (Batch 2 was
+  judged by an AI model and then eye-checked, so "picked by hand" no longer describes all of them.)
