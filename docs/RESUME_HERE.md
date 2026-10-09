@@ -21,7 +21,12 @@ entries of `docs/BUILD_LOG.md`. `docs/HANDOFF.md` has the toolchain and guardrai
   macOS 26 runner, Xcode 26) built an unsigned arm64 app, run 37571962708 BUILD SUCCEEDED. BLOCKED on Eric's Apple
   account: personal Apple ID `ericrwade@pagouro.com` (NOT the work MacBook, kept separate on purpose); Apple's sign-up
   rejected it at first, but by 2026-10-08 10 PM the account EXISTS (Eric Wade, ericrwade@pagouro.com, two-factor on,
-  1 trusted phone; seen on account.apple.com). Next: Developer Program enrollment. Then: Developer Program as
+  1 trusted phone; seen on account.apple.com). Developer Program: Eric ENROLLED as Individual and PAID $99
+  (2026-10-08, his own card), waiting for Apple's approval email. After approval, plan: Eric creates an App Store
+  Connect team API key (App Manager) + the app record (bundle com.pagouro.jigsaw), puts ASC_KEY_ID, ASC_ISSUER_ID,
+  ASC_KEY_P8 (base64) and APPLE_TEAM_ID in GitHub repo secrets; the job then archives with xcodebuild
+  -allowProvisioningUpdates + -authenticationKey* (Apple's cloud-managed signing, so no certificate secret to keep)
+  and uploads to TestFlight. Never use the Apple ID password (in PAGOURO_BUILD/.env) for any of this. Then: Developer Program as
   Individual ($99/yr, his word), then signing cert + App Store Connect API key as repo secrets, then signed IPA ->
   TestFlight from the same job. `joshuaswarren/omarchy-apple-dev` was checked: Linux/SwiftUI/Flutter, still needs an
   Apple ID and paid membership for TestFlight; not useful to us.
