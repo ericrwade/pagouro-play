@@ -25,7 +25,7 @@ backup (making it public, and any GitHub Pages site, is Eric's call).
 | `jigsaw/scripts/piece_masks.gd`, `piece.gdshader` | smooth cut edges: a 16-sample mask per piece, baked when a puzzle starts (0.2 s on the PC at 49 pieces, 1.0 s on a Pixel 11 Pro XL at 156); the shader cuts the picture with it and draws the ink cut line. Polygon2D antialiasing and 2D MSAA do nothing in GL Compatibility |
 | `jigsaw/scripts/help_card.gd` | the Help card (6 s countdown, then Done) |
 | `jigsaw/scripts/belle_style.gd` | the house look: D-74 palette values only, fonts, frame with corner scrolls |
-| `jigsaw/content/panels.json` | 144 Help panels, each with `source` for its facts; `intro-01` is pinned first |
+| `jigsaw/content/panels.json` | 146 Help panels, each with `source` for its facts; `intro-01` is pinned first, then `how-01` (zoom) and `how-02` (Pause) |
 | `jigsaw/music/salon-loop-v1.*` | the loop, its tracklist, and the per-piece start times used for the random start |
 | `jigsaw/art/be/` | 30 pictures (JPEG, imported lossy 0.9) + `pictures.json` (prompts, seeds) |
 | `jigsaw/art/icon/` | crab icons (cropped from `PAGOURO_BUILD/brand/pagouro_mark_1024.png`) |

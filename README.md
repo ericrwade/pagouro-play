@@ -19,7 +19,7 @@ Pagouro Salon piano loop playing softly underneath. Runs on Windows and Android 
 - **Rotation** (Menu, off by default): pieces start turned by quarter turns; tap one to turn it (right-click on a
   computer). Pieces join only when they face the same way, and lock only the right way up.
 - **Tray**: on a phone, loose pieces wait in a two-row tray along the bottom; swipe sideways to browse, swipe a piece up.
-- **Help**: a few seconds of one short panel about the project (144 of them, each with the source of its facts in
+- **Help**: a few seconds of one short panel about the project (146 of them, each with the source of its facts in
   `jigsaw/content/panels.json`), then a Done button and a hint that places about one piece per 24.
 - **Table colors**: nine, all from the locked Belle Époque house palette (D-74).
 - **Music**: the 62-minute Pagouro Salon loop, starting at a random piece each launch.
