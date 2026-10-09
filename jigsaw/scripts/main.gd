@@ -63,6 +63,7 @@ var daily_button: Button
 var random_button: Button
 var menu_button: Button
 var menu_layer: Control
+var pause_layer: PanelContainer
 var menu_panel: PanelContainer
 var menu_box: VBoxContainer
 var about_layer: Control
@@ -352,6 +353,11 @@ func _build_ui() -> void:
 		sounds_button.text = "Sounds on" if on else "Sounds off"
 		_save("sounds", on))
 	bar.add_child(sounds_button)
+	var pause := Button.new()
+	pause.text = "Pause"
+	pause.tooltip_text = "Stop the clock and cover the picture until you come back"
+	pause.pressed.connect(_pause)
+	bar.add_child(pause)
 	menu_button = Button.new()
 	menu_button.text = "Menu"
 	menu_button.pressed.connect(_open_menu)
@@ -373,6 +379,7 @@ func _build_ui() -> void:
 	tray_panel.visible = false
 	root.add_child(tray_panel)
 	_build_menu(root)
+	_build_pause(root)
 	_build_about(root)
 	help_card = HelpCard.new()
 	root.add_child(help_card)
@@ -547,6 +554,54 @@ func _close_menu() -> void:
 	menu_layer.visible = false
 
 
+## Pause (asked for by a tester): a paper sheet over the whole table, so the picture is hidden and the board takes no
+## touches. The clock stops at once; the tap that lifts the sheet starts it again.
+func _build_pause(root: Control) -> void:
+	pause_layer = PanelContainer.new()
+	pause_layer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	pause_layer.add_theme_stylebox_override("panel", BelleStyle.box(BelleStyle.PAPER, BelleStyle.GOLD, 0, 0, Vector4.ZERO))
+	pause_layer.mouse_filter = Control.MOUSE_FILTER_STOP
+	pause_layer.visible = false
+	pause_layer.gui_input.connect(func(e):
+		if (e is InputEventMouseButton or e is InputEventScreenTouch) and e.pressed:
+			_resume())
+	root.add_child(pause_layer)
+	var box := VBoxContainer.new()
+	box.alignment = BoxContainer.ALIGNMENT_CENTER
+	box.add_theme_constant_override("separation", 10)
+	box.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	pause_layer.add_child(box)
+	var head := Label.new()
+	head.text = "Paused"
+	head.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	head.add_theme_font_override("font", BelleStyle.title_font())
+	head.add_theme_font_size_override("font_size", 40)
+	head.add_theme_color_override("font_color", BelleStyle.GREEN)
+	box.add_child(head)
+	var line := Label.new()
+	line.text = "The clock is stopped. Tap anywhere to go on."
+	line.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	line.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	line.add_theme_font_size_override("font_size", 18)
+	line.add_theme_color_override("font_color", BelleStyle.INK_SOFT)
+	box.add_child(line)
+
+
+func _pause() -> void:
+	_close_menu()
+	if puzzle:
+		puzzle.pause_clock()
+	if music_button.button_pressed:
+		music.stream_paused = true
+	pause_layer.visible = true
+	_save_progress()
+
+
+func _resume() -> void:
+	pause_layer.visible = false
+	music.stream_paused = not music_button.button_pressed
+
+
 ## Closing the finish card leaves the finished picture to look at; Menu still offers the next one.
 func _close_finish() -> void:
 	finish_panel.visible = false
@@ -696,7 +751,9 @@ func _clear_progress() -> void:
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_GO_BACK_REQUEST:
 		# Android Back: close whatever is open, and only then leave the game (the puzzle is saved first)
-		if about_layer and about_layer.visible:
+		if pause_layer and pause_layer.visible:
+			_resume()
+		elif about_layer and about_layer.visible:
 			about_layer.visible = false
 		elif finish_panel and finish_panel.visible:
 			_close_finish()
@@ -1192,6 +1249,28 @@ func _selftest() -> void:
 	puzzle._clock_from = now - 200000  # began 200 s ago, last touch 130 s ago: 70 s of play, the idle gap dropped
 	puzzle._last_touch_ms = now - 130000
 	var idle_counted := puzzle.elapsed_ms()
+	# Pause: the clock holds still under the sheet, the board is hidden, and a tap lifts it and starts the clock again
+	_start(91)
+	_touch(0, Vector2(5, 790), true)
+	_touch(0, Vector2(5, 790), false)
+	await get_tree().create_timer(0.3).timeout
+	_pause()
+	var paused_at := puzzle.elapsed_ms()
+	await get_tree().create_timer(0.6).timeout
+	var held_still := puzzle.elapsed_ms() == paused_at
+	var covered := pause_layer.visible and pause_layer.get_global_rect().has_point(Vector2(640, 400))
+	await RenderingServer.frame_post_draw
+	get_viewport().get_texture().get_image().save_png("user://selftest_paused.png")
+	var tap := InputEventMouseButton.new()
+	tap.button_index = MOUSE_BUTTON_LEFT
+	tap.pressed = true
+	tap.position = Vector2(640, 400)
+	get_viewport().push_input(tap)
+	await get_tree().create_timer(0.3).timeout
+	report.append("pause: clock held=%s, picture covered=%s, a tap resumes=%s, clock runs again=%s" % [str(held_still), str(covered), str(not pause_layer.visible), str(puzzle.elapsed_ms() > paused_at)])
+	var up := tap.duplicate()
+	up.pressed = false
+	get_viewport().push_input(up)
 	# the tray closes the gap: a beat with the slot empty, then the next piece glides in and settles exactly
 	_set_tray(true, false)
 	_start(43)
