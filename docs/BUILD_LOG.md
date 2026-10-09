@@ -369,3 +369,15 @@ send adb input without checking the foreground app first.
 - Self-test (guarded, peak 559 MB): 49 and 156 pieces at the test window both went from 8 px to 22 px (0.50 cell);
   a drop 0.28 cell off snaps, 0.6 cell off stays loose. `guarded_selftest.ps1` now prints the snap line.
 - 0.3.1 includes everything in the unuploaded 0.3.0 (382 pictures, seasonal calendar, Share date, Help fixes).
+
+## 2026-10-08: first iPhone build uploaded to App Store Connect (TestFlight)
+
+- Apple Developer Program (Individual, Team 4V5P7JZ6RM) approved the same evening; app record + bundle
+  `com.pagouro.jigsaw` created by Eric. API key: an ADMIN team key (`XQ5GV3Z4JX`, in `%USERPROFILE%\.ssh\`); the first
+  key (`Q87Y4T6MY3`, App Manager) could not use Apple's cloud-managed signing ("Cloud signing permission error").
+- `ios-build.yml` with `upload=true`: archive UNSIGNED (a development signature needs a registered iPhone; automatic
+  signing refuses a manual Distribution identity), then `-exportArchive` with method app-store-connect, destination
+  upload, automatic signing and the API key. Run 37892914136: ARCHIVE SUCCEEDED, "Upload succeeded", EXPORT SUCCEEDED.
+  Build 0.3.1 (22).
+- Its warnings, fixed for the next build: empty camera / photo-library purpose strings (now filled: the game uses
+  neither) and minimum iOS 14 (now 15; Apple requires 15+ from April 2027).
