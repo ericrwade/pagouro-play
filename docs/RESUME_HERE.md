@@ -4,7 +4,30 @@ Saved 2026-10-04, evening, at Eric's request before an aside ("a fork of this co
 committed and pushed (`ericrwade/pagouro-play`, PUBLIC since 2026-10-06 by Eric's word, main). Read this, then `store/PLAY_STORE.md`, then the last two
 entries of `docs/BUILD_LOG.md`. `docs/HANDOFF.md` has the toolchain and guardrails.
 
-## Where things stand
+## NOW (saved 2026-10-08, Eric restarting the PC) — read this block first; the sections below are older history
+
+- **Closed test (Alpha):** Testers Community started 2026-10-06 10:42 AM (16 days, 15 testers). 0.2.9 (code 20) is on
+  Alpha. Earliest production application about 2026-10-22; public launch target **2026-10-25** (Eric's birthday):
+  turn Managed publishing ON a few days before; add the Play link to pagouro.com/jigsaw on launch day.
+- **0.3.0 (code 21) built, NOT yet uploaded** (Eric chose to wait a day or two into the test). `build/pagouro-jigsaw.aab`,
+  127,545,084 bytes, SHA-256 `8bcdb788fc366d20a066b7fcd83140270c0e9f460fab724762c1af915fe7d6f3`, signed CN=Pagouro,
+  backed up on release `play-0.3.0` (verified by download hash). Rebuilt 2026-10-07 for two Help-panel fixes
+  (daily = 49 pieces; 382 pictures) and the iOS-only safe area. Contents: 382 pictures, seasonal calendar from
+  2026-11-17, Share shows the date. Must be live before 2026-11-03. Release name `0.3.0 (21)`; notes: "222 new
+  pictures: 382 in all, a full year of daily puzzles, with seasonal pictures in their season. Share now shows the date."
+- **After 0.3.0 is live:** change 160 -> 382 in the Play listing and on pagouro.com/jigsaw (exact lines at the end of
+  `store/PLAY_STORE.md`, including the reworded "chosen from more than 4,400 drawings" line).
+- **iPhone:** free first step DONE: iOS preset, 1024 icon, safe area, and `.github/workflows/ios-build.yml` (GitHub
+  macOS 26 runner, Xcode 26) built an unsigned arm64 app, run 37571962708 BUILD SUCCEEDED. BLOCKED on Eric's Apple
+  account: personal Apple ID `ericrwade@pagouro.com` (NOT the work MacBook, kept separate on purpose); Apple's sign-up
+  rejected it ("cannot be created / cannot be used for Media & Purchases"), he will retry. Then: Developer Program as
+  Individual ($99/yr, his word), then signing cert + App Store Connect API key as repo secrets, then signed IPA ->
+  TestFlight from the same job. `joshuaswarren/omarchy-apple-dev` was checked: Linux/SwiftUI/Flutter, still needs an
+  Apple ID and paid membership for TestFlight; not useful to us.
+- **Paid picture packs:** direction only, revisit at 60-90 days (`docs/PICTURE_PACKS.md`, Play Billing).
+- **Self-test:** only via `tools_src/guarded_selftest.ps1` (memory guard). Last run clean 2026-10-07.
+
+## Where things stood (2026-10-04)
 
 - **Game:** Pagouro Jigsaw 0.2.4 (version code 15), tag `v0.2.4`. Eric is happy with it ("I'm very happy with the game").
   The RELEASE build (from the Play bundle, via bundletool) is installed on Eric's Pixel 11 Pro XL; the old debug test
