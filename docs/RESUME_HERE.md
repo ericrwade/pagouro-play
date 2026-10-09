@@ -22,7 +22,7 @@ entries of `docs/BUILD_LOG.md`. `docs/HANDOFF.md` has the toolchain and guardrai
   account: personal Apple ID `ericrwade@pagouro.com` (NOT the work MacBook, kept separate on purpose); Apple's sign-up
   rejected it at first, but by 2026-10-08 10 PM the account EXISTS (Eric Wade, ericrwade@pagouro.com, two-factor on,
   1 trusted phone; seen on account.apple.com). Developer Program: Eric ENROLLED as Individual and PAID $99
-  (2026-10-08, his own card), waiting for Apple's approval email. After approval, plan: Eric creates an App Store
+  (2026-10-08, his own card); APPROVED the same evening (App Store Connect opened). Team ID 4V5P7JZ6RM (public, not a secret). Bundle ID com.pagouro.jigsaw being registered (Explicit, no capabilities). After approval, plan: Eric creates an App Store
   Connect team API key (App Manager) + the app record (bundle com.pagouro.jigsaw), puts ASC_KEY_ID, ASC_ISSUER_ID,
   ASC_KEY_P8 (base64) and APPLE_TEAM_ID in GitHub repo secrets; the job then archives with xcodebuild
   -allowProvisioningUpdates + -authenticationKey* (Apple's cloud-managed signing, so no certificate secret to keep)
