@@ -9,7 +9,7 @@ entries of `docs/BUILD_LOG.md`. `docs/HANDOFF.md` has the toolchain and guardrai
 - **Closed test (Alpha):** Testers Community started 2026-10-06 10:42 AM (16 days, 15 testers). 0.2.9 (code 20) is on
   Alpha. Earliest production application about 2026-10-22; public launch target **2026-10-25** (Eric's birthday):
   turn Managed publishing ON a few days before; add the Play link to pagouro.com/jigsaw on launch day.
-- **0.3.0 (code 21) built, NOT yet uploaded** (Eric chose to wait a day or two into the test). `build/pagouro-jigsaw.aab`,
+- **0.3.1 (code 22) SUPERSEDES 0.3.0: generous snap (0.18 -> 0.3 cell, 22 px finger floor), sha256 1c4674a3a94e88c7bf5e3b5417b31ae86b3476d420496c8634da5b27c5428563, release play-0.3.1. Upload 0.3.1, not 0.3.0. Older note:** 0.3.0 (code 21) built, NOT yet uploaded (Eric chose to wait a day or two into the test). `build/pagouro-jigsaw.aab`,
   127,545,084 bytes, SHA-256 `8bcdb788fc366d20a066b7fcd83140270c0e9f460fab724762c1af915fe7d6f3`, signed CN=Pagouro,
   backed up on release `play-0.3.0` (verified by download hash). Rebuilt 2026-10-07 for two Help-panel fixes
   (daily = 49 pieces; 382 pictures) and the iOS-only safe area. Contents: 382 pictures, seasonal calendar from

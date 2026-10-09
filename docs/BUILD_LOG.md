@@ -360,3 +360,12 @@ send adb input without checking the foreground app first.
 - Next needs Eric: Apple Developer Program ($99/year, his Apple ID, individual like the Play account), then signing
   certificates + an App Store Connect API key as repo secrets, so the same job builds a signed IPA and uploads it
   to TestFlight. Testing needs an iPhone (his or family's) through TestFlight.
+
+## 2026-10-08: 0.3.1 (code 22), a more generous snap (Eric's mom: "not very generous"; Eric agreed)
+
+- One tolerance governs both snapping together (piece to neighbor) and snapping to the board: `puzzle.gd`
+  `snap_distance()` = 0.3 of a cell (was 0.18), raised to at least 22 screen px at the current zoom (a fingertip),
+  capped at half a cell. Only a piece's true neighbor or true spot can snap, so loosening it never joins wrong pieces.
+- Self-test (guarded, peak 559 MB): 49 and 156 pieces at the test window both went from 8 px to 22 px (0.50 cell);
+  a drop 0.28 cell off snaps, 0.6 cell off stays loose. `guarded_selftest.ps1` now prints the snap line.
+- 0.3.1 includes everything in the unuploaded 0.3.0 (382 pictures, seasonal calendar, Share date, Help fixes).

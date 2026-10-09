@@ -15,7 +15,10 @@ signal tray_changed
 signal placed  # pieces joined or locked into place: the screen plays the click
 signal border_finished  # the last border piece locked in
 
-const SNAP_FRACTION := 0.18   # snap when within this fraction of a cell
+const SNAP_FRACTION := 0.3    # snap together / to the board when within this fraction of a cell (0.18 until 0.3.0:
+                              # "not very generous", Eric's mom, 2026-10-08; only the true neighbor or true spot snaps)
+const SNAP_MIN_PX := 22.0     # never less than this many screen pixels at the current zoom: a fingertip's slop
+const SNAP_MAX_FRACTION := 0.5  # ...but never more than half a cell
 const MARGIN := 0.3           # scatter margin around the board, as a fraction of the board size
 const TRAY_MARGIN := 0.05     # in tray mode, the little table left around the board
 const MAX_ZOOM := 4.0         # how far in the player can zoom, relative to the whole-table view
@@ -498,9 +501,16 @@ func restore(data: Dictionary) -> void:
 	progress.emit(piece_total() - clusters.size() + 1, piece_total())
 
 
+## How near (in picture pixels) a dropped piece must be to its neighbor's or its home position to snap: a fraction of
+## a cell, raised to a fingertip's width on screen when pieces are small (156 pieces on a phone), capped at half a cell.
+func snap_distance() -> float:
+	var finger := SNAP_MIN_PX / maxf(camera.zoom.x, 0.0001)
+	return minf(maxf(cell.x * SNAP_FRACTION, finger), cell.x * SNAP_MAX_FRACTION)
+
+
 ## After a drop: join any neighbouring cluster that sits at (nearly) the same position, and snap to the board.
 func _settle(cluster: Node2D) -> void:
-	var snap := cell.x * SNAP_FRACTION
+	var snap := snap_distance()
 	var dropped := {}
 	for p in cluster.get_children():
 		dropped[p.get_meta("rc")] = true

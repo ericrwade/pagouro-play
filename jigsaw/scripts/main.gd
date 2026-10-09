@@ -1211,6 +1211,22 @@ func _selftest() -> void:
 	var settled: Vector2 = tray_panel._slot_centre(0) - (piece0.get_meta("centre") * s).rotated(mover.rotation)
 	report.append("tray glide: still during the beat=%s, moving at 0.43 s=%s, settled in slot 0=%s, same thumb kept=%s" % [str(held), str(midway), str(thumb.position.distance_to(settled) < 0.5), str(tray_panel._thumbs.get(mover) == thumb)])
 	_set_tray(false, false)
+	# snap: how far off a drop may land and still snap, on screen, old vs new; a near drop snaps, a far one does not
+	var snaps := []
+	for n in [49, 156]:
+		_start(n)
+		await get_tree().process_frame
+		var z: float = puzzle.camera.zoom.x
+		var free_now := puzzle.clusters.filter(func(c): return is_instance_valid(c) and puzzle.turn_of(c) == 0 and not c.has_meta("locked"))
+		var near: Node2D = free_now[0]
+		var far: Node2D = free_now[1]
+		near.position = Vector2(puzzle.cell.x * 0.28, 0)
+		puzzle._settle(near)
+		far.position = Vector2(puzzle.cell.x * 0.6, 0)
+		puzzle._settle(far)
+		snaps.append("%d pieces: was %.0f px, now %.0f px (%.2f cell), 0.28 cell snaps=%s, 0.6 cell stays loose=%s" % [n, puzzle.cell.x * 0.18 * z, puzzle.snap_distance() * z, puzzle.snap_distance() / puzzle.cell.x, str(puzzle._is_home(near)), str(not puzzle._is_home(far))])
+		await get_tree().process_frame
+	report.append("snap: " + "; ".join(snaps))
 	report.append("clock: before first touch %d ms, after 0.6 s of play %d ms, unchanged in background=%s, 200 s with a 130 s idle gap counts %d s" % [before_touch, banked, str(after_pause == banked), idle_counted / 1000])
 	report.append("screenshots in " + ProjectSettings.globalize_path("user://"))
 	print("SELFTEST " + " | ".join(report))
