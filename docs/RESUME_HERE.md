@@ -20,7 +20,8 @@ entries of `docs/BUILD_LOG.md`. `docs/HANDOFF.md` has the toolchain and guardrai
 - **iPhone:** free first step DONE: iOS preset, 1024 icon, safe area, and `.github/workflows/ios-build.yml` (GitHub
   macOS 26 runner, Xcode 26) built an unsigned arm64 app, run 37571962708 BUILD SUCCEEDED. BLOCKED on Eric's Apple
   account: personal Apple ID `ericrwade@pagouro.com` (NOT the work MacBook, kept separate on purpose); Apple's sign-up
-  rejected it ("cannot be created / cannot be used for Media & Purchases"), he will retry. Then: Developer Program as
+  rejected it at first, but by 2026-10-08 10 PM the account EXISTS (Eric Wade, ericrwade@pagouro.com, two-factor on,
+  1 trusted phone; seen on account.apple.com). Next: Developer Program enrollment. Then: Developer Program as
   Individual ($99/yr, his word), then signing cert + App Store Connect API key as repo secrets, then signed IPA ->
   TestFlight from the same job. `joshuaswarren/omarchy-apple-dev` was checked: Linux/SwiftUI/Flutter, still needs an
   Apple ID and paid membership for TestFlight; not useful to us.
