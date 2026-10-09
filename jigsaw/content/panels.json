@@ -498,6 +498,22 @@
   "source": "PAGOURO_BUILD/docs/ORIGIN.md; PAGOURO_BUILD/docs/facts.json (price_usd 0)"
  },
  {
+  "id": "how-01",
+  "topic": "jigsaw",
+  "how": 1,
+  "title": "Zoom In Close",
+  "text": "Spread two fingers on the table to zoom in, pinch them together to zoom out, and move both fingers to slide the table along. On a computer, use the mouse wheel.",
+  "source": "puzzle.gd _unhandled_input (two-finger pinch and pan, InputEventMagnifyGesture, mouse wheel)"
+ },
+ {
+  "id": "how-02",
+  "topic": "jigsaw",
+  "how": 2,
+  "title": "Take a Break",
+  "text": "Pause, at the top of the screen, stops the clock and covers the picture. Tap anywhere to go on. Switching to another app stops the clock too.",
+  "source": "main.gd _pause/_resume (2026-10-09); NOTIFICATION_APPLICATION_PAUSED -> pause_clock"
+ },
+ {
   "id": "jigsaw-01",
   "topic": "jigsaw",
   "title": "Today's Puzzle",

@@ -17,5 +17,5 @@ while (-not $p.HasExited) {
     }
 }
 "peak memory $peak MB, $([int]((Get-Date) - $start).TotalSeconds) s"
-Get-Content $out | Select-String 'SELFTEST' | ForEach-Object { $_.Line -split ' \| ' } | Select-String -Pattern 'share|calendar|new picture|daily at 100|tray glide|clock:|restore:|daily index|snap:|pause:'
+Get-Content $out | Select-String 'SELFTEST' | ForEach-Object { $_.Line -split ' \| ' } | Select-String -Pattern 'share|calendar|new picture|daily at 100|tray glide|clock:|restore:|daily index|snap:|pause:|help panels|help after'
 Get-Content $out, "$out.err" | Select-String -Pattern 'SCRIPT ERROR|Parse Error' | Select-Object -First 5

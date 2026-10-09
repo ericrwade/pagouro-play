@@ -816,7 +816,8 @@ func _layout_tray() -> void:
 
 
 ## The next panel. The very first Help a player ever presses shows the panel marked "first" (Eric, 2026-10-04: the
-## first one says most of this was built with AI); after that, a fixed shuffle of the rest whose place is kept, so a
+## first one says most of this was built with AI); then the "how" panels in order (2026-10-09: a tester didn't know she
+## could zoom); after that, a fixed shuffle of the rest whose place is kept, so a
 ## player sees every panel before any repeats.
 func next_panel() -> Dictionary:
 	var cfg := ConfigFile.new()
@@ -827,7 +828,14 @@ func next_panel() -> Dictionary:
 			if p.get("first", false):
 				_save("help_intro_seen", true)
 				return p
-	var rest := panels.filter(func(p): return not p.get("first", false))
+	# then the how-to panels in order (zoom, pause), also for players who saw the intro before these existed
+	var how := panels.filter(func(p): return p.has("how"))
+	how.sort_custom(func(a, b): return int(a.how) < int(b.how))
+	var how_seen := int(cfg.get_value("play", "help_how_seen", 0))
+	if how_seen < how.size():
+		_save("help_how_seen", how_seen + 1)
+		return how[how_seen]
+	var rest := panels.filter(func(p): return not p.get("first", false) and not p.has("how"))
 	if rest.is_empty():
 		rest = panels
 	var order := range(rest.size())
@@ -1109,7 +1117,17 @@ func _selftest() -> void:
 	help_card.show_panel(panels[0])
 	var keep_settings := FileAccess.get_file_as_string(SETTINGS)
 	_save("help_intro_seen", false)
-	report.append("first help panels: %s, %s" % [next_panel().get("id"), next_panel().get("id")])
+	_save("help_how_seen", 0)
+	report.append("first help panels: %s, %s, %s, then %s" % [next_panel().get("id"), next_panel().get("id"), next_panel().get("id"), next_panel().get("id")])
+	# a player who saw the intro before the how-to panels existed still gets them next
+	_save("help_how_seen", 0)
+	report.append("help after the intro was already seen: %s, %s" % [next_panel().get("id"), next_panel().get("id")])
+	for id in ["how-01", "how-02"]:
+		help_card.show_panel(panels.filter(func(p): return p.id == id)[0])
+		await get_tree().create_timer(0.4).timeout
+		await RenderingServer.frame_post_draw
+		get_viewport().get_texture().get_image().save_png("user://selftest_%s.png" % id)
+	help_card.show_panel(panels[0])
 	var f := FileAccess.open(SETTINGS, FileAccess.WRITE)
 	f.store_string(keep_settings)
 	f.close()
