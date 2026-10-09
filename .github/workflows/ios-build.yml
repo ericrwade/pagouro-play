@@ -1,10 +1,18 @@
-# iPhone build check (2026-10-06): exports the game as an Xcode project with Godot 4.7.2 on a macOS runner and
-# compiles it for a real iPhone (arm64), unsigned. Proves the game builds for iPhone without a Mac or an Apple account.
-# Signing and App Store upload come later (they need the Apple Developer Program).
-name: iOS build check
+# iPhone build (2026-10-06, signing 2026-10-08): exports the game as an Xcode project with Godot 4.7.2 on a macOS
+# runner and builds it for a real iPhone (arm64). No Mac needed.
+#   upload = false: unsigned compile check (no Apple account involved).
+#   upload = true:  archive signed by Apple's cloud-managed signing via the App Store Connect API key (repo secrets
+#                   ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_P8; no certificate or password is stored anywhere) and upload
+#                   the build to App Store Connect for TestFlight.
+name: iOS build
 
 on:
   workflow_dispatch:
+    inputs:
+      upload:
+        description: "Sign and upload to TestFlight"
+        type: boolean
+        default: false
 
 jobs:
   ios:
@@ -12,6 +20,7 @@ jobs:
     timeout-minutes: 60
     env:
       GODOT_VERSION: 4.7.2
+      TEAM_ID: 4V5P7JZ6RM  # public: printed inside every app the team ships
     steps:
       - uses: actions/checkout@v4
 
@@ -42,9 +51,44 @@ jobs:
 
       # A real iPhone (arm64), unsigned. Godot's Simulator library is x86_64 only, so the Simulator is not the check.
       - name: Compile for iPhone (unsigned)
+        if: ${{ !inputs.upload }}
         run: |
           cd build/ios
           xcodebuild -project PagouroJigsaw.xcodeproj -scheme PagouroJigsaw -configuration Release \
             -sdk iphoneos -destination 'generic/platform=iOS' \
             CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO build 2>&1 | tail -40
           test "${PIPESTATUS[0]}" -eq 0
+
+      - name: Archive, sign and upload to TestFlight
+        if: ${{ inputs.upload }}
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+        run: |
+          set -o pipefail
+          key="$RUNNER_TEMP/AuthKey.p8"
+          printf '%s\n' "$ASC_KEY_P8" > "$key"
+          auth=(-allowProvisioningUpdates -authenticationKeyPath "$key"
+                -authenticationKeyID "$ASC_KEY_ID" -authenticationKeyIssuerID "$ASC_ISSUER_ID")
+          cd build/ios
+          xcodebuild -project PagouroJigsaw.xcodeproj -scheme PagouroJigsaw -configuration Release \
+            -sdk iphoneos -destination 'generic/platform=iOS' -archivePath "$RUNNER_TEMP/Jigsaw.xcarchive" \
+            DEVELOPMENT_TEAM="$TEAM_ID" CODE_SIGN_STYLE=Automatic CODE_SIGN_IDENTITY="Apple Development" \
+            PROVISIONING_PROFILE_SPECIFIER="" PROVISIONING_PROFILE="" \
+            "${auth[@]}" archive 2>&1 | tail -60
+          cat > "$RUNNER_TEMP/ExportOptions.plist" <<EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0"><dict>
+            <key>method</key><string>app-store-connect</string>
+            <key>destination</key><string>upload</string>
+            <key>teamID</key><string>$TEAM_ID</string>
+            <key>signingStyle</key><string>automatic</string>
+            <key>manageAppVersionAndBuildNumber</key><false/>
+          </dict></plist>
+          EOF
+          xcodebuild -exportArchive -archivePath "$RUNNER_TEMP/Jigsaw.xcarchive" \
+            -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" -exportPath "$RUNNER_TEMP/export" \
+            "${auth[@]}" 2>&1 | tail -60
+          rm -f "$key"
