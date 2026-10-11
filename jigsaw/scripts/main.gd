@@ -57,6 +57,7 @@ var finish_panel: PanelContainer
 var finish_label: Label
 var finish_credit: Label
 var share_button: Button
+var rate_button: Button
 var solved_seconds := 0.0
 var bar: HBoxContainer
 var daily_button: Button
@@ -429,6 +430,14 @@ func _build_ui() -> void:
 	again.text = "Another picture"
 	again.pressed.connect(start_random)
 	buttons.add_child(again)
+	# asked once, after the third finished puzzle (see rate_offer_due)
+	rate_button = Button.new()
+	rate_button.text = "Enjoying it? Rate it on Google Play"
+	rate_button.flat = true
+	rate_button.visible = false
+	rate_button.add_theme_font_size_override("font_size", 17)
+	rate_button.pressed.connect(_rate)
+	box.add_child(rate_button)
 
 
 ## Phones: when the window is taller than wide, lay the screen out for a 480-unit width, which makes everything about
@@ -886,16 +895,20 @@ func _on_progress(joined: int, total: int) -> void:
 
 
 ## The text Share copies, like the Wordle and Connections results families post: the daily gets a number and no
-## picture name (so it spoils nothing for anyone who hasn't done it yet). No web address: chat apps turn a link into a
-## big preview of the site's picture, which Eric's mom took for the puzzle she had done (2026-10-06).
+## picture name (so it spoils nothing for anyone who hasn't done it yet). The web address is back (2026-10-11): chat
+## apps turned the old link into a big preview of a puzzle picture, which Eric's mom took for the one she had done
+## (2026-10-06); the page now carries its own preview card, the app icon and name, so whoever reads it can find the app.
+const SHARE_LINK := "pagouro.com/jigsaw"
+
+
 func share_text() -> String:
 	var t := "%d:%02d" % [int(solved_seconds) / 60, int(solved_seconds) % 60]
 	if is_daily:
 		# the date, not a puzzle number: "#279" read like a picture number and puzzled the family (Eric, 2026-10-06)
 		var d := Time.get_date_dict_from_unix_time(today() * 86400)
 		var months := ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-		return "Jigsaw by Pagouro, %s %d 🧩\n%d pieces in %s" % [months[d.month - 1], d.day, puzzle.rows * puzzle.cols, t]
-	return "Jigsaw by Pagouro 🧩\n%s\n%d pieces in %s" % [String(current.caption).capitalize(), puzzle.rows * puzzle.cols, t]
+		return "Jigsaw by Pagouro, %s %d 🧩\n%d pieces in %s\n%s" % [months[d.month - 1], d.day, puzzle.rows * puzzle.cols, t, SHARE_LINK]
+	return "Jigsaw by Pagouro 🧩\n%s\n%d pieces in %s\n%s" % [String(current.caption).capitalize(), puzzle.rows * puzzle.cols, t, SHARE_LINK]
 
 
 ## Godot has no share sheet, so Share copies the result; the button says so, then turns back.
@@ -905,6 +918,19 @@ func _share() -> void:
 	get_tree().create_timer(2.5).timeout.connect(func(): share_button.text = "Share")
 
 
+## Ratings move a store listing more than anything else we can do, so the finish card asks once, after the third
+## finished puzzle, and never again. Android only: Apple's review guideline 5.6.1 forbids custom review prompts (only
+## its own SKStoreReviewController, which needs a native plugin), so the iPhone build does not ask (2026-10-11).
+static func rate_offer_due(finished: int, offered: bool, os_name: String) -> bool:
+	return os_name == "Android" and finished >= 3 and not offered
+
+
+func _rate() -> void:
+	rate_button.visible = false
+	if OS.shell_open("market://details?id=com.pagouro.jigsaw") != OK:
+		OS.shell_open("https://play.google.com/store/apps/details?id=com.pagouro.jigsaw")
+
+
 func _on_solved(seconds: float) -> void:
 	solved_seconds = seconds
 	share_button.text = "Share"
@@ -912,6 +938,13 @@ func _on_solved(seconds: float) -> void:
 	var s := int(seconds) % 60
 	finish_label.text = "Finished in %d:%02d" % [m, s]
 	_clear_progress()
+	var cfg := ConfigFile.new()
+	cfg.load(SETTINGS)
+	var finished: int = cfg.get_value("play", "finished", 0) + 1
+	_save("finished", finished)
+	rate_button.visible = rate_offer_due(finished, cfg.get_value("play", "rate_offered", false), OS.get_name())
+	if rate_button.visible:
+		_save("rate_offered", true)
 	finish_credit.custom_minimum_size.x = min(560.0, get_viewport().get_visible_rect().size.x - 110.0)
 	finish_panel.visible = true
 	tray_panel.visible = false
@@ -1154,6 +1187,11 @@ func _selftest() -> void:
 	report.append("after solve: %d cluster(s), solved=%s" % [puzzle.clusters.size(), str(puzzle.is_solved)])
 	_share()
 	report.append("share (daily=%s, copied=%s): %s" % [str(is_daily), str(DisplayServer.clipboard_get().replace(char(13), "") == share_text()), share_text().replace("\n", " | ")])
+	# rate: Android only, from the third finish, once; never on iOS or a computer
+	var rate_ok := not rate_offer_due(2, false, "Android") and rate_offer_due(3, false, "Android") \
+		and rate_offer_due(9, false, "Android") and not rate_offer_due(3, true, "Android") \
+		and not rate_offer_due(3, false, "iOS") and not rate_offer_due(3, false, "Windows")
+	report.append("rate offer: rule ok=%s, shown here=%s" % [str(rate_ok), str(rate_button.visible)])
 	report.append("border glow played=%s; Help pieces at 156 with 156/78/40/10 left: %s" % [str(puzzle.border_done), str([156, 78, 40, 10].map(func(l): return max(1, int(round(min(156, 2 * l) / 24.0)))))])
 	await get_tree().create_timer(0.8).timeout  # the border light mid-run
 	await RenderingServer.frame_post_draw

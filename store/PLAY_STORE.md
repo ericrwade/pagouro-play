@@ -172,3 +172,22 @@ description (and the same lines on pagouro.com/jigsaw):
 - "The 160 pictures in the game were picked by hand from more than 1,400 drawings." -> "The 382 pictures in the game
   were chosen from more than 4,400 drawings: an automated check first, then a look at every one." (Batch 2 was
   judged by an AI model and then eye-checked, so "picked by hand" no longer describes all of them.)
+
+## Organic growth (agreed with Eric 2026-10-11)
+
+No in-app social features, no community group for now: the app's promises are no account and no network, and a
+group needs someone to moderate it. Growth comes from outside the app and costs no ongoing attention.
+
+- **Share carries a link (0.3.2+).** The copied result ends with `pagouro.com/jigsaw`. That page now has its own
+  link-preview card (`share_card.jpg`: the app icon and name on cream, site commit 5f48339), so a chat shows the app,
+  never a puzzle picture. On launch day the page gets the store buttons, so every share is an install link.
+- **Rate prompt (0.3.2+), Android only.** After the third finished puzzle the finish card shows "Enjoying it? Rate it
+  on Google Play" once, ever. Not on iPhone: Apple guideline 5.6.1 allows only its own SKStoreReviewController, which
+  needs a native plugin (later, if wanted).
+- **Play short description, proposed for launch** (76 of 80; adds "offline", which people search for):
+  `Relaxing Belle Époque jigsaw puzzles. No ads, works offline, nothing to buy.`
+- **App Store keywords, proposed** (98 of 100; the name's words are indexed already, so not repeated):
+  `puzzle,no ads,offline,relaxing,daily,art,vintage,poster,calm,belle epoque,paris,free,classic,adult`
+- **One launch post per place on 2026-10-25, then nothing ongoing:** r/Jigsawpuzzles, the Summer Engine Discord
+  showcase channel, the Pagouro status channel.
+- No Quit button: iOS apps must not quit themselves, and Android's Back already saves and quits.
