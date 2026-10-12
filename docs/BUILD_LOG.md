@@ -381,3 +381,16 @@ send adb input without checking the foreground app first.
   Build 0.3.1 (22).
 - Its warnings, fixed for the next build: empty camera / photo-library purpose strings (now filled: the game uses
   neither) and minimum iOS 14 (now 15; Apple requires 15+ from April 2027).
+
+## 2026-10-12: 0.3.2 (code 23), for the closed test and TestFlight
+
+- Pause (Eric's mom); help how-tos on zoom and Pause as panels 2 and 3; a one-card welcome on first launch (Testers
+  Community's report: no walkthrough); Share ends with pagouro.com/jigsaw, which now has its own preview card;
+  Tell a friend and (Android) Rate in the menu, plus a one-time rate offer after the third finished puzzle.
+- iPhone (Matthew, TestFlight): the board refits when the bar or tray changes size (the notch inset and a two-line
+  title arrive after the first fit), and the finish card is placed inside the safe area. Checked with
+  `tools_src/iphone_layout_test.ps1` (simulated late notch; the old code kept a stale zoom).
+- Self-test (guarded) all pass. AAB 127,548,707 bytes, sha256 42c07142e3751c4186f1ce395c1c39efd6c30d6952729cdcabe017af7205401c,
+  release key (cert SHA-256 89:05:8D:...:BB:22), versionCode 23. Release `play-0.3.2`, verified by download hash.
+- Play release notes (en-US): "A Pause button, a short welcome for new players, tips on zooming, Tell a friend and
+  Rate in the menu, and a link in the shared result."
