@@ -71,6 +71,7 @@ var about_layer: Control
 var compact := false
 var ui_root: Control
 var safe := Vector4.ZERO      # iPhone safe-area insets in view pixels: left, top, right, bottom (zero elsewhere)
+var _sim_safe_late := "--safe-late" in OS.get_cmdline_user_args()  # iPhone test: the inset arrives after the first layout
 var progress_path := PROGRESS
 var _restoring := false
 
@@ -78,7 +79,7 @@ var _restoring := false
 func _ready() -> void:
 	get_tree().quit_on_go_back = false  # Back closes menus and cards first (see _notification)
 	_apply_scale()
-	if "--selftest" in OS.get_cmdline_user_args() or "--shots" in OS.get_cmdline_user_args():
+	if "--selftest" in OS.get_cmdline_user_args() or "--shots" in OS.get_cmdline_user_args() or "--iphone" in OS.get_cmdline_user_args():
 		progress_path = "user://selftest_progress.json"  # never touch the player's own saved puzzle
 	pictures = JSON.parse_string(FileAccess.get_file_as_string(PICTURES))
 	for i in range(pictures.size()):
@@ -149,6 +150,8 @@ func _ready() -> void:
 		_selftest.call_deferred()
 	elif "--shots" in OS.get_cmdline_user_args():
 		_shots.call_deferred()
+	elif "--iphone" in OS.get_cmdline_user_args():
+		_iphone_test.call_deferred()
 	elif not _restore_progress():
 		start_daily()
 
@@ -463,11 +466,17 @@ func _apply_safe_area() -> void:
 		return
 	safe = Vector4.ZERO
 	var win := DisplayServer.window_get_size()
+	var k := get_viewport().get_visible_rect().size.x / float(maxi(win.x, 1))
 	if OS.get_name() == "iOS" and win.x > 0:
 		var area := DisplayServer.get_display_safe_area()
-		var k := get_viewport().get_visible_rect().size.x / float(win.x)
 		safe = Vector4(maxf(area.position.x, 0) * k, maxf(area.position.y, 0) * k,
 				maxf(win.x - area.end.x, 0) * k, maxf(win.y - area.end.y, 0) * k)
+	else:
+		# `-- --sim-safe=TOP,BOTTOM` (window pixels) stands in for an iPhone's notch and home bar in desktop tests
+		for a in OS.get_cmdline_user_args():
+			if a.begins_with("--sim-safe=") and not _sim_safe_late:
+				var tb := a.trim_prefix("--sim-safe=").split(",")
+				safe = Vector4(0, float(tb[0]) * k, 0, float(tb[1]) * k)
 	ui_root.offset_left = safe.x
 	ui_root.offset_top = safe.y
 	ui_root.offset_right = -safe.z
@@ -614,7 +623,7 @@ func _resume() -> void:
 ## Closing the finish card leaves the finished picture to look at; Menu still offers the next one.
 func _close_finish() -> void:
 	finish_panel.visible = false
-	puzzle.focus_board(40.0)  # keep clear of the sponsor line at the bottom
+	puzzle.focus_board(40.0 + safe.w)  # keep clear of the sponsor line at the bottom
 
 
 func _on_top_resized() -> void:
@@ -951,12 +960,13 @@ func _on_solved(seconds: float) -> void:
 	_layout_tray()  # the sponsor line comes down to the bottom
 	finish_panel.modulate.a = 0.0
 	await get_tree().process_frame  # let the wrapped text settle before measuring the card
-	# below the finished picture, so the picture stays in view
-	var view := get_viewport().get_visible_rect().size
+	# below the finished picture, so the picture stays in view. The card lives in ui_root, which the iPhone safe area
+	# shrinks, so it is placed in ui_root's own size; measured from the whole screen it fell off the bottom (2026-10-12).
+	var area := ui_root.size
 	finish_panel.reset_size()
-	finish_panel.position = Vector2((view.x - finish_panel.size.x) * 0.5, view.y - finish_panel.size.y - 44)
+	finish_panel.position = Vector2((area.x - finish_panel.size.x) * 0.5, area.y - finish_panel.size.y - 44)
 	finish_panel.modulate.a = 1.0
-	puzzle.focus_board(finish_panel.size.y + 52)
+	puzzle.focus_board(finish_panel.size.y + 52 + safe.w)
 
 
 ## Self-test helper: every cluster's pieces, position and lock, as a sorted list, to compare two puzzle states.
@@ -1043,6 +1053,50 @@ func _shots() -> void:
 	_close_menu()
 	print("SHOTS written to ", ProjectSettings.globalize_path("user://"))
 	get_tree().quit()
+
+## iPhone layout check (`-- --iphone --sim-safe=TOP,BOTTOM` in a phone-shaped window): the iPhone tester's two reports
+## (2026-10-12) on his own picture, a two-line title. The top of the picture must sit below the bar at full zoom-out,
+## and the finish card must end above the home bar. Writes user://iphone_play.png and user://iphone_done.png.
+func _iphone_test() -> void:
+	var report := []
+	tray_button.set_pressed_no_signal(true)
+	_set_tray(true, false)
+	for p in pictures:
+		if String(p.file).contains("covered-market-hall"):
+			current = p
+	current_count = 49
+	is_daily = false
+	_start(1201)
+	if "--start-wide" in OS.get_cmdline_user_args():
+		# iOS can report its window before it settles; start wide, then turn the window to the phone's shape
+		await get_tree().create_timer(0.5).timeout
+		DisplayServer.window_set_size(Vector2i(393, 852))
+	if _sim_safe_late:
+		await get_tree().create_timer(0.5).timeout
+		_sim_safe_late = false
+		_apply_safe_area()
+	await get_tree().create_timer(1.0).timeout
+	await RenderingServer.frame_post_draw
+	get_viewport().get_texture().get_image().save_png("user://iphone_play.png")
+	var bar_bottom := top_panel.get_global_rect().end.y
+	var pic_top := (puzzle.board.get_global_transform_with_canvas() * Vector2.ZERO).y
+	var view := get_viewport().get_visible_rect().size
+	report.append("safe top %.0f bottom %.0f, view %.0fx%.0f" % [safe.y, safe.w, view.x, view.y])
+	report.append("play: bar ends at %.0f, picture top at %.0f, clear=%s" % [bar_bottom, pic_top, str(pic_top >= bar_bottom)])
+	var pic_w := (puzzle.board.get_global_transform_with_canvas() * puzzle.texture.get_size()).x - (puzzle.board.get_global_transform_with_canvas() * Vector2.ZERO).x
+	report.append("play: zoom %.3f, whole-table zoom %.3f, picture %.0f wide on a %.0f-wide screen, fits=%s" % [puzzle.camera.zoom.x, puzzle.fit_zoom, pic_w, view.x, str(pic_w <= view.x)])
+	puzzle.solve_all_for_test()
+	await get_tree().create_timer(2.0).timeout
+	await RenderingServer.frame_post_draw
+	get_viewport().get_texture().get_image().save_png("user://iphone_done.png")
+	var card_bottom := finish_panel.get_global_rect().end.y
+	var pic_top2 := (puzzle.board.get_global_transform_with_canvas() * Vector2.ZERO).y
+	var pic_bottom := (puzzle.board.get_global_transform_with_canvas() * puzzle.texture.get_size()).y
+	report.append("finish: card ends at %.0f, home bar starts at %.0f, clear=%s" % [card_bottom, view.y - safe.w, str(card_bottom <= view.y - safe.w)])
+	report.append("finish: picture %.0f..%.0f between bar %.0f and card %.0f=%s" % [pic_top2, pic_bottom, bar_bottom, finish_panel.get_global_rect().position.y, str(pic_top2 >= bar_bottom and pic_bottom <= finish_panel.get_global_rect().position.y)])
+	print("IPHONE | " + " | ".join(report))
+	get_tree().quit()
+
 
 func _selftest() -> void:
 	var report := []

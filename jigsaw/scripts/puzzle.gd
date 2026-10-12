@@ -43,7 +43,11 @@ var show_ghost := false  # the faint guide picture starts off (Eric, 2026-10-04)
 var table_color := BelleStyle.PAPER
 var cut_style := PieceShape.Style.WHIMSICAL
 var tray_mode := false
-var tray_height := 0.0        # screen pixels the tray covers at the bottom (set by the screen)
+var tray_height := 0.0:       # screen pixels the tray covers at the bottom (set by the screen)
+	set(v):
+		if v != tray_height:
+			tray_height = v
+			_refit()
 var tray: Array[Node2D] = []  # clusters waiting in the tray, in tray order
 var fit_zoom := 1.0           # the zoom that shows the whole table; the player may zoom in from it up to MAX_ZOOM times
 var fit_centre := Vector2.ZERO  # where the whole-table view puts the camera
@@ -233,8 +237,28 @@ func set_ghost(on: bool) -> void:
 		_draw_board()
 
 
-## Height of the screen's top bar, set by main; the title's own lines on a phone make it taller.
-var top_bar := 64.0
+## Height of the screen's top bar, set by main; the title's own lines on a phone make it taller, and on an iPhone it
+## includes the notch. It settles a frame or two after a puzzle starts (the title wraps, the safe area arrives), so a
+## change refits the view: an iPhone tester found the top of the puzzle under the bar at full zoom-out (2026-10-12).
+var top_bar := 64.0:
+	set(v):
+		if v != top_bar:
+			top_bar = v
+			_refit()
+
+
+## The bars changed size: recompute the whole-table view. Zoomed out, move there; zoomed in, stay put (within bounds).
+func _refit() -> void:
+	if texture == null or is_solved or camera == null:
+		return
+	var at_fit := camera.zoom.x <= fit_zoom * 1.001
+	var keep_zoom := camera.zoom
+	var keep_pos := camera.position
+	_fit_camera()
+	if not at_fit and keep_zoom.x > fit_zoom:
+		camera.zoom = keep_zoom
+		camera.position = keep_pos
+		_clamp_camera()
 var mask_scale := 0.0  # mask pixels per picture pixel (self-test report)
 var mask_ms := 0  # how long the masks took to bake (self-test report)
 func _fit_camera() -> void:
