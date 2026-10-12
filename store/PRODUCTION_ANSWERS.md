@@ -5,9 +5,9 @@ and the build log. Their template answers claim things that did not happen ("sur
 "10k-100k installs", "Rate and Share in Settings" when the form was written); these answers say only what did, and
 name the builds. Testers Community advises 250-300+ characters per answer. Fill the blanks marked ✱ before pasting.
 
-Builds in the closed test: 0.2.7 (18), 0.2.9 (20), ✱ 0.3.1 (22) if uploaded, and 0.3.2 (23), which carries the
-changes from Testers Community's report. Upload 0.3.2 to the closed test before applying, so answer 8 is true of a
-build Google can see.
+Builds in the closed test: it opened with 0.2.6 (17) on 2026-10-05, then four updates: 0.2.7 (18), 0.2.9 (20),
+0.3.1 (22) and 0.3.2 (23). 0.3.2 carries the changes from Testers Community's report and is on the closed test
+(uploaded 2026-10-12), so answer 8 is true of a build Google can see.
 
 **1. How did you recruit users for your closed test?**
 
@@ -63,7 +63,8 @@ template's 10K-100K assumes marketing we are not doing.
 say so plainly:
 
 > This is our first app, so there was no earlier attempt. What we did on purpose was ship small updates during the
-> test (✱ three or four builds in two weeks: count the closed-test releases), each answering something testers told us, rather than one large update at the end.
+> test: four updates in its first week (0.2.7, 0.2.9, 0.3.1 and 0.3.2), each answering something testers told us,
+> rather than one large update at the end.
 
 ## Not taken from the report, and why
 
