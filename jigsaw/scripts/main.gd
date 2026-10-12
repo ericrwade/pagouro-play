@@ -65,6 +65,7 @@ var random_button: Button
 var menu_button: Button
 var menu_layer: Control
 var pause_layer: PanelContainer
+var welcome_layer: Control
 var menu_panel: PanelContainer
 var menu_box: VBoxContainer
 var about_layer: Control
@@ -154,6 +155,11 @@ func _ready() -> void:
 		_iphone_test.call_deferred()
 	elif not _restore_progress():
 		start_daily()
+	if not ("--selftest" in OS.get_cmdline_user_args() or "--shots" in OS.get_cmdline_user_args() or "--iphone" in OS.get_cmdline_user_args()):
+		var seen := ConfigFile.new()
+		seen.load(SETTINGS)
+		if not bool(seen.get_value("play", "welcome_seen", false)):
+			welcome_layer.visible = true
 
 
 ## Days since 1970 on the player's own calendar, so the daily turns over at local midnight (as Wordle does), not at
@@ -385,6 +391,7 @@ func _build_ui() -> void:
 	_build_menu(root)
 	_build_pause(root)
 	_build_about(root)
+	_build_welcome(root)
 	help_card = HelpCard.new()
 	root.add_child(help_card)
 	help_card.finished.connect(_give_hints)
@@ -557,6 +564,22 @@ func _build_menu(root: Control) -> void:
 		_close_menu()
 		about_layer.visible = true)
 	menu_box.add_child(about)
+	# Testers Community's report (2026-10-12) asked for "Share App" and "Rate" in the menu, not only on the finish card
+	var tell := Button.new()
+	tell.text = "Tell a friend"
+	tell.tooltip_text = "Copy a line about the game to paste in a chat"
+	tell.pressed.connect(func():
+		DisplayServer.clipboard_set(TELL_A_FRIEND)
+		tell.text = "Copied! Paste it in a chat"
+		get_tree().create_timer(2.5).timeout.connect(func(): tell.text = "Tell a friend"))
+	menu_box.add_child(tell)
+	if OS.get_name() == "Android":  # iPhone: Apple allows only its own review prompt (see rate_offer_due)
+		var rate := Button.new()
+		rate.text = "Rate it on Google Play"
+		rate.pressed.connect(func():
+			_close_menu()
+			_rate())
+		menu_box.add_child(rate)
 	daily_button.pressed.connect(_close_menu)
 	random_button.pressed.connect(_close_menu)
 
@@ -570,6 +593,59 @@ func _open_menu() -> void:
 
 func _close_menu() -> void:
 	menu_layer.visible = false
+
+
+## First launch only: how to play, on one card with one button. Testers Community's report (2026-10-12) found no
+## walkthrough, and Eric's mom never found pinch-to-zoom; the Help panels only appear when Help is tapped.
+const WELCOME_LINES := [
+	"Drag the pieces onto the board. Each one snaps into place when it is close.",
+	"Spread two fingers to zoom in, pinch them to zoom out.",
+	"Help shows a short note, then puts a few pieces in place for you.",
+	"Pause stops the clock. There is no score and no hurry.",
+]
+
+
+func _build_welcome(root: Control) -> void:
+	welcome_layer = Control.new()
+	welcome_layer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	welcome_layer.mouse_filter = Control.MOUSE_FILTER_STOP
+	welcome_layer.visible = false
+	root.add_child(welcome_layer)
+	var dim := ColorRect.new()
+	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	dim.color = Color(BelleStyle.INK, 0.35)
+	welcome_layer.add_child(dim)
+	var centre := CenterContainer.new()
+	centre.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	welcome_layer.add_child(centre)
+	var card := PanelContainer.new()
+	card.add_theme_stylebox_override("panel", BelleStyle.box(BelleStyle.PAPER, BelleStyle.GOLD, 2, 2, Vector4(24, 18, 24, 18)))
+	centre.add_child(card)
+	var box := VBoxContainer.new()
+	box.add_theme_constant_override("separation", 12)
+	card.add_child(box)
+	var head := Label.new()
+	head.text = "Welcome"
+	head.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	head.add_theme_font_override("font", BelleStyle.title_font())
+	head.add_theme_font_size_override("font_size", 34)
+	head.add_theme_color_override("font_color", BelleStyle.GREEN)
+	box.add_child(head)
+	for t in WELCOME_LINES:
+		var line := Label.new()
+		line.text = "•  " + t
+		line.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		line.custom_minimum_size.x = 360  # a wrapping label needs a width
+		line.add_theme_font_size_override("font_size", 18)
+		box.add_child(line)
+	var go := Button.new()
+	go.text = "Start"
+	go.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	go.custom_minimum_size.x = 140
+	go.pressed.connect(func():
+		welcome_layer.visible = false
+		_save("welcome_seen", true))
+	box.add_child(go)
 
 
 ## Pause (asked for by a tester): a paper sheet over the whole table, so the picture is hidden and the board takes no
@@ -769,7 +845,10 @@ func _clear_progress() -> void:
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_GO_BACK_REQUEST:
 		# Android Back: close whatever is open, and only then leave the game (the puzzle is saved first)
-		if pause_layer and pause_layer.visible:
+		if welcome_layer and welcome_layer.visible:
+			welcome_layer.visible = false
+			_save("welcome_seen", true)
+		elif pause_layer and pause_layer.visible:
 			_resume()
 		elif about_layer and about_layer.visible:
 			about_layer.visible = false
@@ -908,6 +987,7 @@ func _on_progress(joined: int, total: int) -> void:
 ## apps turned the old link into a big preview of a puzzle picture, which Eric's mom took for the one she had done
 ## (2026-10-06); the page now carries its own preview card, the app icon and name, so whoever reads it can find the app.
 const SHARE_LINK := "pagouro.com/jigsaw"
+const TELL_A_FRIEND := "Jigsaw by Pagouro: free jigsaw puzzles of Belle Époque pictures, a new one every day. No ads. " + SHARE_LINK
 
 
 func share_text() -> String:
@@ -1085,6 +1165,18 @@ func _iphone_test() -> void:
 	report.append("play: bar ends at %.0f, picture top at %.0f, clear=%s" % [bar_bottom, pic_top, str(pic_top >= bar_bottom)])
 	var pic_w := (puzzle.board.get_global_transform_with_canvas() * puzzle.texture.get_size()).x - (puzzle.board.get_global_transform_with_canvas() * Vector2.ZERO).x
 	report.append("play: zoom %.3f, whole-table zoom %.3f, picture %.0f wide on a %.0f-wide screen, fits=%s" % [puzzle.camera.zoom.x, puzzle.fit_zoom, pic_w, view.x, str(pic_w <= view.x)])
+	welcome_layer.visible = true
+	await get_tree().create_timer(0.4).timeout
+	await RenderingServer.frame_post_draw
+	get_viewport().get_texture().get_image().save_png("user://iphone_welcome.png")
+	var wcard: Control = welcome_layer.get_child(1).get_child(0)
+	report.append("welcome: card %.0f..%.0f wide %.0f, inside the safe screen=%s" % [wcard.get_global_rect().position.y, wcard.get_global_rect().end.y, wcard.size.x, str(wcard.get_global_rect().position.y >= safe.y and wcard.get_global_rect().end.y <= view.y - safe.w and wcard.size.x <= view.x)])
+	welcome_layer.visible = false
+	_open_menu()
+	await get_tree().create_timer(0.4).timeout
+	await RenderingServer.frame_post_draw
+	get_viewport().get_texture().get_image().save_png("user://iphone_menu.png")
+	_close_menu()
 	puzzle.solve_all_for_test()
 	await get_tree().create_timer(2.0).timeout
 	await RenderingServer.frame_post_draw
