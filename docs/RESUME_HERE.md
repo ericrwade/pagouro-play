@@ -6,6 +6,10 @@ entries of `docs/BUILD_LOG.md`. `docs/HANDOFF.md` has the toolchain and guardrai
 
 ## NOW (saved 2026-10-08, Eric restarting the PC) — read this block first; the sections below are older history
 
+- **2026-10-12: 0.3.2 (code 23) UPLOADED to the closed test (Alpha) by Eric**, and submitted to TestFlight beta
+  review (Family group). Production form answers: `store/PRODUCTION_ANSWERS.md` (fill the ✱ blanks; apply about
+  10-22). Growth plan and launch-day tasks: end of `store/PLAY_STORE.md`.
+
 - **Closed test (Alpha):** Testers Community started 2026-10-06 10:42 AM (16 days, 15 testers). 0.2.9 (code 20) is on
   Alpha. Earliest production application about 2026-10-22; public launch target **2026-10-25** (Eric's birthday):
   turn Managed publishing ON a few days before; add the Play link to pagouro.com/jigsaw on launch day.
