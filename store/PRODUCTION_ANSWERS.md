@@ -3,7 +3,7 @@
 Drafted 2026-10-12 from Testers Community's two reports (`docs/jigsaw_feedback.pdf`, `docs/jigsaw_production.pdf`)
 and the build log. Their template answers claim things that did not happen ("surveys and usability sessions",
 "10k-100k installs", "Rate and Share in Settings" when the form was written); these answers say only what did, and
-name the builds. Testers Community advises 250-300+ characters per answer. Fill the blanks marked ✱ before pasting.
+name the builds. Testers Community advises 250-300+ characters per answer. All blanks filled 2026-10-13 (Eric).
 
 Builds in the closed test: it opened with 0.2.6 (17) on 2026-10-05, then four updates: 0.2.7 (18), 0.2.9 (20),
 0.3.1 (22) and 0.3.2 (23). 0.3.2 carries the changes from Testers Community's report and is on the closed test
@@ -43,8 +43,8 @@ Builds in the closed test: it opened with 0.2.6 (17) on 2026-10-05, then four up
 > and five sizes from 12 to 156 pieces. It collects no data and needs no account or connection. The clock counts
 > only time spent playing, and there is no score, so it stays relaxing.
 
-**7. Expected installs in the first year.** Eric's call. Honest guess: the lowest range that is not zero; the
-template's 10K-100K assumes marketing we are not doing.
+**7. Expected installs in the first year.** The lowest range the form offers (Eric, 2026-10-13); the template's
+10K-100K assumes marketing we are not doing.
 
 **8. What changes did you make based on the closed test?**
 
@@ -55,7 +55,7 @@ template's 10K-100K assumes marketing we are not doing.
 
 **9. How did you decide the app is ready for production?**
 
-> No crashes were reported by any tester (✱ add "or in the pre-launch report" only if the Console shows none), and every problem testers
+> No crashes were reported by any tester or in the pre-launch report, and every problem testers
 > raised during the test was fixed in a build they then played. Each build passes an automated self-test that solves
 > puzzles, checks the clock, saving and restoring, snapping and the tray, so changes do not break what works.
 
