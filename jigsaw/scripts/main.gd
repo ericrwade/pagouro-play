@@ -66,6 +66,8 @@ var menu_button: Button
 var menu_layer: Control
 var pause_layer: PanelContainer
 var welcome_layer: Control
+var day_note: PanelContainer
+var day_note_label: Label
 var menu_panel: PanelContainer
 var menu_box: VBoxContainer
 var about_layer: Control
@@ -153,8 +155,8 @@ func _ready() -> void:
 		_shots.call_deferred()
 	elif "--iphone" in OS.get_cmdline_user_args():
 		_iphone_test.call_deferred()
-	elif not _restore_progress():
-		start_daily()
+	else:
+		_open_on_launch()
 	if not ("--selftest" in OS.get_cmdline_user_args() or "--shots" in OS.get_cmdline_user_args() or "--iphone" in OS.get_cmdline_user_args()):
 		var seen := ConfigFile.new()
 		seen.load(SETTINGS)
@@ -196,6 +198,53 @@ func random_pool() -> Array:
 		if not upcoming.has(i):
 			pool.append(i)
 	return pool
+
+
+## On launch: the puzzle left in progress; else today's daily; but if today's daily is already finished, a new picture
+## with a note, so the app does not offer a finished daily again (Eric, 2026-10-14). The Daily button still replays it.
+func _open_on_launch() -> void:
+	if _restore_progress():
+		return
+	var cfg := ConfigFile.new()
+	cfg.load(SETTINGS)
+	if int(cfg.get_value("play", "daily_done_day", -1)) == today():
+		start_random()
+		var secs := int(cfg.get_value("play", "daily_done_seconds", 0))
+		_show_day_note("Today's daily is done (%d:%02d). Here's another picture. A new daily comes at midnight." % [secs / 60, secs % 60])
+	else:
+		start_daily()
+
+
+## A small paper note under the top bar; a tap or a few seconds puts it away.
+func _build_day_note(root: Control) -> void:
+	day_note = PanelContainer.new()
+	day_note.add_theme_stylebox_override("panel", BelleStyle.box(BelleStyle.PAPER, BelleStyle.GOLD, 2, 2, Vector4(18, 10, 18, 10)))
+	day_note.visible = false
+	day_note.gui_input.connect(func(ev: InputEvent):
+		if (ev is InputEventMouseButton or ev is InputEventScreenTouch) and ev.pressed:
+			day_note.visible = false)
+	root.add_child(day_note)
+	day_note_label = Label.new()
+	day_note_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	day_note_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	day_note_label.add_theme_font_size_override("font_size", 18)
+	day_note.add_child(day_note_label)
+
+
+func _show_day_note(text: String) -> void:
+	day_note_label.text = text
+	var w: float = min(520.0, ui_root.size.x - 32.0)
+	day_note_label.custom_minimum_size.x = w - 40.0
+	day_note.modulate.a = 1.0
+	day_note.visible = true
+	day_note.reset_size()
+	await get_tree().process_frame  # let the wrapped text settle before placing the note
+	day_note.reset_size()
+	day_note.position = Vector2((ui_root.size.x - day_note.size.x) * 0.5, top_panel.size.y + 14)
+	var tw := create_tween()
+	tw.tween_interval(7.0)
+	tw.tween_property(day_note, "modulate:a", 0.0, 0.8)
+	tw.tween_callback(func(): day_note.visible = false)
 
 
 func start_daily() -> void:
@@ -392,6 +441,7 @@ func _build_ui() -> void:
 	_build_pause(root)
 	_build_about(root)
 	_build_welcome(root)
+	_build_day_note(root)
 	help_card = HelpCard.new()
 	root.add_child(help_card)
 	help_card.finished.connect(_give_hints)
@@ -1027,6 +1077,9 @@ func _on_solved(seconds: float) -> void:
 	var s := int(seconds) % 60
 	finish_label.text = "Finished in %d:%02d" % [m, s]
 	_clear_progress()
+	if is_daily:
+		_save("daily_done_day", today())
+		_save("daily_done_seconds", int(seconds))
 	var cfg := ConfigFile.new()
 	cfg.load(SETTINGS)
 	var finished: int = cfg.get_value("play", "finished", 0) + 1
@@ -1338,6 +1391,12 @@ func _selftest() -> void:
 		and rate_offer_due(9, false, "Android") and not rate_offer_due(3, true, "Android") \
 		and not rate_offer_due(3, false, "iOS") and not rate_offer_due(3, false, "Windows")
 	report.append("rate offer: rule ok=%s, shown here=%s" % [str(rate_ok), str(rate_button.visible)])
+	# a finished daily is remembered: reopening the same day deals a new picture with a note, not the daily again;
+	# a day later the daily comes back (the player's real values are put back afterwards)
+	var day_cfg := ConfigFile.new()
+	day_cfg.load(SETTINGS)
+	var recorded: bool = (not is_daily) or int(day_cfg.get_value("play", "daily_done_day", -1)) == today()
+	report.append("daily done: finish recorded=%s (daily=%s)" % [str(recorded), str(is_daily)])
 	report.append("border glow played=%s; Help pieces at 156 with 156/78/40/10 left: %s" % [str(puzzle.border_done), str([156, 78, 40, 10].map(func(l): return max(1, int(round(min(156, 2 * l) / 24.0)))))])
 	await get_tree().create_timer(0.8).timeout  # the border light mid-run
 	await RenderingServer.frame_post_draw
@@ -1434,6 +1493,37 @@ func _selftest() -> void:
 	report.append("daily at 100: today's picture=%s, Daily again gives %d pieces, saved=%s" % [str(same_pic), puzzle.rows * puzzle.cols, str(cfg_check.get_value("play", "daily_count", -1))])
 	daily_count = saved_size
 	_save("daily_count", saved_size)
+	# reopening the same day after finishing the daily deals a new picture with a note, not the daily again; a day later
+	# the daily comes back (the player's real values and saved puzzle are put back afterwards)
+	var day_cfg2 := ConfigFile.new()
+	day_cfg2.load(SETTINGS)
+	var real_done = day_cfg2.get_value("play", "daily_done_day", -1)
+	var real_secs = day_cfg2.get_value("play", "daily_done_seconds", 0)
+	var real_progress := FileAccess.get_file_as_string(progress_path) if FileAccess.file_exists(progress_path) else ""
+	_save("daily_done_day", today())
+	_save("daily_done_seconds", 252)
+	_clear_progress()
+	_open_on_launch()
+	await get_tree().process_frame
+	await get_tree().process_frame
+	var reopened_new: bool = not is_daily and day_note.visible and day_note_label.text.contains("4:12")
+	var note_clear: bool = day_note.position.y >= top_panel.size.y and day_note.position.x >= 0.0 \
+		and day_note.position.x + day_note.size.x <= ui_root.size.x
+	await RenderingServer.frame_post_draw
+	get_viewport().get_texture().get_image().save_png("user://selftest_daynote.png")
+	_save("daily_done_day", today() - 1)
+	_clear_progress()
+	_open_on_launch()
+	var next_day_daily: bool = is_daily and current == pictures[today_index()]
+	_save("daily_done_day", real_done)
+	_save("daily_done_seconds", real_secs)
+	_clear_progress()
+	if real_progress != "":
+		var pf := FileAccess.open(progress_path, FileAccess.WRITE)
+		pf.store_string(real_progress)
+		pf.close()
+	day_note.visible = false
+	report.append("daily done: same-day reopen gives a new picture with the note=%s, note on screen below the bar=%s, next day gives the daily=%s" % [str(reopened_new), str(note_clear), str(next_day_daily)])
 	# the clock: nothing before the first touch, stops in the background, drops an idle stretch
 	_start(91)
 	await get_tree().create_timer(0.6).timeout

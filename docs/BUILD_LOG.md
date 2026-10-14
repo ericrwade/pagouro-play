@@ -394,3 +394,13 @@ send adb input without checking the foreground app first.
   release key (cert SHA-256 89:05:8D:...:BB:22), versionCode 23. Release `play-0.3.2`, verified by download hash.
 - Play release notes (en-US): "A Pause button, a short welcome for new players, tips on zooming, Tell a friend and
   Rate in the menu, and a link in the shared result."
+
+## 2026-10-14: queued for 0.3.3 (not yet versioned or built)
+
+- A finished daily is remembered (Eric: reopened the app hours after finishing the daily and was offered it again).
+  Finishing the daily saves the day and the time; reopening the same day with no puzzle in progress deals a new
+  picture with a note under the bar: "Today's daily is done (4:12). Here's another picture. A new daily comes at
+  midnight." A tap or 7 s puts it away. The Daily button still replays it on purpose.
+- Self-test: `daily done: finish recorded=true`; `same-day reopen gives a new picture with the note=true, note on
+  screen below the bar=true, next day gives the daily=true` (shot `selftest_daynote.png`). The player's real values
+  and saved puzzle are put back afterwards. "2 resources still in use at exit" was there before this change too.
