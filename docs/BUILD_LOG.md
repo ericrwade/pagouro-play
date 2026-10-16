@@ -404,3 +404,9 @@ send adb input without checking the foreground app first.
 - Self-test: `daily done: finish recorded=true`; `same-day reopen gives a new picture with the note=true, note on
   screen below the bar=true, next day gives the daily=true` (shot `selftest_daynote.png`). The player's real values
   and saved puzzle are put back afterwards. "2 resources still in use at exit" was there before this change too.
+- 2026-10-16: a lone piece no longer snaps to the board by itself (Eric: dropping a piece "sorta where I think it's
+  going" and having it jump into place "makes the game too easy"). A piece now has to fit against another piece:
+  joining a placed neighbor brings it home, and a group of two or more still snaps to its spot. The snap reach is
+  unchanged (0.3 cell, 22 px floor). Help still places pieces outright. The welcome card now reads "A piece snaps in
+  when it fits against another piece." Self-test, at 49 and 156 pieces: `lone piece at 0.28 cell stays loose=true,
+  joined pair snaps home=true, third joins the placed pair=true, pair at 0.6 cell stays loose=true`.

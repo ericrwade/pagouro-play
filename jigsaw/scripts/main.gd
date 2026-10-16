@@ -648,7 +648,7 @@ func _close_menu() -> void:
 ## First launch only: how to play, on one card with one button. Testers Community's report (2026-10-12) found no
 ## walkthrough, and Eric's mom never found pinch-to-zoom; the Help panels only appear when Help is tapped.
 const WELCOME_LINES := [
-	"Drag the pieces onto the board. Each one snaps into place when it is close.",
+	"Drag the pieces onto the board. A piece snaps in when it fits against another piece.",
 	"Spread two fingers to zoom in, pinch them to zoom out.",
 	"Help shows a short note, then puts a few pieces in place for you.",
 	"Pause stops the clock. There is no score and no hurry.",
@@ -1582,20 +1582,45 @@ func _selftest() -> void:
 	var settled: Vector2 = tray_panel._slot_centre(0) - (piece0.get_meta("centre") * s).rotated(mover.rotation)
 	report.append("tray glide: still during the beat=%s, moving at 0.43 s=%s, settled in slot 0=%s, same thumb kept=%s" % [str(held), str(midway), str(thumb.position.distance_to(settled) < 0.5), str(tray_panel._thumbs.get(mover) == thumb)])
 	_set_tray(false, false)
-	# snap: how far off a drop may land and still snap, on screen, old vs new; a near drop snaps, a far one does not
+	# snap: how far off a drop may land and still snap, on screen. A lone piece near its spot stays loose (Eric,
+	# 2026-10-16); two neighbors joined near their spot snap home; a third near that placed pair joins and locks; a
+	# group too far off stays loose.
 	var snaps := []
 	for n in [49, 156]:
 		_start(n)
 		await get_tree().process_frame
 		var z: float = puzzle.camera.zoom.x
-		var free_now := puzzle.clusters.filter(func(c): return is_instance_valid(c) and puzzle.turn_of(c) == 0 and not c.has_meta("locked"))
-		var near: Node2D = free_now[0]
-		var far: Node2D = free_now[1]
-		near.position = Vector2(puzzle.cell.x * 0.28, 0)
-		puzzle._settle(near)
-		far.position = Vector2(puzzle.cell.x * 0.6, 0)
-		puzzle._settle(far)
-		snaps.append("%d pieces: was %.0f px, now %.0f px (%.2f cell), 0.28 cell snaps=%s, 0.6 cell stays loose=%s" % [n, puzzle.cell.x * 0.18 * z, puzzle.snap_distance() * z, puzzle.snap_distance() / puzzle.cell.x, str(puzzle._is_home(near)), str(not puzzle._is_home(far))])
+		var by_rc := {}
+		for c in puzzle.clusters:
+			if is_instance_valid(c) and c.get_child_count() == 1:
+				c.set_meta("turn", 0)
+				c.rotation = 0.0
+				c.visible = true
+				by_rc[c.get_child(0).get_meta("rc")] = c
+		var a: Node2D = by_rc[Vector2i(1, 1)]
+		var b: Node2D = by_rc[Vector2i(2, 1)]
+		var c3: Node2D = by_rc[Vector2i(3, 1)]
+		var lone: Node2D = by_rc[Vector2i(1, 3)]
+		var off := Vector2(puzzle.cell.x * 0.28, 0)
+		lone.position = off
+		puzzle._settle(lone)
+		var lone_loose := not puzzle._is_home(lone) and not lone.has_meta("locked")
+		a.position = off
+		b.position = off
+		puzzle._settle(b)  # b meets a: they join, and the pair snaps home
+		var pair: Node2D = a if puzzle.clusters.has(a) else b
+		var pair_home := pair.get_child_count() == 2 and puzzle._is_home(pair) and pair.has_meta("locked")
+		c3.position = off
+		puzzle._settle(c3)  # c3 meets the placed pair: it joins it and is home
+		var third_in := pair.get_child_count() == 3 and puzzle._is_home(pair)
+		var d: Node2D = by_rc[Vector2i(1, 5)]
+		var e: Node2D = by_rc[Vector2i(2, 5)]
+		d.position = Vector2(puzzle.cell.x * 0.6, 0)
+		e.position = d.position
+		puzzle._settle(e)
+		var far_pair: Node2D = d if puzzle.clusters.has(d) else e
+		var far_loose := far_pair.get_child_count() == 2 and not puzzle._is_home(far_pair)
+		snaps.append("%d pieces: reach %.0f px (%.2f cell), lone piece at 0.28 cell stays loose=%s, joined pair snaps home=%s, third joins the placed pair=%s, pair at 0.6 cell stays loose=%s" % [n, puzzle.snap_distance() * z, puzzle.snap_distance() / puzzle.cell.x, str(lone_loose), str(pair_home), str(third_in), str(far_loose)])
 		await get_tree().process_frame
 	report.append("snap: " + "; ".join(snaps))
 	report.append("clock: before first touch %d ms, after 0.6 s of play %d ms, unchanged in background=%s, 200 s with a 130 s idle gap counts %d s" % [before_touch, banked, str(after_pause == banked), idle_counted / 1000])

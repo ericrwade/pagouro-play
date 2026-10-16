@@ -552,7 +552,10 @@ func _settle(cluster: Node2D) -> void:
 				joined = true
 				joined_any = true
 				break
-	if cluster.position.length() <= snap and turn_of(cluster) == 0:
+	# A lone piece never snaps to the board by itself (Eric, 2026-10-16: dropping one "sorta where I think it's going"
+	# and having it jump home "makes the game too easy"). It has to meet a piece first: joining a placed neighbor
+	# brings it home through the merge above, and a group of two or more still snaps to its spot on the board.
+	if cluster.get_child_count() > 1 and cluster.position.length() <= snap and turn_of(cluster) == 0:
 		cluster.position = Vector2.ZERO
 	if _is_home(cluster):
 		_lock(cluster)
