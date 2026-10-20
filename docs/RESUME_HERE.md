@@ -6,6 +6,11 @@ entries of `docs/BUILD_LOG.md`. `docs/HANDOFF.md` has the toolchain and guardrai
 
 ## NOW (saved 2026-10-08, Eric restarting the PC) — read this block first; the sections below are older history
 
+- **2026-10-20: 0.3.3 source is ready, NOT built or versioned.** It has: the daily-done memory, lone pieces never
+  locking, a tighter snap, the tray scroll bar, double-tap to stow, and put-back keeping its slot (BUILD_LOG
+  2026-10-14 entry onward). Eric: wait for Testers Community's last notes (their test ends 2026-10-21), then build
+  both platforms as 0.3.3, code 24.
+
 - **2026-10-12: 0.3.2 (code 23) UPLOADED to the closed test (Alpha) by Eric**, and submitted to TestFlight beta
   review (Family group). Production form answers: `store/PRODUCTION_ANSWERS.md` (fill the ✱ blanks; apply about
   10-22). Growth plan and launch-day tasks: end of `store/PLAY_STORE.md`.
