@@ -951,7 +951,7 @@ func _set_tray(on: bool, save := true) -> void:
 func _layout_tray() -> void:
 	var view := get_viewport().get_visible_rect().size
 	var slot: float = min(view.x / 3.2, view.y * 0.15)
-	var height := slot * Tray.ROWS + 8.0
+	var height := slot * Tray.ROWS + 8.0 + Tray.BAR
 	var on := tray_button.button_pressed
 	tray_panel.offset_top = -height
 	tray_panel.offset_bottom = 0
@@ -1339,7 +1339,7 @@ func _selftest() -> void:
 	_touch(0, piece_screen, false)
 	await get_tree().process_frame
 	report.append("ghost fingers after a pinch lifted over the bar: %d, one finger then picks a piece up=%s" % [ghosts, str(picked)])
-	report.append("tray drag reads as: diagonal up-right, nothing to scroll -> %s; 45 degrees up -> %s; sideways -> %s; sideways, nothing to scroll -> %s" % [Tray.decide(Vector2(40, -22), true, false), Tray.decide(Vector2(20, -20), true, true), Tray.decide(Vector2(30, -6), true, true), Tray.decide(Vector2(30, -6), true, false)])
+	report.append("tray drag reads as: diagonal up-right, nothing to scroll -> %s; 60 degrees up -> %s; 35 degrees up -> %s; sideways -> %s; sideways, nothing to scroll -> %s" % [Tray.decide(Vector2(40, -22), true, false), Tray.decide(Vector2(14, -24), true, true), Tray.decide(Vector2(30, -21), true, true), Tray.decide(Vector2(30, -6), true, true), Tray.decide(Vector2(30, -6), true, false)])
 	# save and restore: the half-done puzzle is rebuilt from its seed and put back exactly
 	var snap := puzzle.snapshot()
 	var sig_before := _layout_signature()
@@ -1581,12 +1581,86 @@ func _selftest() -> void:
 	var s: float = tray_panel.slot * 0.78 / (1.6 * max(puzzle.cell.x, puzzle.cell.y))
 	var settled: Vector2 = tray_panel._slot_centre(0) - (piece0.get_meta("centre") * s).rotated(mover.rotation)
 	report.append("tray glide: still during the beat=%s, moving at 0.43 s=%s, settled in slot 0=%s, same thumb kept=%s" % [str(held), str(midway), str(thumb.position.distance_to(settled) < 0.5), str(tray_panel._thumbs.get(mover) == thumb)])
+	# Matthew's tray notes (2026-10-20): the bar under the pieces only ever scrolls; a piece put back takes its own slot
+	# and the tray keeps its place; a double tap on a loose piece sends it back, a slow second tap does not
+	var count_was := current_count
+	var rot_was: bool = puzzle.rotation_on
+	puzzle.rotation_on = false
+	current_count = 49
+	_start(44)
+	await get_tree().process_frame
+	var tp: Tray = tray_panel
+	var tray_ev := func(pos: Vector2, down: bool) -> void:
+		var e := InputEventMouseButton.new()
+		e.button_index = MOUSE_BUTTON_LEFT
+		e.pressed = down
+		e.position = pos
+		e.global_position = tp.get_global_rect().position + pos
+		tp._gui_input(e)
+	var tray_move := func(pos: Vector2, rel: Vector2) -> void:
+		var e := InputEventMouseMotion.new()
+		e.position = pos
+		e.relative = rel
+		e.global_position = tp.get_global_rect().position + pos
+		tp._gui_input(e)
+	var in_tray := puzzle.tray.size()
+	var bar_y: float = tp.size.y - Tray.BAR * 0.5
+	tray_ev.call(Vector2(tp.size.x * 0.75, bar_y), true)  # touch the bar three quarters along: it jumps there
+	var at_jump: float = tp.scroll
+	var jumped: bool = at_jump > 0.0
+	tray_move.call(Vector2(tp.size.x * 0.75, bar_y - 60), Vector2(0, -60))  # straight up off the bar: still no lift
+	tray_move.call(Vector2(tp.size.x * 0.75 - 40, bar_y - 60), Vector2(-40, 0))
+	var bar_lifted: bool = puzzle.dragging != null or puzzle.tray.size() != in_tray
+	var bar_slides: bool = tp.scroll < at_jump - 40.0  # the shelf moves farther than the handle
+	tray_ev.call(Vector2(tp.size.x * 0.75 - 40, bar_y - 60), false)
+	await RenderingServer.frame_post_draw
+	get_viewport().get_texture().get_image().save_png("user://selftest_traybar.png")
+	# a piece lifted with the shelf scrolled to its far end (the shorter shelf must scroll back while it is out) and
+	# dropped back over the tray
+	tp._scroll_by(tp._max_scroll())
+	var order_before := puzzle.tray.duplicate()
+	var scroll_before: float = tp.scroll
+	var view_now := get_viewport().get_visible_rect().size
+	puzzle.begin_drag_from_tray(puzzle.tray[9], Vector2(640, view_now.y - 60))
+	puzzle.drag_to(Vector2(640, 300))
+	puzzle.end_drag(Vector2(600, view_now.y - 40))
+	var same_order := puzzle.tray == order_before
+	var same_place := is_equal_approx(tp.scroll, scroll_before)
+	# double tap: a piece out on the table, tapped twice quickly, glides back to its own slot
+	var stow_piece: Node2D = puzzle.tray[3]
+	puzzle.begin_drag_from_tray(stow_piece, Vector2(640, 300))
+	puzzle.end_drag(Vector2(640, 300))
+	await get_tree().process_frame
+	var on_screen: Vector2 = puzzle.get_canvas_transform() * (stow_piece.transform * stow_piece.get_child(0).get_meta("centre"))
+	_touch(0, on_screen, true)
+	await get_tree().process_frame
+	_touch(0, on_screen, false)
+	await get_tree().create_timer(0.6).timeout  # a slow second tap is just another tap
+	_touch(0, on_screen, true)
+	await get_tree().process_frame
+	_touch(0, on_screen, false)
+	await get_tree().create_timer(Puzzle.STOW_TIME + 0.2).timeout
+	var slow_kept: bool = stow_piece.visible and not puzzle.tray.has(stow_piece)
+	_touch(0, on_screen, true)
+	await get_tree().process_frame
+	_touch(0, on_screen, false)
+	await get_tree().process_frame
+	_touch(0, on_screen, true)
+	await get_tree().process_frame
+	_touch(0, on_screen, false)
+	await get_tree().create_timer(Puzzle.STOW_TIME + 0.2).timeout
+	var stowed_home: bool = not stow_piece.visible and puzzle.tray == order_before
+	report.append("tray notes: bar touch jumps=%s, bar never lifts a piece=%s, bar drag scrolls=%s, put back keeps order=%s and place=%s, slow second tap leaves it=%s, double tap stows to its own slot=%s" % [str(jumped), str(not bar_lifted), str(bar_slides), str(same_order), str(same_place), str(slow_kept), str(stowed_home)])
+	current_count = count_was
+	puzzle.rotation_on = rot_was
 	_set_tray(false, false)
-	# snap: how far off a drop may land and still snap, on screen. A lone piece near its spot stays loose (Eric,
+	# snap: how far off a drop may land and still snap, on screen (0.25 cell, 18 px floor). A lone piece near its spot stays loose (Eric,
 	# 2026-10-16); two neighbors joined near their spot snap home; a third near that placed pair joins and locks; a
 	# group too far off stays loose.
 	var snaps := []
+	var count_before := current_count
 	for n in [49, 156]:
+		current_count = n  # _start takes a seed; the piece count is current_count (until 2026-10-20 both runs were one size)
 		_start(n)
 		await get_tree().process_frame
 		var z: float = puzzle.camera.zoom.x
@@ -1601,7 +1675,7 @@ func _selftest() -> void:
 		var b: Node2D = by_rc[Vector2i(2, 1)]
 		var c3: Node2D = by_rc[Vector2i(3, 1)]
 		var lone: Node2D = by_rc[Vector2i(1, 3)]
-		var off := Vector2(puzzle.cell.x * 0.28, 0)
+		var off := Vector2(puzzle.cell.x * 0.2, 0)
 		lone.position = off
 		puzzle._settle(lone)
 		var lone_loose := not puzzle._is_home(lone) and not lone.has_meta("locked")
@@ -1620,9 +1694,10 @@ func _selftest() -> void:
 		puzzle._settle(e)
 		var far_pair: Node2D = d if puzzle.clusters.has(d) else e
 		var far_loose := far_pair.get_child_count() == 2 and not puzzle._is_home(far_pair)
-		snaps.append("%d pieces: reach %.0f px (%.2f cell), lone piece at 0.28 cell stays loose=%s, joined pair snaps home=%s, third joins the placed pair=%s, pair at 0.6 cell stays loose=%s" % [n, puzzle.snap_distance() * z, puzzle.snap_distance() / puzzle.cell.x, str(lone_loose), str(pair_home), str(third_in), str(far_loose)])
+		snaps.append("%d pieces (built %d): reach %.0f px (%.2f cell), lone piece at 0.2 cell stays loose=%s, joined pair snaps home=%s, third joins the placed pair=%s, pair at 0.6 cell stays loose=%s" % [n, puzzle.piece_total(), puzzle.snap_distance() * z, puzzle.snap_distance() / puzzle.cell.x, str(lone_loose), str(pair_home), str(third_in), str(far_loose)])
 		await get_tree().process_frame
 	report.append("snap: " + "; ".join(snaps))
+	current_count = count_before
 	report.append("clock: before first touch %d ms, after 0.6 s of play %d ms, unchanged in background=%s, 200 s with a 130 s idle gap counts %d s" % [before_touch, banked, str(after_pause == banked), idle_counted / 1000])
 	report.append("screenshots in " + ProjectSettings.globalize_path("user://"))
 	print("SELFTEST " + " | ".join(report))

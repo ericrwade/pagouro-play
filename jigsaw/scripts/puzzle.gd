@@ -15,13 +15,17 @@ signal tray_changed
 signal placed  # pieces joined or locked into place: the screen plays the click
 signal border_finished  # the last border piece locked in
 
-const SNAP_FRACTION := 0.3    # snap together / to the board when within this fraction of a cell (0.18 until 0.3.0:
-                              # "not very generous", Eric's mom, 2026-10-08; only the true neighbor or true spot snaps)
-const SNAP_MIN_PX := 22.0     # never less than this many screen pixels at the current zoom: a fingertip's slop
+const SNAP_FRACTION := 0.25   # snap together / to the board when within this fraction of a cell (0.18 until 0.3.0:
+                              # "not very generous", Eric's mom, 2026-10-08; 0.3 in 0.3.0-0.3.2, then Eric, 2026-10-20:
+                              # "a tiny bit less forgiving ... we went too far"; only the true neighbor or spot snaps)
+const SNAP_MIN_PX := 18.0     # never less than this many screen pixels at the current zoom: a fingertip's slop (22
+                              # in 0.3.0-0.3.2)
 const SNAP_MAX_FRACTION := 0.5  # ...but never more than half a cell
 const MARGIN := 0.3           # scatter margin around the board, as a fraction of the board size
 const TRAY_MARGIN := 0.05     # in tray mode, the little table left around the board
 const MAX_ZOOM := 4.0         # how far in the player can zoom, relative to the whole-table view
+const DOUBLE_TAP_MS := 450    # a second tap on the same loose piece within this long sends it back to the tray
+const STOW_TIME := 0.28       # seconds a stowed piece takes to glide down and fade
 
 var texture: Texture2D
 var rows := 0
@@ -62,6 +66,8 @@ var border_done := false
 var rotation_on := false
 var _press_screen := Vector2.ZERO
 var _press_ms := 0
+var _last_tap_id := 0         # the piece the last tap landed on, and when it was let go: two make a double tap
+var _last_tap_ms := 0
 var glow: BorderGlow
 
 @onready var camera: Camera2D = $Camera2D
@@ -299,7 +305,7 @@ func screen_to_world(screen: Vector2) -> Vector2:
 func _cluster_at(world: Vector2) -> Node2D:
 	for i in range(pieces_root.get_child_count() - 1, -1, -1):
 		var cluster: Node2D = pieces_root.get_child(i)
-		if not cluster.visible or cluster.has_meta("locked") or cluster.has_meta("turning"):
+		if not cluster.visible or cluster.has_meta("locked") or cluster.has_meta("turning") or cluster.has_meta("stowing"):
 			continue  # placed pieces are locked down
 		var local := cluster.transform.affine_inverse() * world
 		for piece in cluster.get_children():
@@ -330,13 +336,45 @@ func end_drag(screen: Vector2) -> void:
 		return
 	var dropped := dragging
 	dragging = null
-	# dropped back over the tray: a loose piece goes back in, at the front
+	# dropped back over the tray: a loose piece goes back in
 	if tray_mode and screen.y > get_viewport_rect().size.y - tray_height and dropped.get_child_count() == 1:
 		dropped.visible = false
-		tray.push_front(dropped)
-		tray_changed.emit()
+		_tray_insert(dropped)
 		return
 	_settle(dropped)
+
+
+## A piece goes back into the tray in its own slot, in the order the pieces came out of the box, so nothing else
+## moves and the player keeps their place (Matthew, 2026-10-20: a piece grabbed by mistake went back at the front,
+## the rest shifted and he "lost my place"; until 0.3.3 every piece put back went to the front).
+func _tray_insert(c: Node2D) -> void:
+	var rank: int = c.get_meta("tray_rank", 0)
+	var at := tray.size()
+	for i in range(tray.size()):
+		if int(tray[i].get_meta("tray_rank", 0)) > rank:
+			at = i
+			break
+	tray.insert(at, c)
+	tray_changed.emit()
+
+
+## A double tap on a loose piece sends it back to the tray (Matthew, 2026-10-20: a piece tried and found wrong needs
+## "a quick stow away option"). It glides toward the tray and fades, then takes its own slot there.
+func stow(c: Node2D) -> void:
+	if not tray_mode or c.get_child_count() != 1 or c.has_meta("locked") or c.has_meta("stowing"):
+		return
+	c.set_meta("stowing", true)
+	var view := get_viewport_rect().size
+	var target := c.position + screen_to_world(Vector2(view.x * 0.5, view.y - tray_height * 0.5)) - _cluster_centre(c)
+	var t := create_tween().set_parallel(true).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	t.tween_property(c, "position", target, STOW_TIME)
+	t.tween_property(c, "modulate:a", 0.0, STOW_TIME)
+	t.chain().tween_callback(func():
+		if is_instance_valid(c) and clusters.has(c):
+			c.remove_meta("stowing")
+			c.visible = false
+			c.modulate.a = 1.0
+			_tray_insert(c))
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -403,11 +441,22 @@ func _unhandled_input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 		elif dragging:
 			# a tap (no real movement, quickly let go) turns the piece instead of dropping it
-			if rotation_on and event.position.distance_to(_press_screen) < 12.0 and Time.get_ticks_msec() - _press_ms < 400:
+			var now := Time.get_ticks_msec()
+			var is_tap: bool = event.position.distance_to(_press_screen) < 12.0 and now - _press_ms < 400
+			if rotation_on and is_tap:
 				var tapped := dragging
 				dragging = null
 				turn_cluster(tapped)
+			elif is_tap and tray_mode and dragging.get_instance_id() == _last_tap_id and now - _last_tap_ms < DOUBLE_TAP_MS:
+				# the second of two quick taps on one loose piece: back to the tray (not while Rotation is on, where
+				# a tap turns the piece)
+				var stowed := dragging
+				dragging = null
+				_last_tap_id = 0
+				stow(stowed)
 			else:
+				_last_tap_id = dragging.get_instance_id() if is_tap and dragging.get_child_count() == 1 else 0
+				_last_tap_ms = now
 				end_drag(event.position)
 			get_viewport().set_input_as_handled()
 		else:
@@ -672,7 +721,7 @@ func set_rotation_mode(on: bool) -> void:
 	if texture == null or is_solved:
 		return
 	for c in clusters:
-		if c.has_meta("locked") or c.has_meta("hinting"):
+		if c.has_meta("locked") or c.has_meta("hinting") or c.has_meta("stowing"):
 			continue
 		if on and c.get_child_count() == 1:
 			_set_turn(c, randi_range(0, 3))
@@ -727,7 +776,7 @@ func hint() -> bool:
 	var tiers := [[], [], []]  # 0: border while it is open, 1: fits placed work, 2: any loose piece
 	var smallest: Node2D = null
 	for c in clusters:
-		if (_is_home(c) and c.visible) or c.has_meta("hinting"):
+		if (_is_home(c) and c.visible) or c.has_meta("hinting") or c.has_meta("stowing"):
 			continue
 		if c.get_child_count() > 1:
 			if smallest == null or c.get_child_count() < smallest.get_child_count():

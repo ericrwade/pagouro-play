@@ -410,3 +410,21 @@ send adb input without checking the foreground app first.
   unchanged (0.3 cell, 22 px floor). Help still places pieces outright. The welcome card now reads "A piece snaps in
   when it fits against another piece." Self-test, at 49 and 156 pieces: `lone piece at 0.28 cell stays loose=true,
   joined pair snaps home=true, third joins the placed pair=true, pair at 0.6 cell stays loose=true`.
+  Correction (2026-10-20): that test passed its numbers to `_start`, which takes a seed, not a piece count, so both
+  runs were the same size and the "49 and 156 pieces" I reported was wrong. The test now sets the count, and the
+  report prints the size actually built.
+- 2026-10-20, Matthew on iPhone: (1) "I go to scroll left or right and then I accidentally grab piece and then
+  re-order them all and lose my place." A scroll bar now runs under the tray pieces: touching it only scrolls (drag
+  the gold handle, or touch the bar to jump), never lifts. A swipe on the pieces lifts one only when it heads up
+  within 45 degrees of straight up and travels 20 px (60 degrees and 14 px before). A piece put back over the tray
+  takes its own slot in the box order instead of the front, and the shelf returns to where it was, even at the far
+  end. (2) "a quick stow away option ... maybe a double tap puts it back in the tray?" Two taps on the same loose
+  piece within 0.45 s glide it back to its own slot; a slower second tap does nothing. Not while Rotation is on, where a
+  tap turns the piece. The Tray help panel says both.
+- 2026-10-20, Eric: "click together" a tiny bit less forgiving ("we went too far"): 0.3 to 0.25 of a cell, finger
+  floor 22 to 18 px. He also asked that a lone piece never lock down, borders included: that is the 2026-10-16
+  change above, not yet in a build he has played.
+- Self-test: `tray notes: bar touch jumps=true, bar never lifts a piece=true, bar drag scrolls=true, put back keeps
+  order=true and place=true, slow second tap leaves it=true, double tap stows to its own slot=true`; `snap: 49 pieces
+  (built 49): reach 18 px (0.29 cell) ... 156 pieces (built 156): reach 18 px (0.50 cell)`, every check true. At
+  156 pieces on the whole-table view the finger floor still sets the reach at the half-cell cap.

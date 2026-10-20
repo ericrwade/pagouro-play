@@ -566,8 +566,8 @@
   "id": "jigsaw-08",
   "topic": "jigsaw",
   "title": "The Tray",
-  "text": "Loose pieces wait in a two-row tray. Swipe sideways to browse, swipe a piece up to lift it onto the board.",
-  "source": "PAGOURO_PLAY/docs/BUILD_LOG.md (2026-10-04: Tray)"
+  "text": "Loose pieces wait in a two-row tray. Swipe sideways or slide the bar underneath to browse, and swipe a piece up to lift it out. Double-tap a loose piece to send it back.",
+  "source": "PAGOURO_PLAY/docs/BUILD_LOG.md (2026-10-04: Tray; 2026-10-20: scroll bar and double-tap to stow)"
  },
  {
   "id": "jigsaw-09",
