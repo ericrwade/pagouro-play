@@ -428,3 +428,13 @@ send adb input without checking the foreground app first.
   order=true and place=true, slow second tap leaves it=true, double tap stows to its own slot=true`; `snap: 49 pieces
   (built 49): reach 18 px (0.29 cell) ... 156 pieces (built 156): reach 18 px (0.50 cell)`, every check true. At
   156 pieces on the whole-table view the finger floor still sets the reach at the half-cell cap.
+
+## 2026-10-23: 0.3.3 (code 24) built
+
+- Testers Community's test ended with no new notes: both report links (feedback, production) re-downloaded
+  2026-10-23 are byte-identical to the 2026-10-12 copies in docs/. Eric: "go, build 0.3.3".
+- Contents: everything in the 2026-10-14 entry above (daily-done memory, lone pieces never lock, tighter snap,
+  tray scroll bar, stricter lift, put-back keeps its slot and place, double-tap to stow).
+- Self-test (guarded) on the versioned tree: all checks true, peak 565 MB, 30 s, no script errors.
+- AAB 127,556,887 bytes, sha256 03b71b4dc7ed1e0da33bfa4dc84bf455b247d6fd72866b94bba683169811af48, release key
+  (cert SHA-256 89:05:8D:...:BB:22), bundletool manifest versionCode 24 / versionName 0.3.3.

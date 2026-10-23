@@ -6,7 +6,9 @@ entries of `docs/BUILD_LOG.md`. `docs/HANDOFF.md` has the toolchain and guardrai
 
 ## NOW (saved 2026-10-08, Eric restarting the PC) — read this block first; the sections below are older history
 
-- **2026-10-20: 0.3.3 source is ready, NOT built or versioned.** It has: the daily-done memory, lone pieces never
+- **2026-10-23: 0.3.3 (code 24) BUILT** (Testers Community ended with no new notes). AAB on release `play-0.3.3`;
+  iPhone build sent to TestFlight by ios-build.yml (see BUILD_LOG 2026-10-23). Next: Eric uploads the AAB to Play.
+- 2026-10-20 (history): 0.3.3 source ready, not yet versioned. It has: the daily-done memory, lone pieces never
   locking, a tighter snap, the tray scroll bar, double-tap to stow, and put-back keeping its slot (BUILD_LOG
   2026-10-14 entry onward). Eric: wait for Testers Community's last notes (their test ends 2026-10-21), then build
   both platforms as 0.3.3, code 24.
