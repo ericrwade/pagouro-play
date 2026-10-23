@@ -438,3 +438,4 @@ send adb input without checking the foreground app first.
 - Self-test (guarded) on the versioned tree: all checks true, peak 565 MB, 30 s, no script errors.
 - AAB 127,556,887 bytes, sha256 03b71b4dc7ed1e0da33bfa4dc84bf455b247d6fd72866b94bba683169811af48, release key
   (cert SHA-256 89:05:8D:...:BB:22), bundletool manifest versionCode 24 / versionName 0.3.3.
+- iPhone: ios-build.yml upload=true, run 40034954277 on 6f287de, "Upload succeeded" / EXPORT SUCCEEDED 2026-10-23 22:42 UTC (0.3.3, build 24); Apple is processing it.
