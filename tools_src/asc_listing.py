@@ -166,8 +166,18 @@ def apply():
         attrs = {k: "NONE" for k in LEVELS if k in have}
         attrs.update({k: False for k in FLAGS if k in have})
         unknown = sorted(k for k in have if k not in LEVELS and k not in FLAGS)
-        call("PATCH", "/v1/ageRatingDeclarations/" + ar["id"], {"data": {"type": "ageRatingDeclarations", "id": ar["id"], "attributes": attrs}})
-        print("age rating: %d fields set to none/false; left for Eric: %s" % (len(attrs), unknown))
+        try:
+            call("PATCH", "/v1/ageRatingDeclarations/" + ar["id"], {"data": {"type": "ageRatingDeclarations", "id": ar["id"], "attributes": attrs}})
+            print("age rating: %d fields set to none/false; left for Eric: %s" % (len(attrs), unknown))
+        except SystemExit as e:
+            print("AGE RATING NOT SET (Eric answers it in the form):", e)
+        for k in ("socialMedia", "socialMediaAgeRestricted"):
+            if k in have:
+                try:
+                    call("PATCH", "/v1/ageRatingDeclarations/" + ar["id"], {"data": {"type": "ageRatingDeclarations", "id": ar["id"], "attributes": {k: False}}})
+                    print("age rating:", k, "false")
+                except SystemExit as e:
+                    print("age rating:", k, "left for Eric:", e)
 
     # review notes (contact name, phone and email are Eric's to enter)
     rd = call("GET", "/v1/appStoreVersions/%s/appStoreReviewDetail" % vid, ok=(200, 404)).get("data")
