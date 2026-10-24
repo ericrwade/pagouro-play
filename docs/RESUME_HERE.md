@@ -14,6 +14,9 @@ entries of `docs/BUILD_LOG.md`. `docs/HANDOFF.md` has the toolchain and guardrai
 - **2026-10-24: 0.3.3 (code 24) UPLOADED to the closed test by Eric.**
 - **2026-10-24 9:10 AM: Eric APPLIED for production access** in Play Console. Google: usually 7 days or less, by email
   to the account owner. The 2026-10-25 launch target moves to whenever access is granted.
+  Eric did NOT turn on Managed publishing (the older plan to turn it on is dropped). Once access is granted: Production >
+  Create release > add 0.3.3 from the library (or promote it from Closed testing) > send for review. With Managed
+  publishing off, it goes live as soon as Google's review passes.
 - **2026-10-23: 0.3.3 (code 24) BUILT** (Testers Community ended with no new notes). AAB on release `play-0.3.3`;
   iPhone build sent to TestFlight by ios-build.yml (see BUILD_LOG 2026-10-23). Next: Eric uploads the AAB to Play.
 - 2026-10-20 (history): 0.3.3 source ready, not yet versioned. It has: the daily-done memory, lone pieces never

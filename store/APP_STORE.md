@@ -24,4 +24,4 @@ The text lives in `store/app_store.json`; edit it there and run `apply` again.
 3. **App Review Information** (on the 0.3.3 page): contact first and last name, phone, email. Notes are already in.
 4. **Content rights** (App Information): "No, it does not contain, show, or access third-party content."
 5. Open the age rating once to confirm it shows **4+**.
-6. **Add for Review**, then **Submit to App Review**. With manual release, approval waits for your Release button.
+6. **Add for Review**, then **Submit to App Review**. Done 2026-10-24; release is automatic, so approval puts it live.
