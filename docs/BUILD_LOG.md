@@ -439,3 +439,10 @@ send adb input without checking the foreground app first.
 - AAB 127,556,887 bytes, sha256 03b71b4dc7ed1e0da33bfa4dc84bf455b247d6fd72866b94bba683169811af48, release key
   (cert SHA-256 89:05:8D:...:BB:22), bundletool manifest versionCode 24 / versionName 0.3.3.
 - iPhone: ios-build.yml upload=true, run 40034954277 on 6f287de, "Upload succeeded" / EXPORT SUCCEEDED 2026-10-23 22:42 UTC (0.3.3, build 24); Apple is processing it.
+
+## 2026-10-24: App Store listing filled (iPhone and iPad)
+
+- Eric: "iPhone and iPad both, and you do as much as you can for this release". See store/APP_STORE.md for what the
+  API set (run 40111271734: version 0.3.3 with build 24, manual release, text, category, age rating, review notes,
+  10 screenshots COMPLETE) and the five things left for Eric (App Privacy, price, review contact, content rights, Submit).
+- Privacy page now covers iPhone and iPad (pagouro-site c287003).
