@@ -6,6 +6,7 @@ entries of `docs/BUILD_LOG.md`. `docs/HANDOFF.md` has the toolchain and guardrai
 
 ## NOW (saved 2026-10-08, Eric restarting the PC) — read this block first; the sections below are older history
 
+- **2026-10-24: 0.3.3 (code 24) UPLOADED to the closed test by Eric.**
 - **2026-10-24 9:10 AM: Eric APPLIED for production access** in Play Console. Google: usually 7 days or less, by email
   to the account owner. The 2026-10-25 launch target moves to whenever access is granted.
 - **2026-10-23: 0.3.3 (code 24) BUILT** (Testers Community ended with no new notes). AAB on release `play-0.3.3`;
