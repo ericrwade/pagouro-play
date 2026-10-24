@@ -1,0 +1,29 @@
+# Fill the App Store listing through the App Store Connect API (tools_src/asc_listing.py). Manual run only.
+# "inspect" only reads; "apply" writes the listing, build, category, age rating, review notes and screenshots.
+# Never submits for review. Uses the same repo secrets as ios-build.yml.
+name: App Store listing
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "inspect or apply"
+        type: choice
+        options: [inspect, apply]
+        default: inspect
+
+jobs:
+  listing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install --quiet pyjwt cryptography requests
+      - name: Run
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_KEY_P8: ${{ secrets.ASC_KEY_P8 }}
+        run: python tools_src/asc_listing.py "${{ inputs.mode }}"

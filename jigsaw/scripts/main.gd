@@ -1133,6 +1133,14 @@ func _shots() -> void:
 			if String(p.file).contains(part):
 				return p
 		return pictures[0]
+	# `-- --shot-size=WxH` for App Store sizes taller than this desk's screen: a borderless window is not clamped to it
+	for a in OS.get_cmdline_user_args():
+		if a.begins_with("--shot-size="):
+			var wh := a.trim_prefix("--shot-size=").split("x")
+			DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, true)
+			DisplayServer.window_set_size(Vector2i(int(wh[0]), int(wh[1])))
+			await get_tree().create_timer(0.5).timeout
+			print("SHOTS window ", DisplayServer.window_get_size(), " viewport ", get_viewport().get_texture().get_size())
 	tray_button.set_pressed_no_signal(true)
 	_set_tray(true, false)
 	table_button.select(0)
