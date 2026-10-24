@@ -3,6 +3,7 @@
   "version": "0.3.3",
   "build": "24",
   "copyright": "2026 Pagouro",
+  "release_type": "AFTER_APPROVAL",
   "name": "Jigsaw by Pagouro",
   "subtitle": "Relaxing jigsaws, no ads",
   "privacy_policy_url": "https://pagouro.com/jigsaw-privacy.html",

@@ -6,7 +6,7 @@ The text lives in `store/app_store.json`; edit it there and run `apply` again.
 
 ## Done by the API (verified in the run log, run 40111271734)
 
-- Version **0.3.3** (the empty "1.0" draft renamed), release **manually** (Apple's Managed publishing), build **24** attached.
+- Version **0.3.3** (the empty "1.0" draft renamed), release automatically after approval (Eric changed it from manual on 2026-10-24), build **24** attached.
 - Name, subtitle "Relaxing jigsaws, no ads", description, keywords, promotional text, support and marketing URL
   (pagouro.com/jigsaw/), privacy policy URL, copyright "2026 Pagouro".
 - Category Games › Puzzle.

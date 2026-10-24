@@ -83,7 +83,7 @@ def inspect():
 
 def find_or_make_version(app_id):
     vs = call("GET", "/v1/apps/%s/appStoreVersions?filter[platform]=IOS" % app_id)["data"]
-    attrs = {"versionString": L["version"], "copyright": L["copyright"], "releaseType": "MANUAL"}
+    attrs = {"versionString": L["version"], "copyright": L["copyright"], "releaseType": L["release_type"]}
     for v in vs:
         st = v["attributes"].get("appStoreState") or v["attributes"].get("appVersionState")
         if st in ("PREPARE_FOR_SUBMISSION", "DEVELOPER_REJECTED", "REJECTED", "METADATA_REJECTED", "INVALID_BINARY"):

@@ -7,7 +7,8 @@ entries of `docs/BUILD_LOG.md`. `docs/HANDOFF.md` has the toolchain and guardrai
 ## NOW (saved 2026-10-08, Eric restarting the PC) — read this block first; the sections below are older history
 
 - **2026-10-24: iOS 0.3.3 (24) SUBMITTED to App Review by Eric** (App Privacy published: no data collected). Apple: up to
-  48 h, by email. Release is MANUAL: after approval Eric presses Release, ideally the same day as Play.
+  48 h, by email. Eric set it to release AUTOMATICALLY on approval (no fixed launch day now);
+  the App Store button goes on pagouro.com/jigsaw once it is live.
 - **2026-10-24: App Store listing FILLED by API** (store/APP_STORE.md): Eric still does App Privacy, Free price, review
   contact, content rights, then Submit. Release is manual.
 - **2026-10-24: 0.3.3 (code 24) UPLOADED to the closed test by Eric.**
