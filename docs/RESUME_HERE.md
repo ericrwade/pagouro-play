@@ -9,6 +9,8 @@ entries of `docs/BUILD_LOG.md`. `docs/HANDOFF.md` has the toolchain and guardrai
 - **2026-10-24: iOS 0.3.3 (24) SUBMITTED to App Review by Eric** (App Privacy published: no data collected). Apple: up to
   48 h, by email. Eric set it to release AUTOMATICALLY on approval (no fixed launch day now);
   the App Store button goes on pagouro.com/jigsaw once it is live.
+- **2026-10-25 12:16 PM: Play production release 0.3.3 + new listing SENT FOR REVIEW** (submission 12: Production, Open
+  testing, Store Listing; managed publishing off, so live on approval). Then: Play button on pagouro.com/jigsaw.
 - **2026-10-25: Google GRANTED production access** (email to Eric). Next, Eric: Production > Create new release with
   0.3.3 (24), and update the listing from `store/PLAY_LAUNCH_PASTE.txt` (release notes, the new short description, the
   382-picture full description); then send for review. Managed publishing is off, so it goes live when review passes.
